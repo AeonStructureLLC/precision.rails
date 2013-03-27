@@ -1,0 +1,23 @@
+<%
+   if defined? editable
+     content_editable = "contenteditable"
+     drag_class = "drag_handle aeon_drag"
+     deletable = "deletable_question"
+     editable = true
+   else
+     content_editable = ""
+     drag_class = "hidden"
+     deletable = ""
+     editable = false
+   end
+%>
+<li class='category_listing <%= deletable %>' model='category' model_id='<%= category_listing.id %>' model_root='true'>
+  <div class='<%= drag_class %>'></div>
+  <div class='attribute title' model='category' model_id='<%= category_listing.id %>' attribute_name='title' <%= content_editable %>><%= category_listing.title.html_safe %></div>
+  <%= render :partial => 'media_items/media_items_preview', :locals => { :media_items => category_listing.media_items } %>
+  <ul class='sub_categories_list'>
+    <% unless category_listing.categories.blank? %>
+      <%= render :partial => 'categories/category_listing', :collection => category_listing.categories, :locals => { :editable => editable } %>
+    <% end %>
+  </ul>
+</li>

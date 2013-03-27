@@ -1,0 +1,23 @@
+<%
+   css_class = "hidden"
+   unless media_items.blank?
+     css_class = ""
+   end
+%>
+
+<div class='media_items_wrapper <%= css_class %>'>
+  <div class='media_items_preview panel'>
+    <div class='left_arrow nav_arrows previous_media_item'><img class='prev_icon' src='/images/prev.png' /></div>
+    <div class='preview_container'>
+      <% unless media_items.blank? %>
+        <%= render :partial => 'media_items/media_item_listing', :locals => { :media_item_listing => media_items.first } %>
+      <% end %>
+    </div>
+    <div class='right_arrow nav_arrows next_media_item'><img class='next_icon' src='/images/next.png' /></div>
+  </div>
+  <div class='media_items_listing_wrapper'>
+    <ul class='media_items_listing'>
+      <%=  render :partial => 'media_items/media_item_thumb', :collection => media_items %>
+    </ul>
+  </div>
+</div>

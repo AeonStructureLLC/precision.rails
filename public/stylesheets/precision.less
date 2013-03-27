@@ -1,0 +1,37 @@
+@import "aeon_boilerplate";
+
+#Navigation {
+  border: 1px solid #333;
+}
+
+#CategoriesList {
+  border: 1px solid #ccc;
+  padding: 24px;
+  list-style: none;
+
+  .category_listing {
+    background-color: #ccc;
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    .drag_handle {
+      height: 24px;
+      width: 24px;
+      background-color: red;
+    }
+    .sub_categories_list {
+      background-color: #ececec;
+      padding: 12px;
+      border: 1px solid #000;
+      min-height: 48px;
+      list-style: none;
+    }
+  }
+
+  .category_listing.can_drop_hover {
+    .category_droppable {
+//      height: 48px;
+//      border: 1px solid blue;
+    }
+  }
+}

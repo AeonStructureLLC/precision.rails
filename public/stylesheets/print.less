@@ -1,0 +1,216 @@
+@import "aeon-mixins";
+
+@media print {
+    @page { margin: 0.5cm; }
+    #EditorControls, #ContentEntryFooter, .editorSections, .concept_selectors, .Close, .ui-dialog {
+        display: none !important;
+        color: #fff !important;
+    }
+
+    * { -webkit-print-color-adjust: exact; }
+
+    .day_wrapper .heading {
+        font-size: 22px;
+        margin-left: -20px;
+        margin-top: -45px;
+        font-weight: bold;
+        margin-bottom: 24px;
+        //text-shadow: #8B8B8B 1px 1px 1px;
+    }
+
+    .day_wrapper {
+        .aeon-round(5px);
+        //box-shadow: 0px 0px 12px -2px #ccc;
+        border: 1px solid #a2a2a2;
+        background: #fbfbfb;
+        padding: 24px;
+        margin-bottom: 50px;
+        position: relative;
+
+        .heading {
+            font-size: 22px;
+            margin-left: -20px;
+            margin-top: -45px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            //text-shadow: #8b8b8b 1px 1px 1px;
+        }
+    }
+
+    .LessonPart, .LessonHeader, .StandardHeader, .StrategiesEmphasized, .InterdisciplinaryConnection, .PriorToTheLesson, .ConductTheLesson, .LessonFocus {
+        .aeon-round(9px);
+        //.aeon-shadow(0px, 0px, 4px, #ccc);
+        border: 1px solid #ccc;
+        background-color: #ececec;
+        padding: 24px;
+        margin-bottom: 25px;
+
+        .heading {
+            font-size: 22px;
+            margin: 0px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            //text-shadow: #357acb 1px 1px 1px;
+        }
+    }
+
+    .LessonFocus {
+
+    }
+
+    .LessonNote, .LessonCheckup, .PausePoint, .LessonEnd, .ExitTicket {
+        .aeon-round(6px);
+        .center-margins;
+        //.aeon-shadow(1px, 0px, 6px, #777);
+        padding: 16px;
+        margin-top: 25px;
+        border: 2px solid #222;
+        width: 450px;
+        background-color: #fff;
+        min-height: 96px;
+
+        .heading {
+            font-weight: bold;
+            font-size: 20px;
+            margin: 0px;
+            margin-bottom: 12px;
+            display: block;
+            border-bottom: 1px dotted #667;
+        }
+    }
+
+    .LessonCheckup {
+        background-color: #faf4ae;
+    }
+
+    .PausePoint, .LessonEnd, .ExitTicket {
+        border-style: dashed;
+        opacity: 0.9;
+        border-color: #a4a4a4;
+        min-height: 48px;
+    }
+
+    .LessonWhiteboard, .StudentCheckup {
+        .aeon-round(3px);
+        .center-margins;
+        //-webkit-box-shadow:inset 0px 0px 8px #AAA;
+        border: 1px solid #2a2a2a;
+        width: 90%;
+        padding: 24px;
+        background-color: #fff;
+    }
+
+    .StudentCheckup {
+        background-color: #faf4ae;
+    }
+
+    .whiteboard_button {
+        float: right;
+        margin-top: -8px;
+        margin-right: -8px;
+    }
+
+    .lesson_chat_name {
+        display: block;
+    }
+
+    .chat_bubble {
+        .aeon-round(20px);
+        //-webkit-box-shadow:inset 0px 0px 8px #AAA;
+        padding: 12px;
+        background: -webkit-gradient(linear, left top, left bottom, from(#efefef), to(#fafafa));
+        display: inline-block;
+        border: 3px solid #FFF;
+        max-width: 42%;
+    }
+
+    .LessonTeacherSays {
+        position: relative;
+
+        .lesson_q {
+            text-align: left;
+            display: block;
+
+            .lesson_chat_name {
+                margin-bottom: 20px;
+            }
+
+            .chat_bubble {
+                margin-left: 12px;
+                border-color: #9fc9da;
+                &:before {
+                    content: "";
+                    position: relative;
+                    top: -35px;
+                    float: left;
+                    margin-left: 24px;
+                    border-width: 0 20px 20px 0;
+                    border-style: solid;
+                    border-color: #9fc9da transparent;
+                    display: block;
+                    width: 0;
+                    margin-right: -42px;
+                    //.aeon-shadow(-2px, -0.5px, 0.5px, #CCC);
+                }
+            }
+
+        }
+    }
+
+    .LessonClassSays {
+        position: relative;
+
+        .lesson_a {
+            text-align: right;
+            display: block;
+
+            .lesson_chat_name {
+                margin-top: 20px;
+            }
+
+            .chat_bubble {
+                margin-right: 12px;
+                border-color: #95e086;
+                &:after {
+                    content: "";
+                    position: relative;
+                    bottom: -35px;
+                    float: right;
+                    margin-right: 8px;
+                    border-width: 20px 0 0 20px;
+                    border-style: solid;
+                    border-color: #95e086 transparent;
+                    display: block;
+                    width: 0;
+                    margin-left: -42px;
+                    //.aeon-shadow(2px, 0.5px, 0.5px, #CCC);
+                }
+            }
+
+        }
+    }
+
+
+
+
+    button {
+        font-size: 12px;
+        width: 145px;
+    }
+    .demo {
+        padding: 25px;
+        width: 300px;
+        margin: 25px;
+        border: 1px solid blue;
+    }
+
+    .lesson_section {
+        page-break-inside: avoid;
+
+    }
+
+    .button {
+        background: #ccc !important;
+        -webkit-box-shadow: 0px 0px 0px;
+    }
+}

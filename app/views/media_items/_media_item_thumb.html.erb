@@ -1,0 +1,14 @@
+<%
+   case media_item_thumb.mime_type.split('/')[0]
+     when 'image'
+       img_src = "/media_controller/#{media_item_thumb.uuid}_preview.png"
+       if media_item_thumb.file_name.include? "gif"
+         img_src = "/media_controller/#{media_item_thumb.file_name}"
+       end
+       thumb_tag = "<img class='media image media_item_thumb' src='/media_controller/#{media_item_thumb.uuid}_thumb.png' img_src='#{img_src}' mime_type='#{media_item_thumb.mime_type}' media_item_id='#{media_item_thumb.id}'/>".html_safe
+     when 'video'
+       thumb_tag = "<img class='media video media_item_thumb' src='/media_controller/#{media_item_thumb.uuid}_thumb.png' video_src='/media_controller/#{media_item_thumb.file_name}' mime_type='#{media_item_thumb.mime_type}' media_item_id='#{media_item_thumb.id}'/>".html_safe
+   end
+%>
+
+<%= thumb_tag %>

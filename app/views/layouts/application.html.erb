@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PrecisionRails</title>
+  <script type="text/javascript" src="/javascripts/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery-ui-1.9.2.custom.min.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery.dependClass.js"></script>
+  <script type="text/javascript" src="/javascripts/rails.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery.ui.touch-punch.js"></script>
+  <script type="text/javascript" src="/javascripts/underscore-min.js"></script>
+  <script type="text/javascript" src="/javascripts/backbone-min.js"></script>
+  <script type="text/javascript" src="/javascripts/moment.min.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery.total-storage.min.js"></script>
+  <script type="text/javascript" src="/javascripts/json2.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery.tinysort.min.js"></script>
+  <!--<script type="text/javascript" src="/javascripts/jquery.nestable.js"></script>-->
+  <script type="text/javascript" src="/javascripts/precision.js?<%= rand(99999) %>"></script>
+
+  <%= csrf_meta_tags %>
+
+  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Expires" CONTENT="-1">
+
+  <link href="/stylesheets/jquery-ui-1.9.2.custom.min.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <link href="/stylesheets/precision.less?<%= rand(99999) %>" media="screen" rel="stylesheet/less" type="text/css" />
+  <link href="/stylesheets/print.less?<%= rand(99999) %>" media="print" rel="stylesheet/less" type="text/css" />
+  <script type="text/javascript" src="/javascripts/less-1.3.0.min.js"></script>
+  <script>
+
+    <% if Rails.env == 'development' %>
+      var rails_environment = "development";
+    <% else %>
+      var rails_environment = "production";
+    <% end %>
+
+    $(document).ready(function(){
+      less.watch();
+    });
+  </script>
+  <%= yield :head %>
+</head>
+<body>
+
+<%= render :partial => '/shared/navigation' %>
+
+<%= yield %>
+
+</body>
+</html>

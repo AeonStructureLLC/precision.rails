@@ -1,0 +1,14 @@
+<%
+   case media_item_listing.mime_type.split('/')[0]
+     when 'image'
+       img_src = "/media_controller/#{media_item_listing.uuid}_preview.png"
+       if media_item_listing.file_name.include? "gif"
+         img_src = "/media_controller/#{media_item_listing.file_name}"
+       end
+       media_tag = "<img class='media image media_item_listing' src='#{img_src}' img_src='#{img_src}' media_item_id='#{media_item_listing.id}'/>".html_safe
+     when 'video'
+       media_tag = "<video class='media video media_item_listing' src='/media_controller/#{media_item_listing.file_name}' media_item_id='#{media_item_listing.id}'/>".html_safe
+   end
+%>
+
+<%=  media_tag %>

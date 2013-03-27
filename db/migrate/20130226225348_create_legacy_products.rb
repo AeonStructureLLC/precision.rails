@@ -1,0 +1,79 @@
+class CreateLegacyProducts < ActiveRecord::Migration
+  def change
+    create_table :legacy_products do |t|
+      t.integer :prod_id
+      t.datetime :update_datetime
+      t.boolean :prod_locked
+      t.text :prod_change_history
+      t.boolean :prod_drop
+      t.string :prod_type
+      t.string :manuf_code
+      t.boolean :manuf_active
+      t.string :prod_code
+      t.text :manuf_itemcd
+      t.string :prod_subcodes
+      t.text :prod_options
+      t.string :prod_topname
+      t.string :prod_subname
+      t.string :prod_cattop
+      t.boolean :prod_catsub
+      t.boolean :prod_active
+      t.text :prod_catcodes
+      t.string :prod_thumb
+      t.text :prod_images
+      t.boolean :prod_mapcat
+      t.float :price_map
+      t.float :price_site
+      t.float :price_msrp
+      t.float :price_dealer
+      t.string :prod_price_updt
+      t.string :prod_status
+      t.integer :ship_freeship
+      t.float :ship_flatrate
+      t.float :ship_weight
+      t.text :meta_keywd
+      t.text :meta_descr
+      t.text :prod_overview
+      t.string :prod_bullet1_title
+      t.text :prod_bullet1_text
+      t.string :prod_bullet2_title
+      t.text :prod_bullet2_text
+      t.string :prod_bullet3_title
+      t.text :prod_bullet3_text
+      t.string :prod_bullet4_title
+      t.text :prod_bullet4_text
+      t.text :prod_caption_list
+      t.text :prod_html_text
+      t.text :prod_html_files
+      t.text :prod_pdf_files
+      t.text :prod_long_descr_export
+      t.text :prod_short_descr_export
+      t.string :jscript_file
+      t.string :jscript_call
+      t.string :prod_oldpage
+      t.string :old_prodcode
+      t.string :old_prodname
+      t.string :old_thumb
+      t.string :old_image
+      t.datetime :prod_timestamp
+      t.string :prod_condition
+      t.string :prod_itemnum
+      t.text :prod_media
+      t.text :prod_descr
+      t.string :prod_code_BAK
+      t.string :prod_topname_BAK
+      t.boolean :Xprod_taxable
+      t.boolean :Xprod_ready
+      t.integer :part_id
+      t.integer :part_vendpartid
+      t.string :part_vendpartcode
+      t.integer :part_vendcatid
+      t.string :part_vendpartname
+      t.text :part_vendpartdescr
+      t.string :part_vendpartimage
+      t.string :part_partname_IMPORT
+
+      t.timestamps
+    end
+  end
+end
