@@ -399,7 +399,7 @@ function addMediaItem(selected_class, media_item){
 }
 
 function model_to_json(model, model_id){
-    var ui = $("[" + model + "_id='" + model_id + "']");
+    var ui = $("[model='" + model + "'][model_id='" + model_id + "'][model_root='true']");
 
     var model_json = {};
     model_json[model] = {};

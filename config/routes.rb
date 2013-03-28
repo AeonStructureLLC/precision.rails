@@ -2,6 +2,9 @@ PrecisionRails::Application.routes.draw do
   devise_for :users, controllers: {registrations: 'registrations'}
 
   resources :categories
+  resource :category
+  match 'category_stub' => 'categories#stub'
+  match 'set_containment_category' => 'categories#set_containment'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

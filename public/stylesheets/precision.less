@@ -1,37 +1,148 @@
 @import "aeon_boilerplate";
 
 #Navigation {
-  border: 1px solid #333;
+  //border: 1px solid #333;
 }
 
 #CategoriesList {
-  border: 1px solid #ccc;
-  padding: 24px;
   list-style: none;
+  width: 350px;
+  padding: 12px;
+  .aeon-round;
+  border: 1px solid #ccc;
+
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #e7f0ff 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e7f0ff)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#e7f0ff 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7f0ff',GradientType=0 ); /* IE6-9 */
+
+  #CategoryControl {
+    display: none;
+  }
 
   .category_listing {
-    background-color: #ccc;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    margin-bottom: 8px;
 
     .drag_handle {
-      height: 24px;
-      width: 24px;
-      background-color: red;
+      display: hidden;
     }
+
+    .title {
+      min-height: 24px;
+      text-indent: 8px;
+      line-height: 24px;
+      max-height: 48px;
+      font-size: 15px;
+      text-shadow: 0px 1px -1px rgb(190, 207, 255);
+      color: #3b3b3b;
+      letter-spacing: 1px;
+    }
+
     .sub_categories_list {
-      background-color: #ececec;
-      padding: 12px;
-      border: 1px solid #000;
-      min-height: 48px;
+      padding-left: 24px;
       list-style: none;
     }
   }
 
-  .category_listing.can_drop_hover {
-    .category_droppable {
-//      height: 48px;
-//      border: 1px solid blue;
+
+}
+
+#CategoriesList.edit_mode {
+  background: transparent;
+
+  #CategoryControl {
+    position: relative;
+    display: block;
+    height: 32px;
+    .aeon-round-top(5px);
+    background-color: #ececec;
+    border-bottom: 1px solid #c8c8c8;
+    padding: 8px;
+    margin-left: -12px;
+    margin-right: -12px;
+    margin-top: -12px;
+    margin-bottom: 12px;
+    .new_category_button {
+      .button;
+      width: 120px;
+      //font-size: 14px;
+      margin-left: auto;
+      margin-right: auto;
+      position: absolute;
+    }
+    .delete_category_widget {
+      .button;
+      width: 64px;
+      position: absolute;
+      right: 12px;
     }
   }
+
+  .category_listing {
+    cursor: auto;
+    margin-bottom: 8px;
+    .aeon-round;
+
+    .drag_handle {
+      height: 24px;
+      width: 24px;
+      position: absolute;
+      left: 0px;
+      background-image: url('/images/draghandle.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      display: block;
+    }
+
+    .title {
+      text-indent: 28px;
+      border: 1px solid #8b8b8b;
+      .aeon-round(5px);
+      background: #ffffff; /* Old browsers */
+      background: -moz-linear-gradient(top,  #ffffff 0%, #e7f0ff 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e7f0ff)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #ffffff 0%,#e7f0ff 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7f0ff',GradientType=0 ); /* IE6-9 */
+    }
+
+    .sub_categories_list {
+      padding: 12px;
+      padding-right: 8px;
+      .aeon-round-bottom(5px);
+      border-left: 1px solid #e1e1e1;
+      border-right: 1px solid #e1e1e1;
+      border-bottom: 1px solid #e1e1e1;
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.category_listing.stub {
+  -webkit-transform: scale(0.8) translateX(-1%);
+  z-index: 1000;
+  .title {
+    padding-right: 28px;
+  }
+}
+
+
+.small {
+  -webkit-transform: scale(0.8) translateX(-11%);
+}
+
+#EditCategoriesButton {
+  .button;
+  font-size: 14px;
+  width: 135px;
 }

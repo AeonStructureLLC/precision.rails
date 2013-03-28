@@ -1,0 +1,193 @@
+
+<ul id="CategoriesList">
+  <div id="CategoryControl">
+    <div class="new_category_button aeon_drag">New Category</div>
+    <div class="delete_category_widget">Delete</div>
+  </div>
+  <%=  render :partial => 'categories/category_listing', :collection => categories, :locals => { :editable => editable } %>
+</ul>
+
+<script type="text/javascript">
+  function resetCategoryInteractions(){
+    var sub_categories_lists = $('.sub_categories_list');
+    _.each(sub_categories_lists, function(sub_categories_list){
+      var list = $(sub_categories_list);
+      if(list.children().length > 0){
+        list.removeClass('hidden');
+        list.children().tsort();
+      } else {
+        list.addClass('hidden');
+      }
+
+    });
+
+    $('.new_category_button').draggable({
+      revert: true,
+      revertDuration: 100,
+      scope: 'categories',
+      helper: function(event){
+        var item_stub;
+        $.ajax({
+          url: "/category_stub",
+          dataType: 'html',
+          async: false,
+          success: function(data){
+            item_stub = $(data).addClass('stub');
+          }
+        });
+        return item_stub;
+      }
+    });
+
+    $('.delete_category_widget').droppable({
+      scope: 'categories',
+      addClasses: false,
+      greedy: true,
+      tolerance: "touch",
+      drop: function(event, ui){
+        var model_id = ui.draggable.attr('model_id');
+        ui.draggable.remove();
+        resetCategoryInteractions();
+        var url = "/categories/" + model_id + ".json";
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          type: 'DELETE',
+          success: function(data){
+            console.log(data);
+          }
+        });
+      }
+    });
+
+    $("#CategoriesList").droppable({
+      scope: 'categories',
+      tolerance: "touch",
+      addClasses: false,
+      drop: function(event, ui){
+        if(ui.helper.hasClass('stub')){
+          var url = "/categories/new"
+          var params = {
+            category: {
+              title: "New Category"
+            }
+          }
+          $.ajax({
+            url: url,
+            data: params,
+            dataType: 'html',
+            success: function(data){
+              var ui = $(data);
+              ui.attr('contenteditable', 'true');
+
+              $("#CategoriesList").append(ui);
+              resetCategoryInteractions();
+            }
+          });
+        } else {
+          var clone = ui.draggable.clone().css({'top': 'auto', 'left': 'auto', 'z-index': 'auto'}).removeClass('small');
+          var model_id = ui.draggable.attr('model_id');
+          var model = ui.draggable.attr('model');
+          var left_overs = $("[model='"+ model +"'][model_id='"+ model_id +"'][model_root='true']");
+          _.each(left_overs, function(left_over){
+            $(left_over).remove();
+          });
+          $("#CategoriesList").append(clone);
+          resetCategoryInteractions();
+          var url = "/set_containment_category.json";
+          var params = {
+            parent_id: '',
+            child_id: model_id
+          }
+          $.ajax({
+            url: url,
+            data: params,
+            dataType: 'json',
+            success: function(data){
+              console.log(data);
+            }
+          });
+        }
+
+      }
+    });
+
+    $('.category_listing').draggable({
+      scope: 'categories',
+      delay: 300,
+      handle: ".drag_handle",
+      revert: "invalid",
+      revertDuration: 200,
+      scroll: true,
+      stack: '#CategoriesList',
+      zIndex: 1000,
+      cancel: '.title',
+      start: function(event, ui){
+        ui.helper.addClass('small');
+      },
+      stop: function(event, ui){
+        ui.helper.removeClass('small');
+      }
+    });
+
+    $('.category_listing').droppable({
+      activeClass: 'can_drop',
+      addClasses: false,
+      greedy: true,
+      hoverClass: 'can_drop_hover',
+      scope: 'categories',
+      drop: function(event, ui){
+        var parent = $(event.target).closest('[model_root="true"]');
+        var parent_id = parent.attr('model_id');
+        var sub_categories_list = parent.find('.sub_categories_list:first');
+        if(ui.helper.hasClass('stub')){
+          var url = "/categories/new"
+          var params = {
+            category: {
+              parent_id: parent_id,
+              title: "New Category"
+            }
+          }
+          $.ajax({
+            url: url,
+            data: params,
+            dataType: 'html',
+            success: function(data){
+              var ui = $(data);
+              ui.attr('contenteditable', 'true');
+
+              sub_categories_list.append(ui);
+              resetCategoryInteractions();
+            }
+          });
+        } else {
+          var clone = ui.draggable.clone().css({'top': 'auto', 'left': 'auto', 'z-index': 'auto'}).removeClass('small');
+          var model_id = ui.draggable.attr('model_id');
+          var model = ui.draggable.attr('model');
+          var left_overs = $("[model='"+ model +"'][model_id='"+ model_id +"'][model_root='true']");
+          _.each(left_overs, function(left_over){
+            $(left_over).remove();
+          });
+          sub_categories_list.append(clone);
+          resetCategoryInteractions();
+          var url = "/set_containment_category.json";
+          var params = {
+            parent_id: parent_id,
+            child_id: model_id
+          }
+          $.ajax({
+            url: url,
+            data: params,
+            dataType: 'json',
+            success: function(data){
+              console.log(data);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  set_categories_navigation("on");
+
+</script>
