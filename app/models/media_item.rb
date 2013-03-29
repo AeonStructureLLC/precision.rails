@@ -3,7 +3,7 @@ class MediaItem < ActiveRecord::Base
   default_scope order('created_at')
 
   belongs_to :category
-  #belongs_to :product
+  belongs_to :product
 
   attr_accessible :category_id, :description, :file_name, :mime_type, :product_id, :title, :uuid
 
