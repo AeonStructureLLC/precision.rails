@@ -1,7 +1,27 @@
 @import "aeon_boilerplate";
 
-#Navigation {
-  //border: 1px solid #333;
+#AdminNavigation {
+
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  //height: 32px;
+  padding: 8px;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+  border-bottom: 1px solid #aaa;
+  z-index: 100;
+}
+
+#ContentContainer {
+  margin-top: 32px;
 }
 
 #CategoriesList {
@@ -58,30 +78,30 @@
   background: transparent;
 
   #CategoryControl {
-    position: relative;
+    position: fixed;
+    z-index: 101;
     display: block;
     height: 32px;
-    .aeon-round-top(5px);
-    background-color: #ececec;
-    border-bottom: 1px solid #c8c8c8;
     padding: 8px;
-    margin-left: -12px;
-    margin-right: -12px;
-    margin-top: -12px;
-    margin-bottom: 12px;
+    top: 0px;
+    left: 150px;
+    width: 350px;
     .new_category_button {
       .button;
       width: 120px;
-      //font-size: 14px;
-      margin-left: auto;
-      margin-right: auto;
-      position: absolute;
+
+      font-size: 14px;
+      width: 135px;
+      display: inline-block;
     }
     .delete_category_widget {
       .button;
       width: 64px;
-      position: absolute;
+
       right: 12px;
+      font-size: 14px;
+      width: 135px;
+      display: inline-block;
     }
   }
 

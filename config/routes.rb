@@ -6,6 +6,9 @@ PrecisionRails::Application.routes.draw do
   match 'category_stub' => 'categories#stub'
   match 'set_containment_category' => 'categories#set_containment'
 
+  resources :media_items
+  resource :media_item
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

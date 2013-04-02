@@ -5,7 +5,7 @@ class MediaItem < ActiveRecord::Base
   belongs_to :category
   belongs_to :product
 
-  attr_accessible :category_id, :description, :file_name, :mime_type, :product_id, :title, :uuid
+  attr_accessible :category_id, :description, :file_name, :mime_type, :product_id, :title, :uuid, :cover
 
   after_create :setup_defaults
   before_destroy :clean_up
@@ -35,22 +35,39 @@ class MediaItem < ActiveRecord::Base
   end
 
   def make_thumbnail
-    if self.mime_type.include? 'image'
-      img = Magick::Image.read("#{Rails.root}/public/media_controller/#{self.file_name}")
-
-      img[0].rotate(90).resize_to_fit(72).rotate(-90).write("#{Rails.root}/public/media_controller/#{self.uuid}_thumb.png")
-      img[0].rotate(90).resize_to_fit(540).rotate(-90).write("#{Rails.root}/public/media_controller/#{self.uuid}_preview.png")
-
-    elsif self.mime_type.include? 'video'
-      command = "ffmpeg -ss 3 -i '#{Rails.root}/public/media_controller/#{self.file_name}' -vframes 1 '#{Rails.root}/public/media_controller/#{self.uuid}_thumb.png'"
-      %x[#{command}]
+    if self.mime_type.blank?
+      puts "MediaItem #{self.id} - has no mime_type!  Generating it now!"
+      extension = self.file_name.split('.').last
+      mime_type = case extension
+                    when "jpg" then "image/jpeg"
+                    when "png" then "image/png"
+                    when "gif" then "image/gif"
+                  end
+      self.mime_type = mime_type
+      self.save!
     else
-      puts "What type of file is it then?!"
+      if self.mime_type.include? 'image'
+        file_name = "#{Rails.root}/public/media_controller/#{self.file_name}"
+        if File.exist?(file_name)
+          img = Magick::Image.read(file_name)
+          img[0].rotate(90).resize_to_fit(72).rotate(-90).write("#{Rails.root}/public/media_controller/#{self.uuid}_thumb.png")
+          img[0].rotate(90).resize_to_fit(540).rotate(-90).write("#{Rails.root}/public/media_controller/#{self.uuid}_preview.png")
+        else
+          puts "#{file_name} - Doesn't exist!  Deleting this MediaItem"
+          self.destroy
+        end
+
+      elsif self.mime_type.include? 'video'
+        command = "ffmpeg -ss 3 -i '#{Rails.root}/public/media_controller/#{self.file_name}' -vframes 1 '#{Rails.root}/public/media_controller/#{self.uuid}_thumb.png'"
+        %x[#{command}]
+      else
+        puts "What type of file is it then?!"
+      end
     end
   end
 
   def self.generate_thumbnails
-    MediaItem.find_in_batches(:batch_size => 100) do |media_items|
+    MediaItem.find_in_batches(:batch_size => 500) do |media_items|
       sleep(45) #Convention?
       media_items.each do |mi|
         if mi.uuid.blank?
