@@ -2,6 +2,7 @@ class Product < ActiveRecord::Base
   belongs_to :category
   has_many :media_items
   has_many :product_addons
+  default_scope order('title')
   attr_accessible :accessory, :category_id, :content, :description, :free_shipping, :price, :product_discontinued, :ship_flatrate, :title, :weight
 
   def addons

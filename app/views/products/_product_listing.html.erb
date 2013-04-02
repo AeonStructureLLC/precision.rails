@@ -7,7 +7,7 @@
    else
      content_editable = ""
      drag_class = "drag_handle aeon_drag"
-     deletable = ""
+     deletable = "deletable_product"
      editable = false
    end
 
@@ -20,7 +20,15 @@
 <li class='product_listing <%= deletable %>' model='product' model_id='<%= product_listing.id %>' model_root='true'>
   <div class='<%= drag_class %>'></div>
   <div class='cover_image_wrapper'><img class='cover_image' src='<%= product_listing.cover_image_src %>'/></div>
-  <div class='attribute title' model='product' model_id='<%= product_listing.id %>' attribute_name='title' attribute_type='text' <%= content_editable %>><%= product_listing.title.html_safe %></div>
+  <div class='attribute title' model='product' model_id='<%= product_listing.id %>' attribute_name='title' attribute_type='text' <%= content_editable %>><%= product_listing.title.html_safe.truncate(110) %></div>
   <div class='attribute description' model='product' model_id='<%= product_listing.id %>' attribute_name='description' attribute_type='text' <%= content_editable %>><%= description %></div>
-  <div class='attribute price' model='product' model_id='<%= product_listing.id %>' attribute_name='price' attribute_type='text' <%= content_editable %>>$<%= product_listing.price %></div>
+  <% if product_listing.price.blank? %>
+    <div class='price_missing'>N/A</div>
+    <div class='currency_marker hidden'>$</div>
+    <div class='attribute price hidden' model='product' model_id='<%= product_listing.id %>' attribute_name='price' attribute_type='text' <%= content_editable %>></div>
+  <% else %>
+    <div class='currency_marker'>$</div>
+    <div class='attribute price' model='product' model_id='<%= product_listing.id %>' attribute_name='price' attribute_type='text' <%= content_editable %>><%= number_with_precision(product_listing.price, :precision => 2) %></div>
+  <% end %>
+
 </li>

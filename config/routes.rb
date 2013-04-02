@@ -6,6 +6,10 @@ PrecisionRails::Application.routes.draw do
   match 'category_stub' => 'categories#stub'
   match 'set_containment_category' => 'categories#set_containment'
 
+  resources :products
+  resource :product
+  match 'product_stub' => 'products#stub'
+
   resources :media_items
   resource :media_item
 

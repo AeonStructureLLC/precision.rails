@@ -45,18 +45,20 @@
       greedy: true,
       tolerance: "touch",
       drop: function(event, ui){
-        var model_id = ui.draggable.attr('model_id');
-        ui.draggable.remove();
-        resetCategoryInteractions();
-        var url = "/categories/" + model_id + ".json";
-        $.ajax({
-          url: url,
-          dataType: 'json',
-          type: 'DELETE',
-          success: function(data){
-            console.log(data);
-          }
-        });
+        if(ui.draggable.hasClass('deletable_category')){
+          var model_id = ui.draggable.attr('model_id');
+          ui.draggable.remove();
+          resetCategoryInteractions();
+          var url = "/categories/" + model_id + ".json";
+          $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'DELETE',
+            success: function(data){
+              console.log(data);
+            }
+          });
+        }
       }
     });
 

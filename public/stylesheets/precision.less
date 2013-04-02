@@ -221,14 +221,12 @@
     height: 32px;
     padding: 8px;
     top: 0px;
-    left: 150px;
-    width: 350px;
+    left: 134px;
     .new_category_button {
       .button;
       width: 120px;
 
       font-size: 14px;
-      width: 135px;
       display: inline-block;
     }
     .delete_category_widget {
@@ -237,7 +235,6 @@
 
       right: 12px;
       font-size: 14px;
-      width: 135px;
       display: inline-block;
     }
   }
@@ -288,6 +285,7 @@
 .category_listing.stub {
   -webkit-transform: scale(0.8) translateX(-1%);
   z-index: 1000;
+  .aeon-shadow;
   .title {
     padding-right: 28px;
   }
@@ -301,7 +299,7 @@
 #EditCategoriesButton {
   .button;
   font-size: 14px;
-  width: 135px;
+  width: 120px;
 }
 
 #ProductsList {
@@ -317,7 +315,7 @@
   }
 
   .product_listing {
-    //cursor: pointer;
+    cursor: pointer;
     position: relative;
     background-color: transparent;
     margin-bottom: 8px;
@@ -350,7 +348,20 @@
       margin-right: 8px;
     }
 
-    .price {
+    .currency_marker {
+      position: absolute;
+      bottom: 1px;
+      height: 24px;
+      line-height: 24px;
+      color: #900;
+      font-weight: bold;
+      text-indent: 40px;
+      font-size: 20px;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    .price, .price_missing {
       position: absolute;
       bottom: 0px;
       left: 0px;
@@ -368,47 +379,48 @@
       opacity: 0.9;
     }
 
+    .description {
+      position: absolute;
+      top: 50px;
+      left: 172px;
+      margin-right: 8px;
+    }
+
   }
 
   .product_listing.selected {
     border: 1px solid #333;
   }
 
-
 }
 
-#Products.edit_mode {
+#ProductsList.edit_mode {
   background: transparent;
 
   #ProductControl {
     position: fixed;
-    z-index: 101;
+    z-index: 102;
     display: block;
     height: 32px;
     padding: 8px;
     top: 0px;
-    left: 150px;
-    width: 350px;
-    .new_category_button {
+    left: 526px;
+    .new_product_button {
       .button;
       width: 120px;
-
       font-size: 14px;
-      width: 135px;
       display: inline-block;
     }
-    .delete_category_widget {
+    .delete_product_widget {
       .button;
       width: 64px;
-
       right: 12px;
       font-size: 14px;
-      width: 135px;
       display: inline-block;
     }
   }
 
-  .category_listing {
+  .product_listing {
     cursor: auto;
     margin-bottom: 8px;
     .aeon-round;
@@ -422,31 +434,28 @@
       background-repeat: no-repeat;
       background-position: center center;
       display: block;
+
+      z-index: 2;
     }
 
     .title {
-      text-indent: 28px;
-      border: 1px solid #8b8b8b;
-      .aeon-round(5px);
-      background: #ffffff; /* Old browsers */
-      background: -moz-linear-gradient(top,  #ffffff 0%, #e7f0ff 100%); /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e7f0ff)); /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Opera 11.10+ */
-      background: -ms-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* IE10+ */
-      background: linear-gradient(to bottom,  #ffffff 0%,#e7f0ff 100%); /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7f0ff',GradientType=0 ); /* IE6-9 */
-    }
-
-    .sub_categories_list {
-      padding: 12px;
-      padding-right: 8px;
-      .aeon-round-bottom(5px);
-      border-left: 1px solid #e1e1e1;
-      border-right: 1px solid #e1e1e1;
-      border-bottom: 1px solid #e1e1e1;
-      margin-left: 4px;
-      margin-right: 4px;
     }
   }
+}
+
+.product_listing.stub {
+  background-color: #fff !important;
+  -webkit-transform: scale(0.8) translateX(-1%);
+  z-index: 1000;
+  .aeon-shadow;
+}
+
+#EditProductsButton {
+  .button;
+  font-size: 14px;
+  width: 120px;
+  position: absolute;
+  top: 8px;
+  left: 400px;
+  z-index: 102;
 }

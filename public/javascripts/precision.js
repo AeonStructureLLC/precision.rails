@@ -33,7 +33,7 @@ function aeon_persist(item) {
 
 function start_categories_edit(){
     $("#CategoriesList").addClass('edit_mode');
-    $(".attribute").attr('contenteditable', 'true');
+    $(".category_listing .attribute").attr('contenteditable', 'true');
     set_categories_navigation("off");
     resetCategoryInteractions();
     // Change Edit Button Status
@@ -41,7 +41,7 @@ function start_categories_edit(){
 
 function end_categories_edit(){
     $("#CategoriesList").removeClass('edit_mode');
-    $(".attribute").removeAttr('contenteditable');
+    $(".category_listing .attribute").removeAttr('contenteditable');
     set_categories_navigation("on");
     // Change Edit Button Status
 }
@@ -55,6 +55,47 @@ function set_categories_navigation(state){
             var self = $(this);
             var model_id = self.attr('model_id');
             var url = "/categories/" + model_id;
+            location = url;
+        });
+    }
+}
+
+function start_products_edit(){
+    $("#ProductsList").addClass('edit_mode');
+    $(".product_listing .attribute").attr('contenteditable', 'true');
+    $(".product_listing .price_missing").addClass('hidden');
+    $(".product_listing .currency_marker").removeClass('hidden');
+    $(".product_listing .price").removeClass('hidden');
+    set_products_navigation("off");
+    resetProductInteractions();
+    // Change Edit Button Status
+}
+
+function end_products_edit(){
+    $("#ProductsList").removeClass('edit_mode');
+    $(".product_listing .attribute").removeAttr('contenteditable');
+    var product_listings = $(".product_listing");
+    _.each(product_listings, function(product_listing){
+        var price = $(product_listing).find('.price').text();
+        if(price.length == 0){
+            $(product_listing).find('.price').addClass('hidden');
+            $(product_listing).find('.currency_marker').addClass('hidden');
+            $(product_listing).find('.price_missing').removeClass('hidden');
+        }
+    });
+    set_products_navigation("on");
+    // Change Edit Button Status
+}
+
+function set_products_navigation(state){
+    state = state || "off";
+    $(".product_listing").off('click');
+    if(state == "on"){
+        $(".product_listing").on('click', function(event){
+            event.stopPropagation();
+            var self = $(this);
+            var model_id = self.attr('model_id');
+            var url = "/products/" + model_id;
             location = url;
         });
     }
@@ -82,5 +123,18 @@ $(document).on('click', '#EditCategoriesButton', function(event){
     } else {
         self.text('Save Categories');
         start_categories_edit();
+    }
+});
+
+$(document).off('click', "#EditProductsButton");
+$(document).on('click', '#EditProductsButton', function(event){
+    event.stopPropagation();
+    var self = $(this);
+    if($("#ProductsList").hasClass('edit_mode')){
+        self.text('Edit Products');
+        end_products_edit();
+    } else {
+        self.text('Save Products');
+        start_products_edit();
     }
 });

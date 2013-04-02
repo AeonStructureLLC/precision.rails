@@ -22,6 +22,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    @categories = Category.find_all_by_parent_id(nil)
     @product = Product.find(params[:id])
   end
 

@@ -83,9 +83,14 @@ class LegacyProduct < ActiveRecord::Base
         p.weight = lp.ship_weight
       end
 
-      unless lp.prod_overview
-        p.description = lp.prod_overview
+      unless lp.prod_overview.blank?
+        p.content = lp.prod_overview
       end
+
+      unless p.content.blank?
+        p.description = p.content.truncate(250)
+      end
+
 
       p.save!
 
