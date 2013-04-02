@@ -14,7 +14,7 @@
    if product_listing.description.blank?
      description = ""
    else
-     description = product_listing.description.html_safe
+     description = product_listing.description.html_safe.truncate(250)
    end
 %>
 <li class='product_listing <%= deletable %>' model='product' model_id='<%= product_listing.id %>' model_root='true'>

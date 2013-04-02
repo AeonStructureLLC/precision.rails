@@ -16,4 +16,4 @@
 /.idea/*
 /.idea
 .DS_Store
-/media_controller/*
+/public/media_controller/*

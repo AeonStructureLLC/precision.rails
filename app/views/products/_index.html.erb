@@ -1,0 +1,115 @@
+
+<ul id="ProductsList">
+  <div id="ProductControl">
+    <div class="new_product_button aeon_drag">New Product</div>
+    <div class="delete_product_widget">Delete</div>
+  </div>
+  <%=  render :partial => 'products/product_listing', :collection => products, :locals => { :editable => editable } %>
+</ul>
+
+<script type="text/javascript">
+  function resetProductInteractions(){
+    var products_list = $('#ProductsList');
+    //products_list.children().tsort();
+
+
+    $('.new_product_button').draggable({
+      revert: true,
+      revertDuration: 100,
+      scope: 'products',
+      helper: function(event){
+        var item_stub;
+        $.ajax({
+          url: "/product_stub",
+          dataType: 'html',
+          async: false,
+          success: function(data){
+            item_stub = $(data).addClass('stub');
+          }
+        });
+        return item_stub;
+      }
+    });
+
+    $('.delete_product_widget').droppable({
+      scope: 'products',
+      addClasses: false,
+      greedy: true,
+      tolerance: "touch",
+      drop: function(event, ui){
+        if(ui.draggable.hasClass('deletable_product')){
+          var model_id = ui.draggable.attr('model_id');
+          ui.draggable.remove();
+          resetProductInteractions();
+          var url = "/products/" + model_id + ".json";
+          $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'DELETE',
+            success: function(data){
+              console.log(data);
+            }
+          });
+        }
+      }
+    });
+
+    $('.product_listing').draggable({
+      scope: 'products',
+      delay: 300,
+      handle: ".drag_handle",
+      revertDuration: 200,
+      scroll: true,
+      zIndex: 1000,
+      cancel: '.title .description .price',
+      start: function(event, ui){
+        ui.helper.addClass('small');
+      },
+      stop: function(event, ui){
+        ui.helper.removeClass('small');
+      },
+      //revert: "invalid"
+      revert: function(ui){
+        console.log(ui);
+        if($(ui).hasClass('delete_product_widget') != true){
+          return true;
+        }
+      }
+    });
+
+    $("#ProductsList").droppable({
+      scope: 'products',
+      tolerance: "touch",
+      addClasses: false,
+      drop: function(event, ui){
+        if(ui.helper.hasClass('stub')){
+          var url = "/products/new"
+          var params = {
+            product: {
+              title: "New Product",
+              category_id: <%= @category.id %>,
+              price: 9.99,
+              product_discontinued: false,
+              weight: 5.00,
+              free_shipping: false,
+              description: "New Product - Description",
+              content: "New Product - Content"
+            }
+          }
+          $.ajax({
+            url: url,
+            data: params,
+            dataType: 'html',
+            success: function(data){
+              var ui = $(data);
+              $("#ProductsList").prepend(ui);
+              start_products_edit();
+            }
+          });
+        }
+      }
+    });
+  }
+
+  set_products_navigation("on");
+</script>

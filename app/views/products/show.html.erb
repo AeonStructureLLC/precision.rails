@@ -1,0 +1,32 @@
+<%
+
+%>
+
+<%=  render :partial => 'categories/index', :locals => { :categories => @categories, :editable => @editable } %>
+
+<div id="ProductDetailWrapper">
+  <div id="ProductDetail" model="product" model_id="<%= @product.id %>" model_root="true">
+    <div class="attribute title" model="product" model_id="<%= @product.id %>" attribute_name="title" attribute_type="text"><%= @product.title %></div>
+
+    <% if @product.price.blank? %>
+      <div class='price_missing'>N/A</div>
+      <div class='currency_marker hidden'>$</div>
+      <div class='attribute price hidden' model='product' model_id='<%= @product.id %>' attribute_name='price' attribute_type='text'></div>
+    <% else %>
+      <div class='currency_marker'>$</div>
+      <div class='attribute price' model='product' model_id='<%= @product.id %>' attribute_name='price' attribute_type='text'><%= number_with_precision(@product.price, :precision => 2) %></div>
+    <% end %>
+
+    <div class="attribute description" model="product" model_id="<%= @product.id %>" attribute_name="description" attribute_type="text"><%= @product.description %></div>
+    <%= render :partial => 'media_items/media_items_preview', :locals => { :media_items => @product.media_items } %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $("[model_root='true'][model='category'][model_id='<%= @product.category.id %>']").addClass('selected');
+  $("#EditProductsButton").addClass('hidden');
+
+  $(document).ready(function(event){
+    setMediaItemsWidth($("#ProductDetail"));
+  });
+</script>
