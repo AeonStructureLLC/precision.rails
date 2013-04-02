@@ -1,0 +1,7 @@
+<%=  render :partial => 'categories/index', :locals => { :categories => @categories, :editable => @editable } %>
+
+<%=  render :partial => 'products/index', :locals => { :products => @category.products, :editable => @editable } %>
+
+<script type="text/javascript">
+  $("[model_root='true'][model='category'][model_id='<%= @category.id %>']").addClass('selected');
+</script>
