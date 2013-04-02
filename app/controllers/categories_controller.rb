@@ -14,6 +14,11 @@ class CategoriesController < ApplicationController
     render :partial => 'categories/category_listing', :locals => { :category_listing => category_listing }
   end
 
+  def show
+    @categories = Category.find_all_by_parent_id(nil)
+    @category = Category.find(params[:id])
+  end
+
   def new
     category = Category.create(params[:category])
     category.save!
