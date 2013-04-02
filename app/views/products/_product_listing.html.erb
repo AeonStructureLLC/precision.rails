@@ -10,9 +10,17 @@
      deletable = ""
      editable = false
    end
+
+   if product_listing.description.blank?
+     description = ""
+   else
+     description = product_listing.description.html_safe
+   end
 %>
 <li class='product_listing <%= deletable %>' model='product' model_id='<%= product_listing.id %>' model_root='true'>
   <div class='<%= drag_class %>'></div>
+  <div class='cover_image_wrapper'><img class='cover_image' src='<%= product_listing.cover_image_src %>'/></div>
   <div class='attribute title' model='product' model_id='<%= product_listing.id %>' attribute_name='title' attribute_type='text' <%= content_editable %>><%= product_listing.title.html_safe %></div>
-  <%= render :partial => 'media_items/media_items_preview', :locals => { :media_items => product_listing.media_items } %>
+  <div class='attribute description' model='product' model_id='<%= product_listing.id %>' attribute_name='description' attribute_type='text' <%= content_editable %>><%= description %></div>
+  <div class='attribute price' model='product' model_id='<%= product_listing.id %>' attribute_name='price' attribute_type='text' <%= content_editable %>>$<%= product_listing.price %></div>
 </li>
