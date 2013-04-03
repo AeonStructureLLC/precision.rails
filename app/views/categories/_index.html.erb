@@ -24,7 +24,7 @@
     $('.new_category_button').draggable({
       revert: true,
       revertDuration: 100,
-      scope: 'categories',
+      scope: 'categories_products',
       helper: function(event){
         var item_stub;
         $.ajax({
@@ -40,7 +40,7 @@
     });
 
     $('.delete_category_widget').droppable({
-      scope: 'categories',
+      scope: 'categories_products',
       addClasses: false,
       greedy: true,
       tolerance: "touch",
@@ -63,11 +63,11 @@
     });
 
     $("#CategoriesList").droppable({
-      scope: 'categories',
+      scope: 'categories_products',
       tolerance: "touch",
       addClasses: false,
       drop: function(event, ui){
-        if(ui.helper.hasClass('stub')){
+        if(ui.helper.hasClass('stub') && ui.helper.hasClass('category_listing')){
           var url = "/categories/new"
           var params = {
             category: {
@@ -86,7 +86,7 @@
               resetCategoryInteractions();
             }
           });
-        } else {
+        } else if(ui.helper.hasClass('category_listing')) {
           var clone = ui.draggable.clone().css({'top': 'auto', 'left': 'auto', 'z-index': 'auto'}).removeClass('small');
           var model_id = ui.draggable.attr('model_id');
           var model = ui.draggable.attr('model');
@@ -115,13 +115,12 @@
     });
 
     $('.category_listing').draggable({
-      scope: 'categories',
+      scope: 'categories_products',
       delay: 300,
       handle: ".drag_handle",
       revert: "invalid",
       revertDuration: 200,
       scroll: true,
-      stack: '#CategoriesList',
       zIndex: 1000,
       cancel: '.title',
       start: function(event, ui){
@@ -137,12 +136,13 @@
       addClasses: false,
       greedy: true,
       hoverClass: 'can_drop_hover',
-      scope: 'categories',
+      scope: 'categories_products',
       drop: function(event, ui){
+        console.log(ui.helper)
         var parent = $(event.target).closest('[model_root="true"]');
         var parent_id = parent.attr('model_id');
         var sub_categories_list = parent.find('.sub_categories_list:first');
-        if(ui.helper.hasClass('stub')){
+        if(ui.helper.hasClass('stub') && ui.helper.hasClass('category_listing')){
           var url = "/categories/new"
           var params = {
             category: {
@@ -162,6 +162,29 @@
               resetCategoryInteractions();
             }
           });
+        } else if(ui.helper.hasClass('product_listing')){
+          if(parent.hasClass('selected')){
+            console.log('Same Category Move, so, doing nothing.');
+          } else {
+            var product_id = ui.helper.attr('model_id');
+            var params = {
+              product: {
+                category_id: parent_id
+              }
+            }
+            $.ajax({
+              url: "/products/" + product_id + ".json",
+              dataType: "json",
+              type: "PUT",
+              data: params,
+              success: function(data){
+                console.log("Product Moved to new category!");
+                console.log(data);
+                ui.draggable.remove();
+              }
+            });
+          }
+
         } else {
           var clone = ui.draggable.clone().css({'top': 'auto', 'left': 'auto', 'z-index': 'auto'}).removeClass('small');
           var model_id = ui.draggable.attr('model_id');

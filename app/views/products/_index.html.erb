@@ -16,7 +16,7 @@
     $('.new_product_button').draggable({
       revert: true,
       revertDuration: 100,
-      scope: 'products',
+      scope: 'categories_products',
       helper: function(event){
         var item_stub;
         $.ajax({
@@ -32,7 +32,7 @@
     });
 
     $('.delete_product_widget').droppable({
-      scope: 'products',
+      scope: 'categories_products',
       addClasses: false,
       greedy: true,
       tolerance: "touch",
@@ -55,7 +55,7 @@
     });
 
     $('.product_listing').draggable({
-      scope: 'products',
+      scope: 'categories_products',
       delay: 300,
       handle: ".drag_handle",
       revertDuration: 200,
@@ -63,10 +63,10 @@
       zIndex: 1000,
       cancel: '.title .description .price',
       start: function(event, ui){
-        ui.helper.addClass('small');
+        ui.helper.addClass('micro');
       },
       stop: function(event, ui){
-        ui.helper.removeClass('small');
+        ui.helper.removeClass('micro');
       },
       //revert: "invalid"
       revert: function(ui){
@@ -78,7 +78,7 @@
     });
 
     $("#ProductsList").droppable({
-      scope: 'products',
+      scope: 'categories_products',
       tolerance: "touch",
       addClasses: false,
       drop: function(event, ui){
