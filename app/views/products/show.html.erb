@@ -1,5 +1,36 @@
 <%
+   selected = {
+     :product_discontinued_true => "",
+     :product_discontinued_false => "",
+     :free_shipping_true => "",
+     :free_shipping_false => "",
+     :ship_flatrate_true => "",
+     :ship_flatrate_false => ""
+   }
 
+   if @product.product_discontinued
+     selected["product_discontinued_true"] = "selected"
+   else
+     selected["product_discontinued_false"] = "selected"
+   end
+
+   if @product.free_shipping
+     selected["free_shipping_true"] = "selected"
+     selected["ship_flatrate_visibility"] = "hidden"
+   else
+     selected["free_shipping_false"] = "selected"
+     selected["ship_flatrate_visibility"] = ""
+   end
+
+   if @product.ship_flatrate
+     selected["ship_flatrate_true"] = "selected"
+     selected["free_shipping_visibility"] = "hidden"
+     selected["ship_flatrate_price_visibility"] = ""
+   else
+     selected["ship_flatrate_false"] = "selected"
+     selected["free_shipping_visibility"] = ""
+     selected["ship_flatrate_price_visibility"] = "hidden"
+   end
 %>
 
 <%=  render :partial => 'categories/index', :locals => { :categories => @categories, :editable => @editable } %>
@@ -8,8 +39,48 @@
   <div id="ProductDetail" model="product" model_id="<%= @product.id %>" model_root="true">
     <div class="attribute title" model="product" model_id="<%= @product.id %>" attribute_name="title" attribute_type="text"><%= @product.title %></div>
 
+    <div id="ProductDiscontinuedWrapper">
+      <div id="ProductDiscontinued" class="aeon_lozenge_menu">
+        <div class="aeon_lozenge_menu_label">Product Discontinued</div>
+        <div class="product_discontinued_selector aeon_lozenge aeon_lozenge_left <%= selected["product_discontinued_true"] %>" product_discontinued="true">On</div>
+        <div class="product_discontinued_selector aeon_lozenge aeon_lozenge_right <%= selected["product_discontinued_false"] %>" product_discontinued="false">Off</div>
+      </div>
+    </div>
+
+    <div id="ShippingOptionsFreeShippingWrapper" class="<%= selected["free_shipping_visibility"] %>">
+      <div id="ShippingOptionsFreeShipping" class="aeon_lozenge_menu">
+        <div class="aeon_lozenge_menu_label">Free Shipping</div>
+        <div class="free_shipping_selector aeon_lozenge aeon_lozenge_left <%= selected["free_shipping_true"] %>" free_shipping="true">On</div>
+        <div class="free_shipping_selector aeon_lozenge aeon_lozenge_right <%= selected["free_shipping_false"] %>" free_shipping="false">Off</div>
+      </div>
+     </div>
+
+    <div id="ShippingOptionsShipFlatrateWrapper" class="<%= selected["ship_flatrate_visibility"] %>">
+      <div id="ShippingOptionsShipFlatrate" class="aeon_lozenge_menu">
+        <div class="aeon_lozenge_menu_label">Flatrate Shipping</div>
+        <div class="ship_flatrate_selector aeon_lozenge aeon_lozenge_left <%= selected["ship_flatrate_true"] %>" ship_flatrate="true">On</div>
+        <div class="ship_flatrate_selector aeon_lozenge aeon_lozenge_right <%= selected["ship_flatrate_false"] %>" ship_flatrate="false">Off</div>
+      </div>
+      <div id="ShipFlatratePrice" class="<%= selected["ship_flatrate_price_visibility"] %>">
+        <% if @product.ship_flatrate_price.blank? || @product.ship_flatrate == 0 %>
+          0
+        <% else %>
+          <%= @product.ship_flatrate_price %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="attribute weight" model="product" model_id="<%= @product.id %>" attribute_name="weight" attribute_type="text">
+      <% if @product.weight.blank? %>
+        0
+      <% else %>
+        <%= @product.weight %>
+      <% end %>
+    </div>
+
+
     <% if @product.price.blank? %>
-      <div class='price_missing'>N/A</div>
+      <div class='price_missing'>Price: N/A</div>
       <div class='currency_marker hidden'>$</div>
       <div class='attribute price hidden' model='product' model_id='<%= @product.id %>' attribute_name='price' attribute_type='text'></div>
     <% else %>
@@ -17,8 +88,19 @@
       <div class='attribute price' model='product' model_id='<%= @product.id %>' attribute_name='price' attribute_type='text'><%= number_with_precision(@product.price, :precision => 2) %></div>
     <% end %>
 
-    <div class="attribute description" model="product" model_id="<%= @product.id %>" attribute_name="description" attribute_type="text"><%= @product.description %></div>
+    <div class="attribute description" model="product" model_id="<%= @product.id %>" attribute_name="description" attribute_type="text">
+      <% unless @product.description.blank? %>
+        <%= @product.description.html_safe %>
+      <% end %>
+    </div>
     <%= render :partial => 'media_items/media_items_preview', :locals => { :media_items => @product.media_items } %>
+
+    <div class="attribute content" model="product" model_id="<%= @product.id %>" attribute_name="content" attribute_type="text">
+      <% unless @product.content.blank? %>
+        <%= @product.content.html_safe %>
+      <% end %>
+    </div>
+
   </div>
 </div>
 
@@ -26,7 +108,161 @@
   $("[model_root='true'][model='category'][model_id='<%= @product.category.id %>']").addClass('selected');
   $("#EditProductsButton").addClass('hidden');
 
+  function start_product_edit(){
+    $("#ProductDetail").addClass('edit_mode');
+    $("#ProductDetail .attribute").attr('contenteditable', 'true');
+    $("#ShipFlatratePrice").attr('contenteditable', 'true');
+    $("#ProductDetail .price_missing").addClass('hidden');
+    $("#ProductDetail .currency_marker").removeClass('hidden');
+    $("#ProductDetail .price").removeClass('hidden');
+
+    //resetProductDetailInteractions();
+    // Change Edit Button Status
+  }
+
+  function end_product_edit(){
+    $("#ProductDetail").removeClass('edit_mode');
+    $("#ProductDetail .attribute").removeAttr('contenteditable');
+    $("#ShipFlatratePrice").removeAttr('contenteditable');
+    var price = $("#ProductDetail").find('.price').text();
+    if(price.length == 0){
+      $("#ProductDetail").find('.price').addClass('hidden');
+      $("#ProductDetail").find('.currency_marker').addClass('hidden');
+      $("#ProductDetail").find('.price_missing').removeClass('hidden');
+    }
+
+    // Change Edit Button Status
+  }
+  <% if @editable %>
+  $(document).off('click', ".product_discontinued_selector");
+  $(document).on('click', ".product_discontinued_selector", function(){
+    var self = $(this);
+    $(".product_discontinued_selector").removeClass('selected');
+    self.addClass('selected');
+    var product_id = $("#ProductDetail").attr('model_id');
+    var product_discontinued = self.attr('product_discontinued');
+    var params = {
+      product: {
+        product_discontinued: product_discontinued
+      }
+    }
+    $.ajax({
+      url: "/products/" + product_id + ".json",
+      dataType: "json",
+      type: "PUT",
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".free_shipping_selector");
+  $(document).on('click', ".free_shipping_selector", function(){
+    var self = $(this);
+    $(".free_shipping_selector").removeClass('selected');
+    self.addClass('selected');
+    var product_id = $("#ProductDetail").attr('model_id');
+    var free_shipping = self.attr('free_shipping');
+    if(free_shipping == "true"){
+      $("#ShippingOptionsShipFlatrateWrapper").addClass('hidden');
+    } else {
+      $("#ShippingOptionsShipFlatrateWrapper").removeClass('hidden');
+    }
+    var params = {
+      product: {
+        free_shipping: free_shipping
+      }
+    }
+    $.ajax({
+      url: "/products/" + product_id + ".json",
+      dataType: "json",
+      type: "PUT",
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".ship_flatrate_selector");
+  $(document).on('click', ".ship_flatrate_selector", function(){
+    var self = $(this);
+    $(".ship_flatrate_selector").removeClass('selected');
+    self.addClass('selected');
+    var product_id = $("#ProductDetail").attr('model_id');
+    var ship_flatrate = self.attr('ship_flatrate');
+    if(ship_flatrate == "true"){
+      $("#ShippingOptionsFreeShippingWrapper").addClass('hidden');
+      $("#ShipFlatratePrice").removeClass('hidden');
+    } else {
+      $("#ShippingOptionsFreeShippingWrapper").removeClass('hidden');
+      $("#ShipFlatratePrice").html('');
+      $("#ShipFlatratePrice").addClass('hidden');
+      var params = {
+        product: {
+          ship_flatrate_price: "0.0"
+        }
+      }
+      $.ajax({
+        url: "/products/" + product_id + ".json",
+        dataType: "json",
+        type: "PUT",
+        data: params,
+        success: function(data){
+          console.log(data);
+        }
+      });
+    }
+    var params = {
+      product: {
+        ship_flatrate: ship_flatrate
+      }
+    }
+    $.ajax({
+      url: "/products/" + product_id + ".json",
+      dataType: "json",
+      type: "PUT",
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('keyup', "#ShipFlatratePrice")
+  $(document).on('keyup', "#ShipFlatratePrice", function(){
+    var self = $(this);
+    var ship_flatrate_price = self.text();
+    console.log(ship_flatrate_price);
+    var product_id = $("#ProductDetail").attr('model_id');
+    var params = {
+      product: {
+        ship_flatrate_price: ship_flatrate_price
+      }
+    }
+    $.ajax({
+      url: "/products/" + product_id + ".json",
+      dataType: "json",
+      type: "PUT",
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+
+  <% end %>
+
+
   $(document).ready(function(event){
     setMediaItemsWidth($("#ProductDetail"));
+    $(".media_item_thumb").first().addClass("selected");
+
+    <% if @editable %>
+    start_product_edit();
+    <% end %>
+
   });
 </script>

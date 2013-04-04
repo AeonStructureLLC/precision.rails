@@ -479,6 +479,53 @@
     margin-bottom: 12px;
   }
 
+  #ProductDiscontinuedWrapper {
+    display: none;
+    position: absolute;
+    left: 24px;
+  }
+
+  #ShippingOptionsFreeShippingWrapper {
+    display: none;
+    position: absolute;
+    left: 224px;
+  }
+
+  #ShippingOptionsShipFlatrateWrapper {
+    display: none;
+    position: absolute;
+    left: 372px;
+
+    #ShipFlatratePrice {
+      position: absolute;
+      //border: 1px solid #ccc;
+      left: 40px;
+      top: 54px;
+      height: 20px;
+      width: 64px;
+    }
+
+    #ShipFlatratePrice:before {
+      content: "$";
+      margin-right: 1px;
+    }
+
+
+  }
+
+  .weight {
+    position: absolute;
+    right: 48px;
+  }
+
+  .weight:before {
+    content: "Weight: ";
+  }
+
+  .weight:after {
+    content: "lbs";
+  }
+
   .currency_marker, .price {
     display: inline-block;
     font-size: 20px;
@@ -507,4 +554,25 @@
   .media_items_wrapper .media_items_listing_wrapper .media_items_listing {
     padding-left: 1px;
   }
+}
+
+#ProductDetail.edit_mode {
+  .price_missing, .price {
+    margin-top: 96px;
+    min-width: 32px;
+    border-bottom: 1px solid;
+  }
+
+  #ProductDiscontinuedWrapper {
+    display: block;
+  }
+
+  #ShippingOptionsFreeShippingWrapper {
+    display: block;
+  }
+
+  #ShippingOptionsShipFlatrateWrapper {
+    display: block;
+  }
+
 }

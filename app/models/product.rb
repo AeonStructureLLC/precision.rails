@@ -3,7 +3,7 @@ class Product < ActiveRecord::Base
   has_many :media_items
   has_many :product_addons
   default_scope order('title')
-  attr_accessible :accessory, :category_id, :content, :description, :free_shipping, :price, :product_discontinued, :ship_flatrate, :title, :weight
+  attr_accessible :accessory, :category_id, :content, :description, :free_shipping, :price, :product_discontinued, :ship_flatrate, :ship_flatrate_price, :title, :weight
 
   def addons
     addons = []
