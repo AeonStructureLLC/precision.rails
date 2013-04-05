@@ -5,7 +5,8 @@ class MediaItem < ActiveRecord::Base
   belongs_to :category
   belongs_to :product
 
-  attr_accessible :category_id, :description, :file_name, :mime_type, :product_id, :title, :uuid, :cover
+  attr_accessible :category_id, :description, :file_name, :mime_type, :product_id, :title, :uuid, :cover, :media_data
+  attr_accessor :media_data
 
   after_create :setup_defaults
   before_destroy :clean_up

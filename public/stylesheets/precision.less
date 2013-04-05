@@ -576,3 +576,121 @@
   }
 
 }
+#ProductDetailControl {
+  position: fixed;
+  top: 8px;
+  z-index: 103;
+  left: 412px;
+  .add_media_widget {
+    .button;
+    display: inline-block;
+    font-size: 14px;
+  }
+  .delete_media_widget {
+    .button;
+    display: inline-block;
+    font-size: 14px;
+  }
+  .inquire_widget {
+    .button;
+    display: inline-block;
+    font-size: 14px;
+  }
+}
+
+#ProgressModalBlocker {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1299;
+  background-color: #333;
+  opacity: 0.5;
+}
+
+#ProgressModal {
+  position: fixed;
+  z-index: 1301;
+  width: 590px;
+  height: 164px;
+  .aeon-round(9px);
+  .aeon-shadow(0px, 0px, 64px, -1px, #333);
+  border: 1px solid #333;
+  background-color: #ececec;
+
+  #ProgressBarWrapper {
+    width: 90%;
+    height: 64px;
+    border: 1px solid #8b8b8b;
+    .aeon-round(22px);
+    overflow: hidden;
+    .center-margins;
+    margin-top: 32px;
+    background-color: #fcfcfc;
+    box-shadow:inset 0px 0px 16px 1px #8b8b8b;
+
+    #ProgressBar {
+      width: 0%;
+      height: 64px;
+      background: #d0e4f7; /* Old browsers */
+      background: -moz-linear-gradient(top,  #d0e4f7 0%, #73b1e7 24%, #0a77d5 50%, #539fe1 79%, #87bcea 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d0e4f7), color-stop(24%,#73b1e7), color-stop(50%,#0a77d5), color-stop(79%,#539fe1), color-stop(100%,#87bcea)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0e4f7', endColorstr='#87bcea',GradientType=0 ); /* IE6-9 */
+    }
+  }
+
+  #ProgressInformation {
+    margin-top: 12px;
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+}
+
+#FileUploadModalBlocker {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1299;
+  background-color: #333;
+  opacity: 0.5;
+}
+
+#FileUploadModal {
+  position: absolute;
+  z-index: 1301;
+  width: 590px;
+  height: 164px;
+  .aeon-round(9px);
+  .aeon-shadow(0px, 0px, 64px, -1px, #333);
+  border: 1px solid #333;
+  background-color: #ececec;
+
+  #FromYourDeviceButton {
+    .button;
+    position: absolute;
+    width: 250px;
+    border: 1px solid #ff000;
+    padding: 12px;
+  }
+
+  #TempFileInput {
+    position: absolute;
+    z-index: 1399;
+    width: 220px;
+    border: 1px solid #333;
+    padding: 20px;
+    margin-top: 0px;
+    opacity: 0;
+    cursor: pointer;
+  }
+}

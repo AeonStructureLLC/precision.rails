@@ -9,7 +9,9 @@
   <div class='media_items_preview panel'>
     <div class='left_arrow nav_arrows previous_media_item'><img class='prev_icon' src='/images/prev.png' /></div>
     <div class='preview_container'>
-      <% unless media_items.blank? %>
+      <% if media_items.blank? %>
+
+      <% else %>
         <%= render :partial => 'media_items/media_item_listing', :locals => { :media_item_listing => media_items.first } %>
       <% end %>
     </div>

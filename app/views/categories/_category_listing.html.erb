@@ -14,7 +14,6 @@
 <li class='category_listing <%= deletable %>' model='category' model_id='<%= category_listing.id %>' model_root='true'>
   <div class='<%= drag_class %>'></div>
   <div class='attribute title' model='category' model_id='<%= category_listing.id %>' attribute_name='title' attribute_type='text' <%= content_editable %>><%= category_listing.title.html_safe %></div>
-  <%= render :partial => 'media_items/media_items_preview', :locals => { :media_items => category_listing.media_items } %>
     <% if category_listing.categories.blank? %>
     <ul class='sub_categories_list hidden'></ul>
     <% else %>
