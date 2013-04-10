@@ -557,6 +557,13 @@
 }
 
 #ProductDetail.edit_mode {
+  min-width: 720px;
+
+  .title {
+    //margin-right: 200px;
+    padding-right: 200px;
+  }
+
   .price_missing, .price {
     margin-top: 96px;
     min-width: 32px;
@@ -587,6 +594,16 @@
     font-size: 14px;
   }
   .delete_media_widget {
+    .button;
+    display: inline-block;
+    font-size: 14px;
+  }
+  .link_addon_widget {
+    .button;
+    display: inline-block;
+    font-size: 14px;
+  }
+  .unlink_addon_widget {
     .button;
     display: inline-block;
     font-size: 14px;
@@ -693,4 +710,11 @@
     opacity: 0;
     cursor: pointer;
   }
+}
+
+
+#AccessoryWrapper {
+  position: absolute;
+  right: 32px;
+  top: 19px;
 }

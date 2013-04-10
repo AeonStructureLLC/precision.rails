@@ -1,5 +1,7 @@
 <%
    selected = {
+     :accessory_true => "",
+     :accessory_false => "",
      :product_discontinued_true => "",
      :product_discontinued_false => "",
      :free_shipping_true => "",
@@ -7,6 +9,12 @@
      :ship_flatrate_true => "",
      :ship_flatrate_false => ""
    }
+
+   if @product.accessory
+     selected["accessory_true"] = "selected"
+   else
+     selected["accessory_false"] = "selected"
+   end
 
    if @product.product_discontinued
      selected["product_discontinued_true"] = "selected"
@@ -36,6 +44,8 @@
 <div id="ProductDetailControl">
   <div class="add_media_widget">Add Media</div>
   <div class="delete_media_widget">Delete Media</div>
+  <div class="link_addon_widget">Link Addon</div>
+  <div class="unlink_addon_widget">Unlink Addon</div>
   <div class="inquire_widget">?</div>
 </div>
 
@@ -43,6 +53,14 @@
 
 <div id="ProductDetailWrapper">
   <div id="ProductDetail" model="product" model_id="<%= @product.id %>" model_root="true">
+
+    <div id="AccessoryWrapper">
+      <div id="Accessory" class="aeon_lozenge_menu">
+        <div class="accessory_selector aeon_lozenge aeon_lozenge_left <%= selected["accessory_false"] %>" accessory="false">Product</div>
+        <div class="accessory_selector aeon_lozenge aeon_lozenge_right <%= selected["accessory_true"] %>" accessory="true">Accessory</div>
+      </div>
+    </div>
+
     <div class="attribute title" model="product" model_id="<%= @product.id %>" attribute_name="title" attribute_type="text"><%= @product.title %></div>
 
     <div id="ProductDiscontinuedWrapper">
@@ -107,6 +125,8 @@
       <% end %>
     </div>
 
+    <%= render :partial => 'products/product_addons', :locals => { :addons => @product.addons } %>
+
   </div>
 </div>
 
@@ -140,6 +160,41 @@
     // Change Edit Button Status
   }
   <% if @editable %>
+  $(document).off('click', ".inquire_widget");
+  $(document).on('click', ".inquire_widget", function(){
+    var self = $(this);
+    var product_id = $("#ProductDetail").attr('model_id');
+    var title = $("[model='product'][model_id='" + product_id + "'][attribute_name='title']").text();
+    //alert(title);
+    var url = 'https://www.google.com/search?q="' + title + '"';
+    var url2 = 'https://www.google.com/search?q=' + title;
+    window.open(url2, "_blank");
+  });
+
+
+  $(document).off('click', ".accessory_selector");
+  $(document).on('click', ".accessory_selector", function(){
+    var self = $(this);
+    $(".accessory_selector").removeClass('selected');
+    self.addClass('selected');
+    var product_id = $("#ProductDetail").attr('model_id');
+    var accessory = self.attr('accessory');
+    var params = {
+      product: {
+        accessory: accessory
+      }
+    }
+    $.ajax({
+      url: "/products/" + product_id + ".json",
+      dataType: "json",
+      type: "PUT",
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
   $(document).off('click', ".product_discontinued_selector");
   $(document).on('click', ".product_discontinued_selector", function(){
     var self = $(this);

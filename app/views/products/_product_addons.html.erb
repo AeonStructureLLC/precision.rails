@@ -1,0 +1,14 @@
+<%
+   css_class = "hidden"
+   unless addons.blank?
+     css_class = ""
+   end
+%>
+
+<div class='product_addons_wrapper <%= css_class %>'>
+  <ul class='product_addons_list'>
+    <% unless addons.blank? %>
+      <%=  render :partial => 'products/product_addon_listing', :collection => addons %>
+    <% end %>
+  </ul>
+</div>
