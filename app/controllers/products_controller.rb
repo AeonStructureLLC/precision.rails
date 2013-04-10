@@ -4,6 +4,11 @@ class ProductsController < ApplicationController
     @products = Product.find_all_by_category_id(params[:category_id])
   end
 
+  def addons_index
+    addons = Product.find_all_by_accessory(true)
+    render :partial => 'products/addons_index', :locals => { :addons => addons }
+  end
+
   def stub
     require 'ostruct'
     product_listing = {
@@ -43,6 +48,34 @@ class ProductsController < ApplicationController
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def link_product_addon
+    product_id = params[:product_id]
+    addon_id = params[:addon_id]
+    product = Product.find(product_id)
+    addon = Product.find(addon_id)
+    unless product.addons.include? addon
+      product_addon = ProductAddon.new
+      product_addon.product_id = product_id
+      product_addon.addon_id = addon_id
+      product_addon.save!
+    end
+    render json: addon
+  end
+
+  def unlink_product_addon
+    product_id = params[:product_id]
+    addon_id = params[:addon_id]
+    product = Product.find(product_id)
+    addon = Product.find(addon_id)
+    if product.addons.include? addon
+      product_addons = ProductAddon.where(:product_id => product_id, :addon_id => addon_id)
+      product_addons.each do |product_addon|
+        product_addon.destroy
+      end
+    end
+    render json: addon
   end
 
   def destroy

@@ -1,0 +1,5 @@
+<ul class='product_addons_drawer_list'>
+  <% unless addons.blank? %>
+    <%=  render :partial => 'products/product_addon_listing', :collection => addons %>
+  <% end %>
+</ul>

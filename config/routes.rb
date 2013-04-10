@@ -9,6 +9,9 @@ PrecisionRails::Application.routes.draw do
   resources :products
   resource :product
   match 'product_stub' => 'products#stub'
+  match 'product_addons_index' => 'products#addons_index'
+  match 'link_product_addon' => 'products#link_product_addon'
+  match 'unlink_product_addon' => 'products#unlink_product_addon'
 
   resources :media_items
   resource :media_item

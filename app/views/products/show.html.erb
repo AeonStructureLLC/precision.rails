@@ -44,7 +44,7 @@
 <div id="ProductDetailControl">
   <div class="add_media_widget">Add Media</div>
   <div class="delete_media_widget">Delete Media</div>
-  <div class="link_addon_widget">Link Addon</div>
+  <div class="link_addon_widget">Link Addons</div>
   <div class="unlink_addon_widget">Unlink Addon</div>
   <div class="inquire_widget">?</div>
 </div>
@@ -52,6 +52,12 @@
 <%=  render :partial => 'categories/index', :locals => { :categories => @categories, :editable => @editable } %>
 
 <div id="ProductDetailWrapper">
+  <div id="ProductAddonsDrawerWrapper" class="hidden">
+    <div id="ProductAddonsDrawerCloseButton">X</div>
+    <div id="ProductAddonsDrawer">
+
+    </div>
+  </div>
   <div id="ProductDetail" model="product" model_id="<%= @product.id %>" model_root="true">
 
     <div id="AccessoryWrapper">
@@ -125,7 +131,9 @@
       <% end %>
     </div>
 
-    <%= render :partial => 'products/product_addons', :locals => { :addons => @product.addons } %>
+    <div id="ProductDetailAddons">
+      <%= render :partial => 'products/product_addons', :locals => { :addons => @product.addons } %>
+    </div>
 
   </div>
 </div>
@@ -318,29 +326,128 @@
     revert: true,
     revertDuration: 100,
     helper: 'clone',
-    scope: 'add_media'
+    scope: 'product_management',
+    appendTo: 'body',
+    zIndex: 199
   });
 
   $('.delete_media_widget').draggable({
     revert: true,
     revertDuration: 100,
     helper: 'clone',
-    scope: 'delete_media'
+    scope: 'delete_media',
+    appendTo: 'body',
+    zIndex: 199
   });
 
+  $('.link_addon_widget').draggable({
+    revert: true,
+    revertDuration: 100,
+    helper: 'clone',
+    scope: 'product_management',
+    appendTo: 'body',
+    zIndex: 199
+  });
+
+  $('.unlink_addon_widget').draggable({
+    revert: true,
+    revertDuration: 100,
+    helper: 'clone',
+    scope: 'product_addon_management',
+    appendTo: 'body',
+    zIndex: 199
+  });
+
+  function resetProductAddonsInteractivity(){
+    $('.product_addons_drawer_list .product_addon_listing').draggable({
+      revert: true,
+      revertDuration: 100,
+      helper: 'clone',
+      scope: 'product_management',
+      appendTo: 'body',
+      zIndex: 199
+    });
+    $('#ProductDetailAddons .product_addon_listing').droppable({
+      scope: 'product_addon_management',
+      tolerance: 'intersect',
+      greedy: true,
+      drop: function(event, ui){
+        if(ui.draggable.hasClass('unlink_addon_widget')){
+          var addon_id = $(event.target).attr('model_id');
+          var product_id = $("#ProductDetail").attr('model_id');
+          var params = {
+            addon_id: addon_id,
+            product_id: product_id
+          }
+          $.ajax({
+            url: "/unlink_product_addon",
+            dataType: 'json',
+            data: params,
+            success: function(data){
+              var addon_id = data.id;
+              var addon_ui = $("#ProductDetailAddons").find("[model_root='true'][model='product_addon'][model_id='" + addon_id + "']");
+              addon_ui.remove();
+            }
+          });
+        }
+      }
+    });
+  }
+
+
   $('#ProductDetail').droppable({
-    scope: 'add_media',
+    scope: 'product_management',
     tolerance: 'intersect',
     greedy: true,
     drop: function(event, ui){
       var target = $(event.target);
-      var media_item_id = target.attr('media_item_id');
-      var media_items_wrapper = target.closest('.media_items_wrapper');
-      var media_items_preview = target.closest('.media_items_preview');
-      if($(ui.draggable).hasClass('add_media_widget')){
-        fileOpenDialog(target);
+      if(ui.draggable.hasClass('add_media_widget')){
+        var media_item_id = target.attr('media_item_id');
+        var media_items_wrapper = target.closest('.media_items_wrapper');
+        var media_items_preview = target.closest('.media_items_preview');
+        if($(ui.draggable).hasClass('add_media_widget')){
+          fileOpenDialog(target);
+        }
+      } else if(ui.draggable.hasClass('link_addon_widget')){
+        var url = "/product_addons_index";
+        $.ajax({
+          url: url,
+          dataType: 'html',
+          success: function(data){
+            $("#ProductAddonsDrawer").html(data);
+            $("#ProductAddonsDrawerWrapper").hide().removeClass('hidden');
+            $("#ProductAddonsDrawerWrapper").slideDown();
+            resetProductAddonsInteractivity();
+          }
+        });
+      } else if(ui.draggable.hasClass('product_addon_listing')){
+        var addon_id = ui.draggable.attr('model_id');
+        var product_id = $("#ProductDetail").attr('model_id');
+        console.log("We will link Product: " + product_id + " with Addon: " + addon_id);
+        var params = {
+          addon_id: addon_id,
+          product_id: product_id
+        }
+        $.ajax({
+          url: "/link_product_addon",
+          dataType: 'json',
+          data: params,
+          success: function(data){
+            console.log("We linked it!");
+            var clone = ui.draggable.clone();
+            var product_addons_wrapper = $("#ProductDetailAddons").find('.product_addons_wrapper');
+            product_addons_wrapper.removeClass('hidden');
+            product_addons_wrapper.find('.product_addons_list').append(clone);
+            resetProductAddonsInteractivity();
+          }
+        });
       }
     }
+  });
+
+  $(document).off('click', '#ProductAddonsDrawerCloseButton');
+  $(document).on('click', '#ProductAddonsDrawerCloseButton', function(){
+    $("#ProductAddonsDrawerWrapper").slideUp();
   });
 
   function fileOpenDialog(target){
@@ -445,9 +552,6 @@
         jhtml.click();
       }
     });
-
-    console.log(ajax_submit);
-
   }
 
 
@@ -469,6 +573,7 @@
     <% if @editable %>
     start_product_edit();
     reset_media_item_droppable();
+    resetProductAddonsInteractivity();
     <% end %>
 
   });

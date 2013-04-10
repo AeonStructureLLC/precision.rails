@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   def addons
     addons = []
     self.product_addons.each do |addon|
-      addons.push Product.find(addon_id)
+      addons.push Product.find(addon.addon_id)
     end
     return addons
   end
