@@ -7,7 +7,7 @@ gem 'rails', '3.2.11'
 
 gem 'sqlite3'
 gem 'thin'
-gem 'rvm'
+gem 'pg'
 gem 'hirb'
 gem 'wirble'
 gem 'uuid'
