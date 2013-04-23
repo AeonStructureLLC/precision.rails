@@ -1,6 +1,6 @@
 class MediaItem < ActiveRecord::Base
   require 'RMagick'
-  default_scope order('cover')
+  default_scope order('cover DESC')
 
   belongs_to :category
   belongs_to :product

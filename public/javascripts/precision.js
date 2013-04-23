@@ -226,7 +226,7 @@ function setMediaItemsWidth(ui){
 
 function reset_media_item_droppable(){
     $('.media_item_listing').droppable({
-        scope: 'delete_media',
+        scope: 'media_management',
         tolerance: 'intersect',
         greedy: true,
         drop: function(event, ui){
@@ -246,6 +246,22 @@ function reset_media_item_droppable(){
                         if(media_items_wrapper.find('.media_items_listing').children().length == 0){
                             media_items_wrapper.addClass('hidden');
                         }
+                    }
+                });
+            } else if($(ui.draggable).hasClass('set_cover_media_widget')){
+                var url = "/set_cover_media_item.json?media_item_id=" + media_item_id;
+                var params = {
+                    media_item: {
+                        cover: "true"
+                    }
+                }
+                $.ajax({
+                   url: url,
+                    dataType: 'json',
+                    data: params,
+                    type: 'PUT',
+                    success: function(data){
+                        console.log("Assigned Cover Image!");
                     }
                 });
             }

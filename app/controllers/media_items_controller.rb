@@ -28,6 +28,19 @@ class MediaItemsController < ApplicationController
     end
   end
 
+  def update
+    media_item = MediaItem.find(params[:id])
+    respond_to do |format|
+      if media_item.update_attributes(params[:media_item])
+        format.html { }
+        format.json { render json: media_item }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: media_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def destroy
     media_item = MediaItem.find(params[:id])
     media_item.destroy

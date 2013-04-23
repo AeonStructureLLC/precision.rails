@@ -78,6 +78,27 @@ class ProductsController < ApplicationController
     render json: addon
   end
 
+  def set_cover_media_item
+    require 'pp'
+    media_item_id = params[:media_item_id]
+    media_item = MediaItem.find(media_item_id)
+    product_id = media_item.product.id
+    product = Product.find(product_id)
+    product.media_items.each do |mi|
+      pp mi
+      if mi.id == media_item_id.to_i
+        mi.cover = true
+      else
+        mi.cover = false
+      end
+      mi.save!
+    end
+    respond_to do |format|
+      format.html { }
+      format.json { render json: media_item }
+    end
+  end
+
   def destroy
     product = Product.find(params[:id])
     product.destroy

@@ -14,14 +14,17 @@ class Product < ActiveRecord::Base
   end
 
   def cover_image_src
-    media_item = MediaItem.where(:product_id => self.id, :cover => true).first
-    if media_item.blank?
+    if self.media_items.blank?
       cover_image_src = "/images/missing_product_image.png"
-    elsif self.media_items.blank?
-      cover_image_src = "/media_controller/#{media_item.uuid}_preview.png"
     else
-      cover_image_src = "/media_controller/#{self.media_items.first.uuid}_preview.png"
+      media_item = MediaItem.where(:product_id => self.id, :cover => true).first
+      if media_item.blank?
+        cover_image_src = "/media_controller/#{self.media_items.first.uuid}_preview.png"
+      else
+        cover_image_src = "/media_controller/#{media_item.uuid}_preview.png"
+      end
     end
+    return cover_image_src
   end
 
 end
