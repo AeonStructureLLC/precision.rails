@@ -1,3 +1,4 @@
 == Precision E-Commerce Rails Project
+An AeonStructureLLC project
 
 Relevant information will show up when the project is ready for deployment.
