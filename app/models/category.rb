@@ -1,4 +1,5 @@
 class Category < ActiveRecord::Base
+  belongs_to :storefront
   has_many :media_items
   has_many :products
   default_scope order('title')

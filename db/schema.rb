@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130404182830) do
+ActiveRecord::Schema.define(:version => 20130430173658) do
 
   create_table "categories", :force => true do |t|
     t.string   "title"
@@ -141,6 +141,21 @@ ActiveRecord::Schema.define(:version => 20130404182830) do
   end
 
   add_index "products", ["title"], :name => "index_products_on_title"
+
+  create_table "storefronts", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "url"
+    t.boolean  "inactive",         :default => false
+    t.string   "default_language", :default => "en-US"
+    t.string   "default_currency", :default => "USD"
+    t.integer  "billing_user_id"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "storefronts", ["billing_user_id"], :name => "index_storefronts_on_billing_user_id"
+  add_index "storefronts", ["url"], :name => "index_storefronts_on_url", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
