@@ -118,6 +118,7 @@
       <div class='currency_marker'>$</div>
       <div class='attribute price' model='product' model_id='<%= @product.id %>' attribute_name='price' attribute_type='text'><%= number_with_precision(@product.price, :precision => 2) %></div>
     <% end %>
+    <div class='add_to_cart_button'>Add to Cart</div>
 
     <div class="attribute description" model="product" model_id="<%= @product.id %>" attribute_name="description" attribute_type="text">
       <% unless @product.description.blank? %>
@@ -458,6 +459,23 @@
   $(document).off('click', '#ProductAddonsDrawerCloseButton');
   $(document).on('click', '#ProductAddonsDrawerCloseButton', function(){
     $("#ProductAddonsDrawerWrapper").slideUp();
+  });
+
+  $(document).off('click', '.add_to_cart_button');
+  $(document).on('click', '.add_to_cart_button', function(){
+    var product_id = $("#ProductDetail").attr('model_id');
+    var params = {
+      product_id: product_id
+    }
+    $.ajax({
+      url: "/add_to_cart",
+      dataType: 'json',
+      type: 'POST',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    })
   });
 
   function fileOpenDialog(target){

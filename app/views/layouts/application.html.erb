@@ -35,6 +35,8 @@
       var rails_environment = "production";
     <% end %>
 
+    var CurrentUser = <%= current_user.to_json.html_safe %>;
+
     $(document).ready(function(){
       less.watch();
     });

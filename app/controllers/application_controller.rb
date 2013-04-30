@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
   def get_storefront
     host = request.host
     @storefront = Storefront.find_by_url(host)
+    if @storefront.blank? && request.original_url.exclude?("/customer_setup")
+      redirect_to create_your_storefront_url
+    end
   end
 
   def authenticate_user!(*args)
@@ -16,7 +19,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    super || AnonymousUser.find_or_initialize_by_token(anonymous_user_token).tap do |user|
+    super || AnonymousUser.where(authentication_token: anonymous_user_token).first_or_initialize do |user|
+      user.email = "#{anonymous_user_token}@#{@storefront.url}"
       user.save(validate: false) if user.new_record?
     end
   end

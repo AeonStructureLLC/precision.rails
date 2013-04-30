@@ -17,6 +17,12 @@ PrecisionRails::Application.routes.draw do
   resources :media_items
   resource :media_item
 
+  match 'customer_setup/create_your_storefront' => 'customer_setup#create_storefront', :as => 'create_your_storefront'
+
+  resources :carts
+  resource :cart
+  match 'add_to_cart' => 'carts#add_to_cart', :as => 'add_to_cart'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -66,7 +72,7 @@ PrecisionRails::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'categories#index'
 
   # See how all your routes lay out with "rake routes"
 
