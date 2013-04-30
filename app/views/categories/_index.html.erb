@@ -133,9 +133,10 @@
 
     $('.category_listing').droppable({
       activeClass: 'can_drop',
-      addClasses: false,
+      addClasses: true,
       greedy: true,
       hoverClass: 'can_drop_hover',
+      tolerance: "pointer",
       scope: 'categories_products',
       drop: function(event, ui){
         console.log(ui.helper)
