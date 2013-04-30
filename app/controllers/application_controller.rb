@@ -1,9 +1,14 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :check_admin
+  before_filter :check_admin, :get_storefront
 
   def check_admin
     @editable = true
+  end
+
+  def get_storefront
+    host = request.host
+    @storefront = Storefront.find_by_url(host)
   end
 
   def authenticate_user!(*args)

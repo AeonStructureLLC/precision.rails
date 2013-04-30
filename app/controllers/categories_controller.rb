@@ -1,7 +1,8 @@
 class CategoriesController < ApplicationController
 
   def index
-    @categories = Category.find_all_by_parent_id(nil)
+    #@categories = Category.find_all_by_parent_id(nil)
+    @categories = Category.where(:storefront_id => @storefront.id, :parent_id => nil)
   end
 
   def stub

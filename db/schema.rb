@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430173658) do
+ActiveRecord::Schema.define(:version => 20130430175849) do
 
   create_table "categories", :force => true do |t|
     t.string   "title"
@@ -24,9 +24,11 @@ ActiveRecord::Schema.define(:version => 20130430173658) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.integer  "category_order"
+    t.integer  "storefront_id"
   end
 
   add_index "categories", ["parent_id"], :name => "index_categories_on_parent_id"
+  add_index "categories", ["storefront_id"], :name => "index_categories_on_storefront_id"
 
   create_table "legacy_products", :force => true do |t|
     t.integer  "prod_id"
