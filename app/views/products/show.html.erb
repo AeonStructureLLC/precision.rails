@@ -469,11 +469,12 @@
     }
     $.ajax({
       url: "/add_to_cart",
-      dataType: 'json',
+      dataType: 'html',
       type: 'POST',
       data: params,
       success: function(data){
-        console.log(data);
+        $("#CurrentCartWrapper").html(data);
+        updateCartCount();
       }
     })
   });

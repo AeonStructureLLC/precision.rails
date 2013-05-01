@@ -39,13 +39,38 @@
 
     $(document).ready(function(){
       less.watch();
+      updateCartCount();
     });
+
+    $(document).off('click', '#CurrentCart');
+    $(document).on('click', '#CurrentCart', function(){
+      var current_cart_wrapper = $("#CurrentCartWrapper");
+      if(current_cart_wrapper.hasClass('hidden')){
+        current_cart_wrapper.removeClass('hidden');
+      } else {
+        current_cart_wrapper.addClass('hidden');
+      }
+    });
+
+    function updateCartCount(){
+      var quantities = $("#CurrentCartWrapper").find(".quantity");
+      var total_quantity = 0;
+      _.each(quantities, function(quantity){
+        var quantity_ui = $(quantity);
+        total_quantity = total_quantity + Number(quantity_ui.attr('value'));
+      });
+      $("#CartItemsCount").html(total_quantity);
+    }
   </script>
   <%= yield :head %>
 </head>
 <body>
 
 <%= render :partial => '/shared/navigation' %>
+<div id="CurrentCartWrapper" class="hidden">
+  <%= render :partial => '/carts/cart_item_list' %>
+</div>
+
 
 <div id="ContentContainer">
   <%= yield %>

@@ -1,0 +1,10 @@
+<%
+  product = Product.find(cart_item_listing.product_id)
+%>
+
+<div class="cart_item_listing">
+  <div class="cover_thumb"><img src="<%= product.cover_thumb_src %>" /></div>
+  <div class="title"><%= link_to product.title, product_url(product.id) %></div>
+  <div class="price"><%= number_to_currency(product.price) %></div>
+  <input type="text" maxlength="3" size="1" class="quantity" value="<%= cart_item_listing.quantity %>"/>
+</div>

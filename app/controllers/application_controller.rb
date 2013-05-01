@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :check_admin, :get_storefront
+  before_filter :check_admin, :get_storefront, :get_cart
 
   def check_admin
     @editable = true
@@ -12,6 +12,24 @@ class ApplicationController < ActionController::Base
     if @storefront.blank? && request.original_url.exclude?("/customer_setup")
       redirect_to create_your_storefront_url
     end
+  end
+
+  def get_cart
+    if @storefront.blank?
+      get_storefront
+    end
+
+    cart = Cart.where(:storefront_id => @storefront.id, :user_id => current_user.id).first
+    if cart.blank?
+      require 'ostruct'
+      cart = {
+          :user_id => current_user.id,
+          :storefront_id => @storefront.id,
+          :cart_items => {}
+      }
+      cart = OpenStruct.new cart
+    end
+    @cart = cart
   end
 
   def authenticate_user!(*args)

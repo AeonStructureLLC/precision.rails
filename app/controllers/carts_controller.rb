@@ -24,7 +24,8 @@ class CartsController < ApplicationController
         item.save!
       end
     end
-    render json: cart.to_json(:include => :cart_items)
+    @cart = cart
+    render :partial => "/carts/cart_item_list"
   end
 
 end

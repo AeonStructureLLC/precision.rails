@@ -27,4 +27,18 @@ class Product < ActiveRecord::Base
     return cover_image_src
   end
 
+  def cover_thumb_src
+    if self.media_items.blank?
+      cover_image_src = "/images/missing_product_image_thumb.png"
+    else
+      media_item = MediaItem.where(:product_id => self.id, :cover => true).first
+      if media_item.blank?
+        cover_image_src = "/media_controller/#{self.media_items.first.uuid}_thumb.png"
+      else
+        cover_image_src = "/media_controller/#{media_item.uuid}_thumb.png"
+      end
+    end
+    return cover_image_src
+  end
+
 end
