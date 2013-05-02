@@ -118,7 +118,7 @@
       <div class='currency_marker'>$</div>
       <div class='attribute price' model='product' model_id='<%= @product.id %>' attribute_name='price' attribute_type='text'><%= number_with_precision(@product.price, :precision => 2) %></div>
     <% end %>
-    <div class='add_to_cart_button'>Add to Cart</div>
+    <div class='add_to_cart_button'><img class="add_to_cart_icon" src="/images/add_to_cart_icon.png"/>Add to Cart</div>
 
     <div class="attribute description" model="product" model_id="<%= @product.id %>" attribute_name="description" attribute_type="text">
       <% unless @product.description.blank? %>
