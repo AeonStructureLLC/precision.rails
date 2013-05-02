@@ -2,9 +2,60 @@
   product = Product.find(cart_item_listing.product_id)
 %>
 
-<div class="cart_item_listing">
+<div class="cart_item_listing" model_root="true" model="cart_item" model_id="<%= cart_item_listing.id %>" product_id="<%= cart_item_listing.product_id %>">
   <div class="cover_thumb"><img src="<%= product.cover_thumb_src %>" /></div>
   <div class="title"><%= link_to product.title, product_url(product.id) %></div>
   <div class="price"><%= number_to_currency(product.price) %></div>
   <input type="text" maxlength="3" size="1" class="quantity" value="<%= cart_item_listing.quantity %>"/>
+  <div class="remove_icon"></div>
 </div>
+
+<script>
+  $(document).off('keyup', ".cart_item_listing .quantity");
+  $(document).on('keyup', ".cart_item_listing .quantity", function(){
+    var self = $(this);
+    var quantity = self.attr('value').replace(/[^\d+]/,'');
+    self.attr('value', quantity);
+  });
+
+  $(document).off('change', ".cart_item_listing .quantity");
+  $(document).on('change', ".cart_item_listing .quantity", function(){
+    var self = $(this);
+    var quantity = self.attr('value');
+    var cart_item_id = self.closest("[model_root='true']").attr('model_id');
+    var params = {
+      cart_item_id: cart_item_id,
+      quantity: quantity
+    }
+    $.ajax({
+      url: "/update_quantity_in_cart",
+      dataType: 'html',
+      type: 'POST',
+      data: params,
+      success: function(data){
+        $("#CurrentCartWrapper").html(data);
+        updateCartCount();
+      }
+    });
+  });
+
+  $(document).off('click', ".cart_item_listing .remove_icon");
+  $(document).on('click', ".cart_item_listing .remove_icon", function(){
+    var self = $(this);
+    var cart_item_id = self.closest("[model_root='true']").attr('model_id');
+    var params = {
+      cart_item_id: cart_item_id,
+    }
+    $.ajax({
+      url: "/remove_from_cart",
+      dataType: 'html',
+      type: 'POST',
+      data: params,
+      success: function(data){
+        $("#CurrentCartWrapper").html(data);
+        updateCartCount();
+      }
+    });
+  });
+
+</script>

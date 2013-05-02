@@ -28,4 +28,20 @@ class CartsController < ApplicationController
     render :partial => "/carts/cart_item_list"
   end
 
+  def remove_from_cart
+    cart_item_id = params[:cart_item_id]
+    cart_item = CartItem.find(cart_item_id)
+    cart_item.destroy
+    render :partial => "/carts/cart_item_list"
+  end
+
+  def update_quantity_in_cart
+    cart_item_id = params[:cart_item_id]
+    quantity = params[:quantity]
+    cart_item = CartItem.find(cart_item_id)
+    cart_item.quantity = quantity
+    cart_item.save!
+    render :partial => "/carts/cart_item_list"
+  end
+
 end

@@ -22,6 +22,9 @@ PrecisionRails::Application.routes.draw do
   resources :carts
   resource :cart
   match 'add_to_cart' => 'carts#add_to_cart', :as => 'add_to_cart'
+  match 'remove_from_cart' => 'carts#remove_from_cart', :as => 'remove_from_cart'
+  match 'update_quantity_in_cart' => 'carts#update_quantity_in_cart', :as => 'update_quantity_in_cart'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
