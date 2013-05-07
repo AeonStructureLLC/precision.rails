@@ -26,6 +26,10 @@ PrecisionRails::Application.routes.draw do
   match 'update_quantity_in_cart' => 'carts#update_quantity_in_cart', :as => 'update_quantity_in_cart'
 
 
+  match 'checkout' => 'checkouts#checkout', :as => 'checkout'
+  match 'checkout_list' => 'checkouts#checkout_list', :as => 'checkout_list'
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

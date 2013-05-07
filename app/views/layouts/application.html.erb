@@ -36,11 +36,8 @@
     <% end %>
 
     var CurrentUser = <%= current_user.to_json.html_safe %>;
-
-    $(document).ready(function(){
-      less.watch();
-      updateCartCount();
-    });
+    var ItemsInCart = <%= @cart.item_count %>;
+    var CartSubtotal = "<%= number_to_currency(@cart.subtotal) %>";
 
     $(document).off('click', '#CurrentCart');
     $(document).on('click', '#CurrentCart', function(){
@@ -58,15 +55,20 @@
       $('.aeon_modal').addClass('hidden');
     });
 
-    function updateCartCount(){
-      var quantities = $("#CurrentCartWrapper").find(".quantity");
-      var total_quantity = 0;
-      _.each(quantities, function(quantity){
-        var quantity_ui = $(quantity);
-        total_quantity = total_quantity + Number(quantity_ui.attr('value'));
-      });
-      $("#CartItemsCount").html(total_quantity);
+    function updateItemCountAndSubtotal(){
+      $("#CartItemsCount").html(ItemsInCart);
+      $("#CartItemSubTotal").html(CartSubtotal);
+      if(ItemsInCart > 0){
+        $("#CheckoutButton").removeClass('hidden');
+      } else {
+        $("#CheckoutButton").addClass('hidden');
+      }
     }
+
+    $(document).ready(function(){
+      less.watch();
+      updateItemCountAndSubtotal();
+    });
   </script>
   <%= yield :head %>
 </head>
@@ -74,7 +76,16 @@
 
 <%= render :partial => '/shared/navigation' %>
 <div id="CurrentCartWrapper" class="hidden">
-  <%= render :partial => '/carts/cart_item_list' %>
+  <div id="CartItemList">
+    <%= render :partial => '/carts/cart_item_list' %>
+  </div>
+  <div id="CheckoutButtonWrapper">
+    <a id="CheckoutButton"  class="hidden" href="/checkout">Proceed to Checkout</a>
+  </div>
+  <div id="CartItemSubTotalWrapper">
+    <div class="cart_label">Subtotal: </div>
+    <div id="CartItemSubTotal"><%= number_to_currency(@cart.subtotal) %></div>
+  </div>
 </div>
 
 

@@ -13,4 +13,12 @@ class Cart < ActiveRecord::Base
     return subtotal
   end
 
+  def item_count
+    quantity = 0
+    self.cart_items.each do |ci|
+      quantity = quantity + ci.quantity
+    end
+    return quantity
+  end
+
 end

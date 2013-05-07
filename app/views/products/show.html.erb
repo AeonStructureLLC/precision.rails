@@ -473,8 +473,8 @@
       type: 'POST',
       data: params,
       success: function(data){
-        $("#CurrentCartWrapper").html(data);
-        updateCartCount();
+        $("#CartItemList").html(data);
+        updateItemCountAndSubtotal();
       }
     });
   });

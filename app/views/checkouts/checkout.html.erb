@@ -1,0 +1,26 @@
+<div id="CheckoutList">
+  <%= render :partial => '/checkouts/checkout_list' %>
+</div>
+<div id="ReviewAndAuthorizeWrapper">
+  <a id="ReviewAndAuthorizeButton"  class="" href="#">Review & Authorize</a>
+</div>
+<div id="CheckoutSubTotalWrapper">
+  <div class="cart_label">Subtotal: </div>
+  <div id="CheckoutSubTotal"><%= number_to_currency(@cart.subtotal) %></div>
+</div>
+<div id="CheckoutShippingWrapper">
+  <div class="cart_label">Shipping: </div>
+  <div id="CheckoutShipping"><%= number_to_currency(@cart.subtotal) %></div>
+</div>
+<div id="CheckoutTaxWrapper">
+  <div class="cart_label">Tax: </div>
+  <div id="CheckoutTax"><%= number_to_currency(@cart.subtotal) %></div>
+</div>
+<div id="CheckoutTotalWrapper">
+  <div class="cart_label">Total: </div>
+  <div id="CheckoutTotal"><%= number_to_currency(@cart.subtotal) %></div>
+</div>
+
+<script type="text/javascript">
+  $(document).off('click', '#CurrentCart');
+</script>

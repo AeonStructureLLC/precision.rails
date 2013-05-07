@@ -1,7 +1,5 @@
-<div id="CartItemList">
 <%= render :partial => '/carts/cart_item_listing', :collection => @cart.cart_items %>
-</div>
-<div id="CartItemSubTotalWrapper">
-  <div class="cart_label">Subtotal: </div>
-  <div id="CartItemSubTotal"><%= number_to_currency(@cart.subtotal) %></div>
-</div>
+<script type="text/javascript">
+  ItemsInCart = <%= @cart.item_count %>;
+  CartSubtotal = "<%= number_to_currency(@cart.subtotal) %>";
+</script>
