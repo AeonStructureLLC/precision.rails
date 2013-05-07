@@ -2,4 +2,5 @@
 <script type="text/javascript">
   ItemsInCart = <%= @cart.item_count %>;
   CartSubtotal = "<%= number_to_currency(@cart.subtotal) %>";
+  CartWeight = <%= @cart.weight %>;
 </script>

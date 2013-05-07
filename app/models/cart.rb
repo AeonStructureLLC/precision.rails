@@ -21,4 +21,13 @@ class Cart < ActiveRecord::Base
     return quantity
   end
 
+  def weight
+    weight = 0
+    self.cart_items.each do |ci|
+      p = Product.find(ci.product_id)
+      weight = weight + (p.weight * ci.quantity)
+    end
+    return weight
+  end
+
 end
