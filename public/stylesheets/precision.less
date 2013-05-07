@@ -170,7 +170,11 @@
   padding: 12px;
   .aeon-round;
   border: 1px solid #ccc;
-  position: absolute;
+  position: fixed;
+  top: 52px;
+  bottom: 0px;
+
+  overflow-y: scroll;
 
   background: #ffffff; /* Old browsers */
   background: -moz-linear-gradient(top,  #ffffff 0%, #e7f0ff 100%); /* FF3.6+ */
@@ -180,10 +184,6 @@
   background: -ms-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* IE10+ */
   background: linear-gradient(to bottom,  #ffffff 0%,#e7f0ff 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7f0ff',GradientType=0 ); /* IE6-9 */
-
-  #CategoryControl {
-    display: none;
-  }
 
   .category_listing {
     cursor: pointer;
@@ -219,33 +219,33 @@
 
 }
 
+#CategoryControl {
+  position: fixed;
+  z-index: 101;
+  display: block;
+  height: 32px;
+  padding: 8px;
+  top: 0px;
+  left: 134px;
+  .new_category_button {
+    .button;
+    width: 120px;
+
+    font-size: 14px;
+    display: inline-block;
+  }
+  .delete_category_widget {
+    .button;
+    width: 64px;
+
+    right: 12px;
+    font-size: 14px;
+    display: inline-block;
+  }
+}
+
 #CategoriesList.edit_mode {
   background: transparent;
-
-  #CategoryControl {
-    position: fixed;
-    z-index: 101;
-    display: block;
-    height: 32px;
-    padding: 8px;
-    top: 0px;
-    left: 134px;
-    .new_category_button {
-      .button;
-      width: 120px;
-
-      font-size: 14px;
-      display: inline-block;
-    }
-    .delete_category_widget {
-      .button;
-      width: 64px;
-
-      right: 12px;
-      font-size: 14px;
-      display: inline-block;
-    }
-  }
 
   .category_listing {
     cursor: auto;
@@ -291,6 +291,47 @@
 }
 
 .category_listing.stub {
+  list-style: none;
+  cursor: auto;
+  margin-bottom: 8px;
+  .aeon-round;
+
+  .drag_handle {
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    left: 0px;
+    background-image: url('/images/draghandle.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: block;
+  }
+
+  .title {
+    text-indent: 28px;
+    border: 1px solid #8b8b8b;
+    .aeon-round(5px);
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffffff 0%, #e7f0ff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e7f0ff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffffff 0%,#e7f0ff 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffffff 0%,#e7f0ff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7f0ff',GradientType=0 ); /* IE6-9 */
+    padding: 4px;
+  }
+
+  .sub_categories_list {
+    padding: 12px;
+    padding-right: 8px;
+    .aeon-round-bottom(5px);
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
   -webkit-transform: scale(0.8) translateX(-1%);
   z-index: 1000;
   .aeon-shadow;
@@ -1087,5 +1128,33 @@
       margin-right: 12px;
     }
   }
+
+}
+
+#NewCategoryModal {
+  padding: 12px;
+  #NewCategory {
+    width: 350px;
+    height: 75px;
+    position: relative;
+    padding: 12px;
+
+    #NewCategoryTitle {
+      width: 100%;
+      font-size: 22px;
+      padding: 2px;
+    }
+
+    #CreateNewCategoryButton {
+      .button;
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      border-color: #a2a2a2;
+
+    }
+  }
+
+
 
 }

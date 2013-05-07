@@ -25,7 +25,8 @@ class ApplicationController < ActionController::Base
       cart = {
           :user_id => current_user.id,
           :storefront_id => @storefront.id,
-          :cart_items => {}
+          :cart_items => {},
+          :subtotal => 0
       }
       cart = OpenStruct.new cart
     end

@@ -108,6 +108,7 @@ function uploadProgressor(progress){
 
 function start_categories_edit(){
     $("#CategoriesList").addClass('edit_mode');
+    $("#CategoryControl").removeClass('hidden');
     $(".category_listing .attribute").attr('contenteditable', 'true');
     set_categories_navigation("off");
     resetCategoryInteractions();
@@ -116,6 +117,7 @@ function start_categories_edit(){
 
 function end_categories_edit(){
     $("#CategoriesList").removeClass('edit_mode');
+    $("#CategoryControl").addClass('hidden');
     $(".category_listing .attribute").removeAttr('contenteditable');
     set_categories_navigation("on");
     // Change Edit Button Status

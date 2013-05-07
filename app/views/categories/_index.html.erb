@@ -1,14 +1,20 @@
 
 <ul id="CategoriesList">
-  <div id="CategoryControl">
-    <div class="new_category_button aeon_drag">New Category</div>
-    <div class="delete_category_widget">Delete</div>
-  </div>
   <%=  render :partial => 'categories/category_listing', :collection => categories, :locals => { :editable => editable } %>
 </ul>
 
+<div id="NewCategoryModal" class="aeon_modal hidden">
+  <div id="NewCategory">
+    <input type="text" id="NewCategoryTitle" placeholder="New Category"/>
+    <div id="CreateNewCategoryButton">Create</div>
+  </div>
+</div>
+
 <script type="text/javascript">
   function resetCategoryInteractions(){
+    var root_categories = $("#CategoriesList");
+    root_categories.children().tsort();
+
     var sub_categories_lists = $('.sub_categories_list');
     _.each(sub_categories_lists, function(sub_categories_list){
       var list = $(sub_categories_list);
@@ -18,7 +24,6 @@
       } else {
         list.addClass('hidden');
       }
-
     });
 
     $('.new_category_button').draggable({
@@ -39,31 +44,8 @@
       }
     });
 
-    $('.delete_category_widget').droppable({
-      scope: 'categories_products',
-      addClasses: false,
-      greedy: true,
-      tolerance: "touch",
-      drop: function(event, ui){
-        if(ui.draggable.hasClass('deletable_category')){
-          var model_id = ui.draggable.attr('model_id');
-          ui.draggable.remove();
-          resetCategoryInteractions();
-          var url = "/categories/" + model_id + ".json";
-          $.ajax({
-            url: url,
-            dataType: 'json',
-            type: 'DELETE',
-            success: function(data){
-              console.log(data);
-            }
-          });
-        }
-      }
-    });
-
     $("#CategoriesList").droppable({
-      scope: 'categories_products',
+      scope: 'unused',
       tolerance: "touch",
       addClasses: false,
       drop: function(event, ui){
@@ -131,6 +113,62 @@
       }
     });
 
+    function add_new_category(){
+      var title = $("#NewCategoryTitle").attr('value');
+
+      var url = "/categories/new"
+      var params = {
+        category: {
+          title: title
+        }
+      }
+      $.ajax({
+        url: url,
+        data: params,
+        dataType: 'html',
+        success: function(data){
+          var ui = $(data);
+          ui.find('.title').attr('contenteditable', 'true');
+          $("#CategoriesList").append(ui);
+          resetCategoryInteractions();
+          $("#AeonModalBlocker").click();
+        }
+      });
+    }
+
+    $(document).off('click', '.new_category_button');
+    $(document).on('click', '.new_category_button', function(){
+      $("#AeonModalBlocker").removeClass('hidden');
+      $("#NewCategoryModal").removeClass('hidden');
+      $("#NewCategoryModal").center();
+      $("#NewCategoryTitle").attr('value', '');
+      $("#NewCategoryTitle").focus();
+    });
+
+    $(document).off('click', '#CreateNewCategoryButton');
+    $(document).on('click', '#CreateNewCategoryButton', function(){
+      add_new_category();
+    });
+
+    $(document).off('keyup', '#NewCategoryTitle');
+    $(document).on('keyup', '#NewCategoryTitle', function(event){
+      var key = event.keyCode || event.which;
+      if (key === 13) {
+        add_new_category();
+      }
+      return false;
+    });
+
+
+    $('.delete_category_widget').draggable({
+      scope: 'categories_products',
+      delay: 300,
+      revert: "invalid",
+      revertDuration: 200,
+      zIndex: 1000,
+      helper: 'clone'
+    });
+
     $('.category_listing').droppable({
       activeClass: 'can_drop',
       addClasses: true,
@@ -157,7 +195,7 @@
             dataType: 'html',
             success: function(data){
               var ui = $(data);
-              ui.attr('contenteditable', 'true');
+              ui.find('.title').attr('contenteditable', 'true');
 
               sub_categories_list.append(ui);
               resetCategoryInteractions();
@@ -186,6 +224,21 @@
             });
           }
 
+        } else if(ui.helper.hasClass('delete_category_widget')){
+          var category_name = parent.find('.title:first').text();
+          if( confirm("Deleting this category: ''" + category_name + "'' will remove ALL products associated with it.  Are you SURE you want to do this?")){
+            var url = "/categories/" + parent_id + ".json";
+            $.ajax({
+              url: url,
+              dataType: 'json',
+              type: 'DELETE',
+              success: function(data){
+                console.log(data);
+                parent.remove();
+                resetCategoryInteractions();
+              }
+            });
+          };
         } else {
           var clone = ui.draggable.clone().css({'top': 'auto', 'left': 'auto', 'z-index': 'auto'}).removeClass('small');
           var model_id = ui.draggable.attr('model_id');
