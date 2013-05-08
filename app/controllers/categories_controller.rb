@@ -9,7 +9,8 @@ class CategoriesController < ApplicationController
     require 'ostruct'
     category_listing = {
         :id => 0,
-        :title => "New Category"
+        :title => "New Category",
+        :storefront_id => @storefront.id
     }
     category_listing = OpenStruct.new category_listing
     render :partial => 'categories/category_listing', :locals => { :category_listing => category_listing }
@@ -22,6 +23,7 @@ class CategoriesController < ApplicationController
 
   def new
     category = Category.create(params[:category])
+    category.storefront_id = @storefront.id
     category.save!
     unless category.parent_id.blank?
       parent = Category.find(category.parent_id)
