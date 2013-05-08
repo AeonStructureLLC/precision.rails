@@ -13,16 +13,7 @@ class CartsController < ApplicationController
       item.quantity = 1
       item.save!
     else
-      item = cart.cart_items.find_by_product_id(product_id)
-      if item.blank?
-        item = cart.cart_items.new
-        item.product_id = product_id
-        item.quantity = 1
-        item.save!
-      else
-        item.quantity = item.quantity + 1
-        item.save!
-      end
+      cart.add_item(product_id)
     end
     @cart = cart
     render :partial => "/carts/cart_item_list"
@@ -41,6 +32,10 @@ class CartsController < ApplicationController
     cart_item = CartItem.find(cart_item_id)
     cart_item.quantity = quantity
     cart_item.save!
+    render :partial => "/carts/cart_item_list"
+  end
+
+  def list
     render :partial => "/carts/cart_item_list"
   end
 

@@ -1,5 +1,5 @@
 PrecisionRails::Application.routes.draw do
-  devise_for :users, controllers: {registrations: 'registrations'}
+  devise_for :users, :controllers => {:registrations => 'registrations', :sessions => 'sessions'}
 
   resources :categories
   resource :category
@@ -21,6 +21,7 @@ PrecisionRails::Application.routes.draw do
 
   resources :carts
   resource :cart
+  match 'cart/list' => 'carts#list', :as => 'cart_list'
   match 'add_to_cart' => 'carts#add_to_cart', :as => 'add_to_cart'
   match 'remove_from_cart' => 'carts#remove_from_cart', :as => 'remove_from_cart'
   match 'update_quantity_in_cart' => 'carts#update_quantity_in_cart', :as => 'update_quantity_in_cart'
@@ -28,6 +29,8 @@ PrecisionRails::Application.routes.draw do
 
   match 'checkout' => 'checkouts#checkout', :as => 'checkout'
   match 'checkout_list' => 'checkouts#checkout_list', :as => 'checkout_list'
+
+  match 'check_registration' => 'registrations#check_registration', :as => 'check_registration'
 
 
   # The priority is based upon order of creation:

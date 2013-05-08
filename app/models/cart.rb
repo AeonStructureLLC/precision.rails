@@ -30,4 +30,39 @@ class Cart < ActiveRecord::Base
     return weight
   end
 
+  def self.get_or_create(storefront_id, user_id)
+    cart = Cart.where(:storefront_id => storefront_id, :user_id => user_id).first
+    if cart.blank?
+      cart = Cart.new
+      cart.storefront_id = storefront_id
+      cart.user_id = user_id
+      cart.save!
+    end
+    return cart
+  end
+
+  def add_item(product_id)
+    item = self.cart_items.find_by_product_id(product_id)
+    if item.blank?
+      item = self.cart_items.new
+      item.product_id = product_id
+      item.quantity = 1
+      item.save!
+    else
+      item.quantity = item.quantity + 1
+      item.save!
+    end
+  end
+
+  def transfer_to_cart_id(cart_id)
+    new_cart = Cart.find(cart_id)
+    self.cart_items.each do |item|
+      item.quantity.times do
+        new_cart.add_item(item.product_id)
+      end
+    end
+    self.destroy
+    return new_cart
+  end
+
 end

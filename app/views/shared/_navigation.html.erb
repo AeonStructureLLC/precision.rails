@@ -1,3 +1,13 @@
+<%
+  user_controls_visibility = "hidden"
+   greeting = ""
+  if current_user.class == User
+    user_controls_visibility = ""
+    greeting = current_user.greeting
+  end
+
+%>
+
 <% if @editable %>
   <div id="AdminNavigation">
     <div id="EditCategoriesButton">Edit Categories</div>
@@ -10,5 +20,12 @@
 <% end %>
 
 <div id="Navigation">
+  <div id="UserControls" class="<%= user_controls_visibility %>">
+      <div id="CurrentUserGreeting">
+        <%= greeting %>
+      </div>
+      <a href="/users/sign_out" class="current_user_sign_out" data-method="delete" rel="nofollow">Sign Out</a>
+  </div>
   <div id="CurrentCart"><div id="CartItemsCount">0</div></div>
 </div>
+

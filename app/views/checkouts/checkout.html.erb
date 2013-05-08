@@ -1,3 +1,19 @@
+<% if current_user.class == AnonymousUser %>
+<div id="UserSessionWrapper">
+  <div id="UserSessionExplanation">
+    Sign-in or Sign-up : WORDS
+  </div>
+  <div id="UserSession">
+    <div class="field_wrapper"><label>E-Mail: </label><input type="email" id="UserSessionEmail" placeholder="Enter your E-Mail address"/></div>
+    <div class="field_wrapper"><label>Password: </label><input type="password" id="UserSessionPassword" class="passwords" placeholder="Enter your password"/></div>
+    <div id="UserSessionPasswordConfirmationWrapper" class="hidden field_wrapper"><label>Password Confirmation: </label><input type="password" class="passwords" id="UserSessionPasswordConfirmation" placeholder="Enter your password again"/></div>
+    <div id="ForgotPasswordWrapper" class="hidden"><a href="#">Forgot password?</a></div>
+    <div id="SignInButton" class="hidden">Sign In</div>
+    <div id="SignUpButton" class="hidden">Sign Up</div>
+  </div>
+</div>
+<% end %>
+
 <div id="CheckoutList">
   <%= render :partial => '/checkouts/checkout_list' %>
 </div>
@@ -22,5 +38,121 @@
 </div>
 
 <script type="text/javascript">
+  var FoundUser = false;
+
+  function resetUserOptionsForm(){
+    $("#UserSessionPassword").attr('value', '');
+    $("#UserSessionPasswordConfirmation").attr('value', '');
+    $("#ForgotPasswordWrapper").addClass('hidden');
+    $("#UserSessionPasswordConfirmationWrapper").addClass('hidden');
+    $("#SignInButton").addClass('hidden');
+    $("#SignUpButton").addClass('hidden');
+  }
+
   $(document).off('click', '#CurrentCart');
+  $("#AdminNavigation").addClass('hidden');
+
+  $(document).on('blur', '#UserSessionEmail', function(){
+    var self = $(this)
+    var email = self.attr('value');
+    if(email.length > 4){
+      var params = {
+        email: email
+      }
+      $.ajax({
+        url: "/check_registration.json",
+        data: params,
+        dataType: 'json',
+        statusCode: {
+          404: function(){
+            FoundUser = false;
+            $("#UserSessionPasswordConfirmationWrapper").removeClass('hidden');
+            $("#ForgotPasswordWrapper").addClass('hidden');
+            $("#SignInButton").addClass('hidden');
+          },
+          200: function(){
+            FoundUser = true;
+            $("#UserSessionPasswordConfirmationWrapper").addClass('hidden');
+            $("#ForgotPasswordWrapper").removeClass('hidden');
+            $("#SignUpButton").addClass('hidden');
+            $("#SignInButton").removeClass('hidden');
+          }
+        }
+      });
+    } else {
+      resetUserOptionsForm();
+    }
+  });
+
+  $(document).on('keyup', "#UserSessionEmail", function(){
+    var self = $(this);
+    var email = self.attr('value');
+    if(email.length <= 1){
+      resetUserOptionsForm();
+    }
+  });
+
+  $(document).on('keyup', ".passwords", function(){
+    var password = $("#UserSessionPassword").attr('value');
+    var password_confirmation = $("#UserSessionPasswordConfirmation").attr('value');
+    if(password.length >= 5){
+      if(password === password_confirmation){
+        $("#SignUpButton").removeClass('hidden');
+      }
+    }
+  });
+
+  $(document).on('click', '#SignUpButton', function(){
+    var params = {
+      user: {
+        email: $("#UserSessionEmail").attr("value"),
+        password: $("#UserSessionPassword").attr("value"),
+        password_confirmation: $("#UserSessionPasswordConfirmation").attr("value")
+      }
+    }
+    $.ajax({
+      url: "/users.json",
+      dataType: 'json',
+      type: 'POST',
+      data: params,
+      success: function(data){
+        CurrentUser = data;
+        $("#UserSessionWrapper").addClass('hidden');
+        $("#UserControls").removeClass('hidden');
+        $("#CurrentUserGreeting").html(CurrentUser.greeting);
+
+      }
+    });
+  });
+
+  $(document).on('click', '#SignInButton', function(){
+    var params = {
+      user: {
+        email: $("#UserSessionEmail").attr("value"),
+        password: $("#UserSessionPassword").attr("value")
+      },
+      anon_user_id: CurrentUser.id
+    }
+    $.ajax({
+      url: "/users/sign_in.json",
+      dataType: 'json',
+      type: 'POST',
+      data: params,
+      success: function(data){
+        CurrentUser = data;
+        $("#UserSessionWrapper").addClass('hidden');
+        $("#UserControls").removeClass('hidden');
+        $("#CurrentUserGreeting").html(CurrentUser.greeting);
+        $.ajax({
+          url: "/cart/list",
+          dataType: 'html',
+          success: function(data){
+            $("#CartItemList").html(data);
+            $("#CheckoutList").html(data);
+            updateItemCountAndSubtotal();
+          }
+        });
+      }
+    });
+  });
 </script>
