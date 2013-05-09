@@ -50,6 +50,20 @@
       }
     });
 
+    $(document).off('click', '#MyAccount');
+    $(document).on('click', '#MyAccount', function(){
+      var my_account_modal = $("#MyAccountModal");
+      if(my_account_modal.hasClass('hidden')){
+        my_account_modal.removeClass('hidden');
+        $("#AeonModalBlocker").removeClass('hidden');
+      } else {
+        my_account_modal.addClass('hidden');
+        $("#AeonModalBlocker").addClass('hidden');
+      }
+    });
+
+
+
     $(document).off('click', '#AeonModalBlocker');
     $(document).on('click', '#AeonModalBlocker', function(){
       $("#AeonModalBlocker").addClass('hidden');
@@ -69,6 +83,7 @@
     $(document).ready(function(){
       less.watch();
       updateItemCountAndSubtotal();
+      $("#MyAccountModal").center();
     });
   </script>
   <%= yield :head %>

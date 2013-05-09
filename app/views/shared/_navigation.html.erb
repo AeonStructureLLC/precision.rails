@@ -1,15 +1,17 @@
 <%
   user_controls_visibility = "hidden"
-   greeting = ""
+  anonymous_controls_visibility = ""
+  greeting = ""
   if current_user.class == User
     user_controls_visibility = ""
+    anonymous_controls_visibility = "hidden"
     greeting = current_user.greeting
   end
 
-%>
+-%>
 
-<% if @editable %>
-  <div id="AdminNavigation">
+<% if @editable -%>
+  <div id="AdminNavigation" class="admin">
     <div id="EditCategoriesButton">Edit Categories</div>
     <div id="CategoryControl" class="hidden">
       <div class="new_category_button aeon_drag">New Category</div>
@@ -24,8 +26,25 @@
       <div id="CurrentUserGreeting">
         <%= greeting %>
       </div>
-      <a href="/users/sign_out" class="current_user_sign_out" data-method="delete" rel="nofollow">Sign Out</a>
+    <div id="MyAccount" class="my_account">
+      My Account
+    </div>
+      <div class='not_user'>
+        Not <%= current_user.firstname %>?<a href="/users/sign_out" class="current_user_sign_out" data-method="delete" rel="nofollow">Sign Out</a>
+      </div>
+
+  </div>
+  <div id="AnonymousControls" class="<%= anonymous_controls_visibility %>">
+    <div id="CurrentUserGreeting">
+      Hello!
+    </div>
+    <div class='not_user'>
+      <a href="/users/sign_in" class="current_user_sign_out" rel="nofollow">Sign in</a>
+    </div>
   </div>
   <div id="CurrentCart"><div id="CartItemsCount">0</div></div>
 </div>
 
+<div id="MyAccountModal" class="hidden">
+  <%= render :partial => "/users/myaccount" %>
+</div>

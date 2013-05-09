@@ -1,0 +1,19 @@
+<div class="modal_title">Your Account</div>
+
+
+<div id="AddressList" class='list'>
+  <div class="section_label">Your Saved Addresses</div>
+    <div id="AddAddress">Add Address</div>
+    <%= render :partial => "/shared/address", :collection => current_user.addresses %>
+</div>
+
+<div id="OpenOrderList" class='list'>
+  <div class="section_label">Open Orders</div>
+  <div class="message">You have no open orders at this time.</div>
+</div>
+
+<div id="CompletedOrderList" class='list'>
+  <div class="section_label">Completed Orders</div>
+  <div class="message">You have no completed orders at this time.</div>
+
+</div>

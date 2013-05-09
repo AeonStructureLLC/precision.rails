@@ -14,7 +14,17 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
 
   def greeting
-    return self.email
+    if self.fullname.blank?
+      return "Hello, #{email}"
+    else
+      return "Hello, #{self.firstname}"
+    end
+  end
+
+  def firstname
+    unless self.fullname.blank?
+      return self.fullname.split[0]
+    end
   end
 
   def as_json(options)

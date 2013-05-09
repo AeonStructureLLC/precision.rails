@@ -134,10 +134,15 @@
   position: fixed;
   top: 0px;
   left: 0px;
-  right: 160px;
+  right: 360px;
   height: 32px;
   padding: 8px;
   z-index: 101;
+}
+
+.admin {
+  background-color: #ff7c55;
+  .aeon-round-right(25px);
 }
 
 #Navigation {
@@ -1002,12 +1007,33 @@
   }
 }
 
-#UserControls {
+#UserControls, #AnonymousControls {
   position: absolute;
   right: 88px;
-  .current_user_sign_out {
-    float: right;
+  width: 250px;
+  .not_user {
+    position: absolute;
+    left: 0px;
+    font-size: 12px;
+    text-align: right;
+    font-weight: bold;
+    .current_user_sign_out {
+      margin-left: 4px;
+      text-decoration: none;
+      color: #00F;
+    }
   }
+  #CurrentUserGreeting {
+    display: inline-block;
+  }
+  #MyAccount {
+    position: absolute;
+    top: 0px;
+    right : 0px;
+    display: inline-block;
+    .button;
+  }
+
 }
 
 #CurrentCart {
@@ -1320,4 +1346,75 @@
   bottom: -8px;
   padding-left: 12px;
   padding-right: 12px;
+}
+
+#MyAccountModal {
+  .aeon_modal;
+  height: 500px;
+  width: 500px;
+  padding: 8px;
+
+  .modal_title {
+    border-bottom: 2px solid #160d8b;
+    margin-bottom: 12px;
+    font-weight: bold;
+    font-size: 22px;
+    color: #160d8b;
+  }
+
+  .list {
+    position: relative;
+    width: 484px;
+    border: 1px solid #2a2a2a;
+    padding: 6px;
+    margin-bottom: 8px;
+//    margin-left: 8px;
+//    margin-right: 8px;
+    .aeon-round();
+    min-height: 125px;
+
+    .section_label {
+      position: relative;
+      width: 470px;
+      left: 5px;
+      border-bottom: 1px solid #646464;
+      margin-bottom: 12px;
+    }
+
+    .message {
+
+    }
+  }
+
+  #AddressList {
+    #AddAddress {
+      .button;
+    }
+    .address_listing {
+
+      .label {
+        display: inline-block;
+      }
+      .shipping_true, .billing_true {
+        display: inline-block;
+         .aeon-round(10px);
+         height: 10px;
+         width: 10px;
+         border: 1px solid #3b3b3b;
+         background-color: darkgreen;
+       }
+
+      .shipping_false, .billing_false {
+        display: inline-block;
+        .aeon-round(10px);
+        height: 10px;
+        width: 10px;
+        border: 1px solid #3b3b3b;
+        background-color: darkred;
+      }
+
+    }
+  }
+
+
 }
