@@ -1,6 +1,7 @@
 class Storefront < ActiveRecord::Base
   has_many :categories
   has_many :carts
+  has_many :addresses
   attr_accessible :billing_user_id, :default_currency, :default_language, :description, :inactive, :title, :url
 
   def self.bootstrap_dev

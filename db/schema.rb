@@ -11,7 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430204325) do
+ActiveRecord::Schema.define(:version => 20130509190523) do
+
+  create_table "addresses", :force => true do |t|
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "postal_code"
+    t.boolean  "billing",       :default => true
+    t.boolean  "shipping",      :default => true
+    t.integer  "user_id"
+    t.integer  "storefront_id"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
 
   create_table "cart_items", :force => true do |t|
     t.integer  "product_id"

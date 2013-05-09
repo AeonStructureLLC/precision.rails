@@ -9,4 +9,12 @@ class Category < ActiveRecord::Base
   def categories
     return children
   end
+
+  # Added to facilitate testing
+  def self.assign_storefront(storefront_id)
+    Category.all.each do |c|
+      c.storefront_id = storefront_id
+      c.save
+    end
+  end
 end

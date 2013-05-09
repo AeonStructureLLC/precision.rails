@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :carts
+  has_many :addresses
 
   ACCESSIBLE_ATTRS = [:email, :password, :password_confirmation, :remember_me]
   # Include default devise modules. Others available are:
