@@ -143,6 +143,7 @@
 .admin {
   background-color: #ff7c55;
   .aeon-round-right(25px);
+  border: 1px dotted #3b3b3b;
 }
 
 #Navigation {
@@ -1376,9 +1377,10 @@
     .section_label {
       position: relative;
       width: 470px;
-      left: 5px;
-      border-bottom: 1px solid #646464;
+      height: 30px;
       margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .message {
@@ -1387,30 +1389,46 @@
   }
 
   #AddressList {
+    position: relative;
     #AddAddress {
+      display: inline-block;
+      position: absolute;
+      right: 0px;
+      top: 0px;
       .button;
+      font-size: 12px;
+      width: 125px;
+      margin-bottom: 8px;
     }
     .address_listing {
-
+      border-top: 1px solid #646464;
       .label {
         display: inline-block;
+        font-size: 21px;
       }
       .shipping_true, .billing_true {
         display: inline-block;
-         .aeon-round(10px);
-         height: 10px;
-         width: 10px;
-         border: 1px solid #3b3b3b;
-         background-color: darkgreen;
+        .statusIcon;
+        .ok;
+        .aeon-round(10px);
+        height: 10px;
+        width: 10px;
+
        }
 
       .shipping_false, .billing_false {
         display: inline-block;
+        .statusIcon;
+        .ok;
         .aeon-round(10px);
         height: 10px;
         width: 10px;
-        border: 1px solid #3b3b3b;
-        background-color: darkred;
+      }
+
+      .city,
+      .state,
+      .postal_code {
+        display: inline-block;
       }
 
     }
