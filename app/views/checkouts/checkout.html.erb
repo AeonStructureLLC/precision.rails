@@ -1,24 +1,5 @@
-<% if current_user.class == AnonymousUser %>
-<div id="UserSessionWrapper">
-  <div id="UserSessionExplanation">
-    Sign-in or Sign-up : WORDS
-  </div>
-  <div id="UserSession">
-    <div class="field_wrapper"><label>E-Mail: </label><input type="email" id="UserSessionEmail" placeholder="Enter your E-Mail address"/></div>
-    <div class="field_wrapper"><label>Password: </label><input type="password" id="UserSessionPassword" class="passwords" placeholder="Enter your password"/></div>
-    <div id="UserSessionPasswordConfirmationWrapper" class="hidden field_wrapper"><label>Password Confirmation: </label><input type="password" class="passwords" id="UserSessionPasswordConfirmation" placeholder="Enter your password again"/></div>
-    <div id="ForgotPasswordWrapper" class="hidden"><a href="#">Forgot password?</a></div>
-    <div id="SignInButton" class="hidden">Sign In</div>
-    <div id="SignUpButton" class="hidden">Sign Up</div>
-  </div>
-</div>
-<% end %>
-
 <div id="CheckoutList">
   <%= render :partial => '/checkouts/checkout_list' %>
-</div>
-<div id="ReviewAndAuthorizeWrapper">
-  <a id="ReviewAndAuthorizeButton"  class="" href="#">Review & Authorize</a>
 </div>
 <div id="CheckoutSubTotalWrapper">
   <div class="cart_label">Subtotal: </div>
@@ -35,6 +16,40 @@
 <div id="CheckoutTotalWrapper">
   <div class="cart_label">Total: </div>
   <div id="CheckoutTotal"><%= number_to_currency(@cart.subtotal) %></div>
+</div>
+
+<% if current_user.class == AnonymousUser %>
+  <div id="UserSessionWrapper">
+    <div id="UserSessionExplanation">
+      Sign-in or Sign-up : WORDS
+    </div>
+    <div id="UserSession">
+      <div class="field_wrapper"><label>E-Mail: </label><input type="email" id="UserSessionEmail" placeholder="Enter your E-Mail address"/></div>
+      <div class="field_wrapper"><label>Password: </label><input type="password" id="UserSessionPassword" class="passwords" placeholder="Enter your password"/></div>
+      <div id="UserSessionPasswordConfirmationWrapper" class="hidden field_wrapper"><label>Password Confirmation: </label><input type="password" class="passwords" id="UserSessionPasswordConfirmation" placeholder="Enter your password again"/></div>
+      <div id="ForgotPasswordWrapper" class="hidden"><a href="#">Forgot password?</a></div>
+      <div id="SignInButton" class="hidden">Sign In</div>
+      <div id="SignUpButton" class="hidden">Sign Up</div>
+    </div>
+  </div>
+<% end %>
+
+<div id="ReviewAndAuthorizeWrapper" class="hidden">
+  <div id="AddressesWrapper">
+    <%= render :partial => "/addresses/addresses_list" %>
+  </div>
+  <a id="ReviewAndAuthorizeButton"  class="" href="#">Review & Authorize</a>
+</div>
+
+<div id="AddAddressModal" class="aeon_modal hidden">
+  <div id="NewAddress">
+    <input type="text" id="NewAddressAddress1" name='address1' placeholder="Street Address"/>
+    <input type="text" id="NewAddressAddress2" name='address2' placeholder="Apartment #, Suite, etc"/>
+    <input type="text" id="NewAddressCity" name='city' placeholder="City"/>
+    <input type="text" id="NewAddressState" name='state' placeholder="State"/>
+    <input type="text" id="NewAddressPostalCode" name='postal_code' placeholder="Zip Code"/>
+    <div id="AddNewAddressButton">Add Address</div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -120,6 +135,7 @@
         $("#UserSessionWrapper").addClass('hidden');
         $("#UserControls").removeClass('hidden');
         $("#CurrentUserGreeting").html(CurrentUser.greeting);
+        $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
 
       }
     });
@@ -150,9 +166,126 @@
             $("#CartItemList").html(data);
             $("#CheckoutList").html(data);
             updateItemCountAndSubtotal();
+            $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
           }
         });
       }
     });
+  });
+
+  $(document).off('click', '#AddAddress');
+  $(document).on('click', '#AddAddress', function(){
+    $("#AeonModalBlocker").removeClass('hidden');
+    $("#AddAddressModal").removeClass('hidden');
+    $("#AddAddressModal").center();
+    var inputs = $("#AddAddressModal").find('input');
+    _.each(inputs, function(input){
+      $(input).attr('value', '');
+    });
+    $("#NewAddressAddress1").focus();
+  });
+
+  $(document).off('click', '#AddNewAddressButton');
+  $(document).on('click', '#AddNewAddressButton', function(e){
+    var self = this;
+    var params = { address: {} };
+
+    var inputs = $("#AddAddressModal").find('input');
+    _.each(inputs, function(input){
+      var attribute = $(input).attr('name');
+      var value = $(input).attr('value');
+      params.address[attribute] = value;
+    });
+
+    var url = "/addresses/new";
+
+    $.ajax({
+      url: url,
+      data: params,
+      dataType: 'html',
+      success: function(data){
+        console.log(data);
+        $("#AddressesWrapper").html(data);
+        $("#AeonModalBlocker").click();
+      }
+    });
+
+  });
+
+  $(document).off('click', '.is_shipping');
+  $(document).on('click', '.is_shipping', function(e){
+    var self = $(this);
+    if(self.hasClass('selected_true')){
+      console.log("Already selected!");
+    } else {
+      $('.is_shipping').removeClass('selected_true').addClass('selected_false');
+      self.removeClass('selected_false').addClass('selected_true');
+      var address_id = self.closest('[model_root]').attr('model_id');
+      var params = {
+        address_id: address_id
+      }
+      $.ajax({
+        url: "/set_default_shipping_address",
+        data: params,
+        dataType: 'json',
+        success: function(data){
+          console.log("Default Shipping Address Updated.");
+        }
+      });
+    }
+  });
+
+  $(document).off('click', '.is_billing');
+  $(document).on('click', '.is_billing', function(e){
+    var self = $(this);
+    if(self.hasClass('selected_true')){
+      console.log("Already selected!");
+    } else {
+      $('.is_billing').removeClass('selected_true').addClass('selected_false');
+      self.removeClass('selected_false').addClass('selected_true');
+      var address_id = self.closest('[model_root]').attr('model_id');
+      var params = {
+        address_id: address_id
+      }
+      $.ajax({
+        url: "/set_default_billing_address",
+        data: params,
+        dataType: 'json',
+        success: function(data){
+          console.log("Default Billing Address Updated.");
+        }
+      });
+    }
+  });
+
+  $(document).off('click', '.delete_address_icon');
+  $(document).on('click', '.delete_address_icon', function(e){
+    var self = $(this);
+    if( confirm("Deleting this address can not be undone, are you sure you want to do this?")){
+      var model_root = self.closest('[model_root]')
+      var address_id = model_root.attr('model_id');
+      var params = {
+        address_id: address_id
+      }
+      var url = "/addresses/" + address_id;
+      $.ajax({
+        url: url,
+        data: params,
+        dataType: 'json',
+        type: 'DELETE',
+        success: function(data){
+          console.log("Address Deleted.");
+          model_root.remove();
+        }
+      });
+    }
+  });
+
+  $(document).ready(function(){
+
+    if(CurrentUser.is_anonymous == false){
+      $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
+    }
+
   });
 </script>

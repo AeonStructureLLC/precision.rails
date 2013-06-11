@@ -1,0 +1,13 @@
+
+<li class='address_listing' model_root='true' model='address' model_id='<%= address_listing.id %>'>
+  <div class='delete_address_icon'>x</div>
+  <div class='address1'><%= address_listing.address1 %></div>
+  <div class='address2'><%= address_listing.address2 %></div>
+  <div class='city'><%= address_listing.city %></div>
+  <div class='state'><%= address_listing.state %></div>
+  <div class='postal_code'><%= address_listing.postal_code %></div>
+  <div class='address_classification'>
+    <div class="is_shipping selected_<%= address_listing.shipping %>">Use as Shipping</div>
+    <div class="is_billing selected_<%= address_listing.billing %>">Use as Billing</div>
+  </div>
+</li>
