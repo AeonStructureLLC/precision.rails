@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130611201003) do
+ActiveRecord::Schema.define(:version => 20130612203611) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -183,10 +183,25 @@ ActiveRecord::Schema.define(:version => 20130611201003) do
     t.integer  "billing_user_id"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.string   "stripe_secret"
+    t.string   "stripe_publish"
   end
 
   add_index "storefronts", ["billing_user_id"], :name => "index_storefronts_on_billing_user_id"
   add_index "storefronts", ["url"], :name => "index_storefronts_on_url", :unique => true
+
+  create_table "stripe_cards", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "storefront_id"
+    t.string   "stripe_customer_id"
+    t.string   "name"
+    t.string   "last4"
+    t.string   "exp_month"
+    t.string   "exp_year"
+    t.string   "card_type"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

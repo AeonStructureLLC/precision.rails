@@ -18,6 +18,7 @@ gem 'awesome_nested_set'
 gem 'devise'
 gem 'rvm'
 gem 'rmagick'
+gem 'httparty'
 
 # Gems used only for assets and not required
 # in production environments by default.

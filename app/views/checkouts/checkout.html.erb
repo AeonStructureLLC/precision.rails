@@ -1,3 +1,4 @@
+
 <div id="CheckoutList">
   <%= render :partial => '/checkouts/checkout_list' %>
 </div>
@@ -50,6 +51,50 @@
     <input type="text" id="NewAddressPostalCode" name='postal_code' placeholder="Zip Code"/>
     <div id="AddNewAddressButton">Add Address</div>
   </div>
+</div>
+
+
+<div id="StripeFormWrapper">
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+  <div id="NewCard">
+    <input type="text" id="CardNumber" name='number' data-stripe="number" placeholder="Card Number"/>
+    <input type="text" id="CVC" name='cvc' data-stripe="cvc" placeholder="CVC"/>
+    <input type="text" id="CardExpMonth" name='exp-month' data-stripe="exp-month" placeholder="MM"/>
+    <input type="text" id="CardExpYear" name='exp-year' data-stripe="exp-year" placeholder="YYYY"/>
+    <div id="AddNewCardButton">Add Card</div>
+  </div>
+
+  </form>
+
+
+
+  <script type="text/javascript">
+    Stripe.setPublishableKey('pk_test_7cIgyQ22tDxHnGVilkz1OOSW');
+
+    var stripeResponseHandler = function(status, response) {
+      var $form = $('#payment-form');
+
+      if (response.error) {
+        // Show the errors on the form
+        console.log(response.error.message);
+      } else {
+        // token contains id, last4, and card type
+        var token = response.id;
+        // Insert the token into the form so it gets submitted to the server
+        console.log("Stripe Token Auth Successful: " + token);
+      }
+    };
+
+    $(document).off('click', '#AddNewCardButton');
+    $(document).on('click', '#AddNewCardButton', function(e){
+      var self = this;
+      var fields = $("#NewCard");
+      Stripe.createToken(fields, stripeResponseHandler);
+      return false;
+    });
+
+  </script>
 </div>
 
 <script type="text/javascript">

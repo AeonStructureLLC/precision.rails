@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  stripe_customer_id: MyString
+  name: MyString
+  last4: MyString
+  exp_month: MyString
+  exp_year: MyString
+  type: 
+
+two:
+  user_id: 1
+  stripe_customer_id: MyString
+  name: MyString
+  last4: MyString
+  exp_month: MyString
+  exp_year: MyString
+  type: 
