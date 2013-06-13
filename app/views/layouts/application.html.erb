@@ -68,6 +68,18 @@
     function updateItemCountAndSubtotal(){
       $("#CartItemsCount").html(ItemsInCart);
       $("#CartItemSubTotal").html(CartSubtotal);
+      $("#CheckoutSubTotal").html(CartSubtotal);
+
+      var CartSubtotalNumber = currencyToNumber(CartSubtotal);
+      var CartTaxNumber = currencyToNumber($("#CheckoutTax").text());
+      var CartShippingNumber = currencyToNumber($("#CheckoutShipping").text());
+
+      var CartTotalNumber = CartSubtotalNumber + CartTaxNumber + CartShippingNumber;
+      var CartTotalString = CartTotalNumber.toMoney().string;
+
+      $("#CheckoutTotal").html(CartTotalString);
+
+
       if(ItemsInCart > 0){
         $("#CheckoutButton").removeClass('hidden');
       } else {

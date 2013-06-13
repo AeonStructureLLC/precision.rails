@@ -1437,7 +1437,7 @@
 
 }
 
-.address_listing {
+.review_item_listing {
   border: 1px solid #ccc;
   display: inline-block;
   padding: 8px;
@@ -1450,6 +1450,74 @@
   font-size: 14px;
   text-align: center;
   margin: 8px;
+
+}
+
+.stripe_card_listing {
+  .review_item_listing;
+  cursor: pointer;
+  background: #fbfdff; /* Old browsers */
+
+
+  .delete_stripe_card_icon {
+    color: #fcfcfc;
+    //font-weight: bold;
+    background-color: #777;
+    border: 2px solid #fff;
+    .aeon-shadow;
+    font-size: 18px;
+    line-height: 13px;
+    text-indent: 1px;
+    padding: 8px;
+    .aeon-round(18px);
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    cursor: pointer;
+  }
+
+  .card_type, .last4 {
+    display: inline-block;
+  }
+
+  .card_type {
+    margin-top: 24px;
+    vertical-align: bottom;
+  }
+
+  .exp_wrapper {
+    margin-top: 4px;
+    color: #8b8b8b;
+    .exp_month, .exp_year {
+      display: inline-block;
+    }
+  }
+
+}
+
+.stripe_card_listing.default_true {
+  border: 1px solid #000;
+  background: #d3f5ff;
+  .aeon-shadow;
+  .last4 {
+    color: #000 !important;
+  }
+  .exp_wrapper {
+    color: #555 !important;
+  }
+}
+
+.stripe_card_listing.deleting_card {
+  opacity: 0.3 !important;
+}
+
+.address_listing {
+  .review_item_listing;
+  background: #fcfcfc; /* Old browsers */
+
+
 
   .delete_address_icon {
     color: #fcfcfc;
@@ -1469,7 +1537,6 @@
     right: -8px;
     cursor: pointer;
   }
-
 
   .city, .state, .postal_code {
     display: inline-block;
@@ -1506,8 +1573,8 @@
     }
 
     .selected_false {
-      border-color: #ececec;
-      background-color: #fcfcfc;
+      border-color: #ccc;
+      background-color: #fff;
     }
 
     .selected_true {
@@ -1525,24 +1592,46 @@
 
     clear: both;
   }
-
 }
 
 #ReviewAndAuthorizeWrapper {
-  border: 1px solid #333;
-  padding: 12px;
+  width: 960px;
+  .center-margins;
+  //border: 1px solid #333;
+  padding: 1px;
+  margin-bottom: 108px;
 
   #AddressesWrapper {
+    width: 890px;
+    .center-margins;
     #AddressesList {
       list-style: none;
       display: inline-block;
+
     }
     #AddAddress {
-      .address_listing;
+      .review_item_listing;
       cursor: pointer;
-      line-height: 64px;
+      line-height: 86px;
+      border: 2px solid #ccc;
     }
 
+  }
+
+  #StripeCardsWrapper {
+    width: 890px;
+    .center-margins;
+    #StripeCardsList {
+      list-style: none;
+      display: inline-block;
+    }
+
+    #AddStripeCard {
+      .review_item_listing;
+      cursor: pointer;
+      line-height: 86px;
+      border: 2px solid #ccc;
+    }
   }
 
 }
@@ -1569,4 +1658,98 @@
       line-height: 32px;
     }
   }
+}
+
+#AddStripeCardModal {
+  padding: 24px;
+  #StripeCardErrors {
+    color: #d72732;
+    width: 350px;
+    .center-margins;
+    margin-bottom: 12px;
+    font-style: oblique;
+  }
+  #NewStripeCard {
+    input {
+      display: block;
+      font-size: 18px;
+      width: 350px;
+      .aeon-round(3px);
+      border: 1px solid #ccc;
+      margin-bottom: 8px;
+      padding: 8px;
+      box-shadow:inset 1px 1px 8px -2px #8b8b8b;
+    }
+    #AddNewCardButton {
+      .button;
+      margin-top: 24px;
+      max-width: 358px;
+      width: 358px;
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+}
+
+
+#CartCostSummaryWrapper {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 72px;
+  border-top: 1px solid #aaa;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+  border-bottom: 1px solid #aaa;
+  z-index: 100;
+  .aeon-shadow;
+
+  #CartCostSummary {
+    position: relative;
+    width: 960px;
+    .center-margins;
+    .cart_cost_summary_item {
+      position: absolute;
+      top: 8px;
+      vertical-align: top;
+      border: 1px solid #8b8b8b;
+      padding: 4px;
+      padding-left: 8px;
+      padding-right: 8px;
+      background-color: #fcfcfc;
+      box-shadow:inset 0px 2px 8px -3px #8b8b8b;
+      .aeon-round(3px);
+      color: #555;
+      width: 88px;
+      text-align: center;
+
+      .cart_label {
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 4px;
+        color: #8b8b8b;
+      }
+    }
+
+    #CheckoutSubTotalWrapper {
+      left: 24px;
+    }
+    #CheckoutShippingWrapper {
+      right: 296px;
+    }
+    #CheckoutTaxWrapper {
+      left: 296px;
+    }
+    #CheckoutTotalWrapper {
+      right: 24px;
+    }
+  }
+
 }

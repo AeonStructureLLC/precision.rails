@@ -15,6 +15,11 @@ class StorefrontsController < ApplicationController
 
   end
 
+  def create_stripe_customer_for_user
+    @storefront.create_stripe_customer_for_user(current_user.id, params[:stripe_token])
+    render :partial => 'stripe_cards/stripe_cards_list'
+  end
+
   def destroy
     # NEVER DO THIS!
     storefront = Storefront.find(params[:id])

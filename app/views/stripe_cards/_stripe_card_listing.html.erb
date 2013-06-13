@@ -1,0 +1,11 @@
+
+<li class='stripe_card_listing default_<%= stripe_card_listing.is_default %>' model_root='true' model='stripe_card' model_id='<%= stripe_card_listing.id %>'>
+  <div class='delete_stripe_card_icon'>x</div>
+  <img class="card_type" src="/images/<%= stripe_card_listing.card_type.downcase.gsub(" ", "") %>.gif"/>
+  <div class='last4'> ending in <%= stripe_card_listing.last4 %></div>
+  <div class='exp_wrapper'>
+    Expires on:
+    <div class='exp_month'><%= stripe_card_listing.exp_month %></div> /
+    <div class='exp_year'><%= stripe_card_listing.exp_year %></div>
+  </div>
+</li>

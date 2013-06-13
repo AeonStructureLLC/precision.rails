@@ -2,22 +2,29 @@
 <div id="CheckoutList">
   <%= render :partial => '/checkouts/checkout_list' %>
 </div>
-<div id="CheckoutSubTotalWrapper">
-  <div class="cart_label">Subtotal: </div>
-  <div id="CheckoutSubTotal"><%= number_to_currency(@cart.subtotal) %></div>
+
+<div id="CartCostSummaryWrapper">
+  <div id="CartCostSummary">
+    <div id="CheckoutSubTotalWrapper" class="cart_cost_summary_item">
+      <div class="cart_label">Subtotal</div>
+      <div id="CheckoutSubTotal"><%= number_to_currency(@cart.subtotal) %></div>
+    </div>
+    <div id="CheckoutShippingWrapper" class="cart_cost_summary_item">
+      <div class="cart_label">Shipping</div>
+      <div id="CheckoutShipping">$0</div>
+    </div>
+    <div id="CheckoutTaxWrapper" class="cart_cost_summary_item">
+      <div class="cart_label">Tax</div>
+      <div id="CheckoutTax">$0</div>
+    </div>
+    <div id="CheckoutTotalWrapper" class="cart_cost_summary_item">
+      <div class="cart_label">Total</div>
+      <div id="CheckoutTotal"><%= number_to_currency(@cart.subtotal) %></div>
+    </div>
+  </div>
 </div>
-<div id="CheckoutShippingWrapper">
-  <div class="cart_label">Shipping: </div>
-  <div id="CheckoutShipping"><%= number_to_currency(@cart.subtotal) %></div>
-</div>
-<div id="CheckoutTaxWrapper">
-  <div class="cart_label">Tax: </div>
-  <div id="CheckoutTax"><%= number_to_currency(@cart.subtotal) %></div>
-</div>
-<div id="CheckoutTotalWrapper">
-  <div class="cart_label">Total: </div>
-  <div id="CheckoutTotal"><%= number_to_currency(@cart.subtotal) %></div>
-</div>
+
+
 
 <% if current_user.class == AnonymousUser %>
   <div id="UserSessionWrapper">
@@ -39,6 +46,13 @@
   <div id="AddressesWrapper">
     <%= render :partial => "/addresses/addresses_list" %>
   </div>
+
+  <% unless @storefront.stripe_publish.blank? %>
+    <div id="StripeCardsWrapper">
+      <%= render :partial => "/stripe_cards/stripe_cards_list" %>
+    </div>
+  <% end %>
+
   <a id="ReviewAndAuthorizeButton"  class="" href="#">Review & Authorize</a>
 </div>
 
@@ -53,11 +67,12 @@
   </div>
 </div>
 
-
-<div id="StripeFormWrapper">
+<% unless @storefront.stripe_publish.blank? %>
+<div id="AddStripeCardModal" class="aeon_modal hidden">
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <div id="StripeCardErrors"></div>
 
-  <div id="NewCard">
+  <div id="NewStripeCard">
     <input type="text" id="CardNumber" name='number' data-stripe="number" placeholder="Card Number"/>
     <input type="text" id="CVC" name='cvc' data-stripe="cvc" placeholder="CVC"/>
     <input type="text" id="CardExpMonth" name='exp-month' data-stripe="exp-month" placeholder="MM"/>
@@ -67,35 +82,53 @@
 
   </form>
 
-
-
   <script type="text/javascript">
-    Stripe.setPublishableKey('pk_test_7cIgyQ22tDxHnGVilkz1OOSW');
+    Stripe.setPublishableKey('<%= @storefront.stripe_publish %>');
 
     var stripeResponseHandler = function(status, response) {
       var $form = $('#payment-form');
 
       if (response.error) {
         // Show the errors on the form
+        //TODO  MAKE THIS SHOW UP SOMEWHERE
+        var error_ui = $("#StripeCardErrors");
+        error_ui.hide();
+        error_ui.html(response.error.message);
+        error_ui.fadeIn();
         console.log(response.error.message);
       } else {
-        // token contains id, last4, and card type
-        var token = response.id;
-        // Insert the token into the form so it gets submitted to the server
-        console.log("Stripe Token Auth Successful: " + token);
+        var stripe_token = response.id;
+        console.log("Stripe Token Auth Successful: " + stripe_token);
+        var params = {
+          stripe_token: stripe_token
+        }
+        var url = "/create_stripe_customer_for_user";
+        $.ajax({
+          url: url,
+          dataType: 'html',
+          type: 'POST',
+          data: params,
+          success: function(data){
+            console.log("Completed creating StripeCard, need to refresh now.");
+            $("#AeonModalBlocker").click();
+            $("#StripeCardsWrapper").html(data);
+          }
+        });
       }
     };
 
     $(document).off('click', '#AddNewCardButton');
     $(document).on('click', '#AddNewCardButton', function(e){
       var self = this;
-      var fields = $("#NewCard");
+      $("#StripeCardErrors").hide();
+      var fields = $("#NewStripeCard");
       Stripe.createToken(fields, stripeResponseHandler);
       return false;
     });
 
   </script>
 </div>
+<% end %>
 
 <script type="text/javascript">
   var FoundUser = false;
@@ -218,11 +251,75 @@
     });
   });
 
+  $(document).off('click', '#AddStripeCard');
+  $(document).on('click', '#AddStripeCard', function(){
+    $("#AeonModalBlocker").removeClass('hidden');
+    $("#AddStripeCardModal").removeClass('hidden').center();
+    var inputs = $("#AddStripeCardModal").find('input');
+    _.each(inputs, function(input){
+      $(input).attr('value', '');
+    });
+    $("#CardNumber").focus();
+  });
+
+  $(document).off('click', '.stripe_card_listing');
+  $(document).on('click', '.stripe_card_listing', function(e){
+    var self = $(this);
+    if(self.hasClass('default_true')){
+      console.log("Already selected!");
+    } else {
+      $('.stripe_card_listing').removeClass('default_true').addClass('default_false');
+      self.removeClass('default_false').addClass('default_true');
+      var stripe_card_id = self.attr('model_id');
+      var params = {
+        stripe_card_id: stripe_card_id
+      }
+      $.ajax({
+        url: "/set_default_stripe_card",
+        data: params,
+        dataType: 'json',
+        success: function(data){
+          console.log("Default Stripe Card Updated.");
+        }
+      });
+    }
+  });
+
+  $(document).off('click', '.delete_stripe_card_icon');
+  $(document).on('click', '.delete_stripe_card_icon', function(e){
+    e.stopImmediatePropagation();
+    var self = $(this);
+    if( confirm("Deleting this card can not be undone, are you sure you want to do this?")){
+      var model_root = self.closest('[model_root]')
+
+      var stripe_card_id = model_root.attr('model_id');
+      var params = {
+        stripe_card_id: stripe_card_id
+      }
+      model_root.removeClass('default_true').addClass('default_false deleting_card');
+      var url = "/stripe_cards/" + stripe_card_id;
+      $.ajax({
+        url: url,
+        data: params,
+        dataType: 'json',
+        type: 'DELETE',
+        success: function(data){
+          console.log("Card Deleted.");
+          model_root.remove();
+          var stripe_cards = $(".stripe_card_listing");
+          if(stripe_cards.length == 1){
+            $(stripe_cards[0]).click();
+          }
+        }
+      });
+    }
+  });
+
+
   $(document).off('click', '#AddAddress');
   $(document).on('click', '#AddAddress', function(){
     $("#AeonModalBlocker").removeClass('hidden');
-    $("#AddAddressModal").removeClass('hidden');
-    $("#AddAddressModal").center();
+    $("#AddAddressModal").removeClass('hidden').center();
     var inputs = $("#AddAddressModal").find('input');
     _.each(inputs, function(input){
       $(input).attr('value', '');
@@ -327,7 +424,7 @@
   });
 
   $(document).ready(function(){
-
+    $("#StripeCardErrors").hide();
     if(CurrentUser.is_anonymous == false){
       $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
     }

@@ -30,6 +30,12 @@ PrecisionRails::Application.routes.draw do
   match 'set_default_shipping_address' => 'registrations#set_default_shipping_address'
   match 'set_default_billing_address' => 'registrations#set_default_billing_address'
 
+  resources :stripe_cards
+  match 'create_stripe_customer_for_user' => 'storefronts#create_stripe_customer_for_user'
+  match 'set_default_stripe_card' => 'registrations#set_default_stripe_card'
+
+  resources :geo_areas_importer
+
 
   match 'checkout' => 'checkouts#checkout', :as => 'checkout'
   match 'checkout_list' => 'checkouts#checkout_list', :as => 'checkout_list'

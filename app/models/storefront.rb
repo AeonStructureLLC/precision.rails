@@ -1,7 +1,4 @@
 class Storefront < ActiveRecord::Base
-  require 'httparty'
-  require 'pp'
-  include HTTParty
   has_many :categories
   has_many :carts
   has_many :addresses
@@ -44,6 +41,8 @@ class Storefront < ActiveRecord::Base
     response = HTTParty.post(uri, :basic_auth => auth, :body => {:card => stripe_token, :email => user.email, :description => "Payment method for #{user.fullname}'s (#{user.id}) account for #{self.title} (#{self.url})" } )
     if response.code == 200
       response_json = JSON.parse(response.body)
+      pp "create_stripe_customer_for_user SUCCESS: #{response_json}"
+
       customer_id = response_json['id']
       card_type = response_json['active_card']['type']
       last4 = response_json['active_card']['last4']
@@ -59,9 +58,19 @@ class Storefront < ActiveRecord::Base
       stripe_card.exp_month = exp_month
       stripe_card.exp_year = exp_year
 
+      updated_card = StripeCard.where(:user_id => user_id, :storefront_id => self.id, :last4 => last4, :card_type => card_type).first
+      unless updated_card.blank?
+        updated_card.destroy
+      end
+
+      stripe_cards = StripeCard.find_all_by_user_id(user_id)
+      if stripe_cards.blank?
+        address.is_default = true
+      end
+
       stripe_card.save!
     else
-      pp "Failed with error code : #{response.code}"
+      pp "create_stripe_customer_for_user FAILED with error code : #{response.code}"
     end
 
   end
@@ -71,16 +80,16 @@ class Storefront < ActiveRecord::Base
       return "Storefront #{self.id} is missing Stripe Secret!"
     end
 
-    stripe_card = PaymentMethod.find(payment_method_id)
-    user = User.find(payment_method.user_id)
-    uri = "https://api.stripe.com/v1/customers/#{user.stripe_customer_id}"
+    stripe_card = StripeCard.find(stripe_card_id)
+    user = User.find(stripe_card.user_id)
+    uri = "https://api.stripe.com/v1/customers/#{stripe_card.stripe_customer_id}"
     auth = {:username => self.stripe_secret, :password => "password"}
 
     response = HTTParty.post(uri, :basic_auth => auth )
     if response.code == 200
-      pp JSON.parse(response.body)
+      pp "fetch_stripe_customer_for_payment SUCCESS: #{JSON.parse(response.body)}"
     else
-      pp "Failed with error code : #{response.code}"
+      pp "fetch_stripe_customer_for_payment FAILED with error code: #{response.code}"
     end
 
   end

@@ -1,0 +1,4 @@
+<ul id="StripeCardsList">
+  <%= render :partial => "/stripe_cards/stripe_card_listing", :collection => current_user.stripe_cards %>
+  <li id="AddStripeCard">Add New Card</li>
+</ul>

@@ -63,4 +63,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def set_default_stripe_card(stripe_card_id)
+    self.stripe_cards.each do |sc|
+      sc.is_default = false
+      if sc.id == stripe_card_id.to_i
+        sc.is_default = true
+      end
+      sc.save!
+    end
+  end
+
 end

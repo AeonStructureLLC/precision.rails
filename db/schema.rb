@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130612203611) do
+ActiveRecord::Schema.define(:version => 20130613213132) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -58,6 +58,27 @@ ActiveRecord::Schema.define(:version => 20130612203611) do
 
   add_index "categories", ["parent_id"], :name => "index_categories_on_parent_id"
   add_index "categories", ["storefront_id"], :name => "index_categories_on_storefront_id"
+
+  create_table "geo_areas", :force => true do |t|
+    t.string   "zip"
+    t.string   "geo_area_type"
+    t.string   "primary_city"
+    t.text     "acceptable_cities"
+    t.text     "unacceptable_cities"
+    t.string   "state"
+    t.string   "county"
+    t.string   "timezone"
+    t.text     "area_codes"
+    t.string   "latitude"
+    t.string   "longitude"
+    t.string   "world_region"
+    t.string   "country"
+    t.string   "decommissioned"
+    t.string   "estimated_population"
+    t.text     "notes"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "legacy_products", :force => true do |t|
     t.integer  "prod_id"
@@ -199,8 +220,9 @@ ActiveRecord::Schema.define(:version => 20130612203611) do
     t.string   "exp_month"
     t.string   "exp_year"
     t.string   "card_type"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.boolean  "is_default",         :default => false
   end
 
   create_table "users", :force => true do |t|

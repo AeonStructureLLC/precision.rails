@@ -1,0 +1,2 @@
+class GeoAreasController < ApplicationController
+end
