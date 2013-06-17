@@ -20,6 +20,11 @@ class StorefrontsController < ApplicationController
     render :partial => 'stripe_cards/stripe_cards_list'
   end
 
+  def get_tax_rate_for_zip
+    tax_rate = @storefront.get_tax_rate_for_zip(params[:zip])
+    render :json => tax_rate
+  end
+
   def destroy
     # NEVER DO THIS!
     storefront = Storefront.find(params[:id])

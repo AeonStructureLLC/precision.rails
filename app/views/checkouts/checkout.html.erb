@@ -133,6 +133,24 @@
 <script type="text/javascript">
   var FoundUser = false;
 
+  function updateTaxRate(){
+    var postal_code = $('.is_shipping.selected_true').closest("[model_root]").find('.postal_code').text();
+    if(postal_code.length != 0){
+      var params = {
+        zip: postal_code
+      }
+      $.ajax({
+        url: "/get_tax_rate_for_zip",
+        data: params,
+        dataType: 'json',
+        success: function(data){
+          CartTaxRate = Number(data);
+          updateItemCountAndSubtotal();
+        }
+      });
+    }
+  }
+
   function resetUserOptionsForm(){
     $("#UserSessionPassword").attr('value', '');
     $("#UserSessionPasswordConfirmation").attr('value', '');
@@ -349,6 +367,7 @@
         console.log(data);
         $("#AddressesWrapper").html(data);
         $("#AeonModalBlocker").click();
+        updateTaxRate();
       }
     });
 
@@ -362,6 +381,7 @@
     } else {
       $('.is_shipping').removeClass('selected_true').addClass('selected_false');
       self.removeClass('selected_false').addClass('selected_true');
+      updateTaxRate();
       var address_id = self.closest('[model_root]').attr('model_id');
       var params = {
         address_id: address_id
@@ -425,6 +445,7 @@
 
   $(document).ready(function(){
     $("#StripeCardErrors").hide();
+    updateTaxRate();
     if(CurrentUser.is_anonymous == false){
       $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
     }

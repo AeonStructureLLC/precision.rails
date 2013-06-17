@@ -38,6 +38,7 @@
     var CurrentUser = <%= current_user.to_json.html_safe %>;
     var ItemsInCart = <%= @cart.item_count %>;
     var CartSubtotal = "<%= number_to_currency(@cart.subtotal) %>";
+    var CartTaxRate = 0;
     var CartWeight = <%= @cart.weight %>;
 
     $(document).off('click', '#CurrentCart');
@@ -71,14 +72,15 @@
       $("#CheckoutSubTotal").html(CartSubtotal);
 
       var CartSubtotalNumber = currencyToNumber(CartSubtotal);
-      var CartTaxNumber = currencyToNumber($("#CheckoutTax").text());
+      var CartTaxNumber = CartSubtotalNumber * (CartTaxRate / 100);
+      var CartTaxString = CartTaxNumber.toMoney().string;
       var CartShippingNumber = currencyToNumber($("#CheckoutShipping").text());
 
       var CartTotalNumber = CartSubtotalNumber + CartTaxNumber + CartShippingNumber;
       var CartTotalString = CartTotalNumber.toMoney().string;
 
+      $("#CheckoutTax").html(CartTaxString);
       $("#CheckoutTotal").html(CartTotalString);
-
 
       if(ItemsInCart > 0){
         $("#CheckoutButton").removeClass('hidden');

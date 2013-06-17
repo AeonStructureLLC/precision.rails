@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  storefront_id: 1
+  geo_area_id: 1
+  ship_from: false
+  state_tax_rate: 1.5
+  county_tax_rate: 1.5
+  city_tax_rate: 1.5
+
+two:
+  storefront_id: 1
+  geo_area_id: 1
+  ship_from: false
+  state_tax_rate: 1.5
+  county_tax_rate: 1.5
+  city_tax_rate: 1.5

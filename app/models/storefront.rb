@@ -3,6 +3,7 @@ class Storefront < ActiveRecord::Base
   has_many :carts
   has_many :addresses
   has_many :stripe_cards
+  has_many :storefront_presences
   attr_accessible :billing_user_id, :default_currency, :default_language, :description, :inactive, :title, :url
 
   def self.bootstrap_dev
@@ -92,6 +93,35 @@ class Storefront < ActiveRecord::Base
       pp "fetch_stripe_customer_for_payment FAILED with error code: #{response.code}"
     end
 
+  end
+
+  def get_tax_rate_for_zip(zip)
+    customer_geo_area = GeoArea.find_by_zip(zip)
+    tax_rate = 0.0
+    state_tax_rate = 0.0
+    county_tax_rate = 0.0
+    city_tax_rate = 0.0
+    self.storefront_presences.each do |sp|
+      storefront_geo_area = sp.geo_area
+      if storefront_geo_area == customer_geo_area
+        state_tax_rate = sp.state_tax_rate
+        county_tax_rate = sp.county_tax_rate
+        city_tax_rate = sp.city_tax_rate
+      else
+        areas = GeoArea.where(:state => storefront_geo_area.state, :county => storefront_geo_area.county)
+        areas.each do |area|
+          if area.state == customer_geo_area.state
+            state_tax_rate = sp.state_tax_rate
+          end
+          if area.county == customer_geo_area.county
+            county_tax_rate = sp.county_tax_rate
+          end
+        end
+      end
+    end
+
+    tax_rate = state_tax_rate + county_tax_rate + city_tax_rate
+    return tax_rate
   end
 
 end

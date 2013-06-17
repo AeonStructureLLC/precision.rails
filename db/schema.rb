@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613213132) do
+ActiveRecord::Schema.define(:version => 20130617200404) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(:version => 20130613213132) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  add_index "geo_areas", ["zip"], :name => "index_geo_areas_on_zip"
 
   create_table "legacy_products", :force => true do |t|
     t.integer  "prod_id"
@@ -193,6 +195,17 @@ ActiveRecord::Schema.define(:version => 20130613213132) do
   end
 
   add_index "products", ["title"], :name => "index_products_on_title"
+
+  create_table "storefront_presences", :force => true do |t|
+    t.integer  "storefront_id"
+    t.integer  "geo_area_id"
+    t.boolean  "ship_from"
+    t.float    "state_tax_rate"
+    t.float    "county_tax_rate"
+    t.float    "city_tax_rate"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "storefronts", :force => true do |t|
     t.string   "title"
