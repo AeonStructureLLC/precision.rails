@@ -145,6 +145,7 @@
         url: "/get_tax_rate_for_zip",
         data: params,
         dataType: 'json',
+        async: true,
         success: function(data){
           CartTaxRate = Number(data);
           updateItemCountAndSubtotal();
@@ -154,13 +155,25 @@
   }
 
   function updateShippingOptions(){
-//    var html = "";
-//    html += "<div id='ShippingOptionsPlaceholder'>";
-//    html += "<img class='loading_spinner' src='/images/credit_card_cvc_location.gif'>";
-//    html += "<div class='loading_text'>Looking up shipping options...</div>";
-//    html += "</div>";
-//
-//    $("#ShippingOptionsWrapper").html(html);
+    var html = "";
+    html += "<div id='ShippingOptionsPlaceholder'>";
+    html += "<img class='loading_spinner' src='/images/spinner.gif'>";
+    html += "<div class='loading_text'>Looking up shipping options...</div>";
+    html += "</div>";
+
+    $("#ShippingOptionsWrapper").html(html);
+//    setTimeout(function(){
+//      $.ajax({
+//        url: "/get_shipping_options_for_cart",
+//        dataType: 'html',
+//        async: true,
+//        success: function(data){
+//          $("#ShippingOptionsWrapper").html(data);
+//          //console.log(data);
+//        }
+//      })
+//    }, 500);
+
     $.ajax({
       url: "/get_shipping_options_for_cart",
       dataType: 'html',
@@ -169,7 +182,8 @@
         $("#ShippingOptionsWrapper").html(data);
         //console.log(data);
       }
-    });
+    })
+
   }
 
   function resetUserOptionsForm(){

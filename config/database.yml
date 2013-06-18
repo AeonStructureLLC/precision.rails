@@ -3,12 +3,21 @@
 #
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
+
+#development:
+#  adapter: sqlite3
+#  encoding: utf8
+#  database: db/development.sqlite3
+#  pool: 5
+#  timeout: 5000
+
 development:
-  adapter: sqlite3
+  adapter: postgresql
+  database: precision_dev
   encoding: utf8
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
+  username: aeonstructure
+  password: support
+  host: devbuntu.local
 
 legacy_products:
   adapter: mysql2

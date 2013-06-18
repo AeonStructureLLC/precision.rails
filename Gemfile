@@ -11,6 +11,7 @@ gem 'pg'
 gem 'hirb'
 gem 'wirble'
 gem 'uuid'
+gem 'unicorn'
 gem 'mysql2'
 gem 'therubyracer', '0.11.0beta8'
 gem 'libv8', '~> 3.11.8'
@@ -20,6 +21,7 @@ gem 'rvm'
 gem 'rmagick'
 gem 'httparty'
 gem 'active_shipping'
+gem 'yaml_db'
 
 # Gems used only for assets and not required
 # in production environments by default.
