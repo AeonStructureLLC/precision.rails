@@ -154,16 +154,17 @@
   }
 
   function updateShippingOptions(){
-    var html = [];
-    html.push("<div id='ShippingOptionsPlaceholder'>");
-    html.push("<img class='loading_spinner' src='/images/spinner.gif'>");
-    html.push("<div class='loading_text'>Looking up shipping options...</div>");
-    html.push("</div>");
-    html = html.join("\n");
-    $("#ShippingOptionsWrapper").html(html);
+//    var html = "";
+//    html += "<div id='ShippingOptionsPlaceholder'>";
+//    html += "<img class='loading_spinner' src='/images/credit_card_cvc_location.gif'>";
+//    html += "<div class='loading_text'>Looking up shipping options...</div>";
+//    html += "</div>";
+//
+//    $("#ShippingOptionsWrapper").html(html);
     $.ajax({
       url: "/get_shipping_options_for_cart",
       dataType: 'html',
+      async: true,
       success: function(data){
         $("#ShippingOptionsWrapper").html(data);
         //console.log(data);
@@ -465,9 +466,8 @@
 
   $(document).ready(function(){
     $("#StripeCardErrors").hide();
-    updateShippingOptions();
     updateTaxRate();
-    //updateShippingOptions();
+    updateShippingOptions();
     if(CurrentUser.is_anonymous == false){
       $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
     }
