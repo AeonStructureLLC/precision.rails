@@ -25,6 +25,11 @@ class StorefrontsController < ApplicationController
     render :json => tax_rate
   end
 
+  def get_shipping_options_for_cart
+    @shipping_options = @storefront.get_shipping_options_for_cart(@cart.id)
+    render :partial => 'storefronts/shipping_options'
+  end
+
   def destroy
     # NEVER DO THIS!
     storefront = Storefront.find(params[:id])

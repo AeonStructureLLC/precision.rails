@@ -65,4 +65,8 @@ class Cart < ActiveRecord::Base
     return new_cart
   end
 
+  def cart_items_by_product_weight
+    return self.cart_items.sort_by! { |ci| ci.product.weight }
+  end
+
 end

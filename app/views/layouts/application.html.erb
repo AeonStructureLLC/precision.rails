@@ -38,8 +38,9 @@
     var CurrentUser = <%= current_user.to_json.html_safe %>;
     var ItemsInCart = <%= @cart.item_count %>;
     var CartSubtotal = "<%= number_to_currency(@cart.subtotal) %>";
-    var CartTaxRate = 0;
+    var CartTaxRate = 0.0;
     var CartWeight = <%= @cart.weight %>;
+    var CartShippingShippingCost = 0.0;
 
     $(document).off('click', '#CurrentCart');
     $(document).on('click', '#CurrentCart', function(){

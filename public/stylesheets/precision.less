@@ -1618,6 +1618,63 @@
 
   }
 
+  #ShippingOptionsWrapper {
+    width: 890px;
+    .center-margins;
+
+    #ShippingOptionsPlaceholder {
+      .aeon-round;
+      width: 890px;
+      height: 382px;
+      background-color: #fff;
+      box-shadow:inset 0px 0px 9px -1px #8b8b8b;
+      text-align: center;
+      //line-height: 382px;
+      color: #bfbfbf;
+      font-weight: bold;
+    }
+
+    #ShippingOptions {
+      list-style: none;
+      display: inline-block;
+
+      .shipping_option_list {
+        //border: 1px solid red;
+        width: 232px;
+        min-height: 200px;
+        display: inline-block;
+        .center-margins;
+        vertical-align: top;
+        margin: 8px;
+        padding: 8px;
+
+        .shipping_option_listing {
+          border: 1px solid;
+          padding: 8px;
+          cursor: pointer;
+          .aeon-round(5px);
+          border-color: #ccc;
+          background-color: #fff;
+          font-size: 14px;
+          text-align: center;
+          margin: 8px;
+
+          .label {
+            border-bottom: 1px solid #ececec;
+          }
+          .cost {
+            color: #900;
+            font-weight: bold;
+            font-size: 16px;
+          }
+        }
+
+      }
+
+    }
+
+  }
+
   #StripeCardsWrapper {
     width: 890px;
     .center-margins;
@@ -1753,3 +1810,4 @@
   }
 
 }
+

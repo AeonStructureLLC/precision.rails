@@ -1,4 +1,6 @@
 class Storefront < ActiveRecord::Base
+  require 'active_shipping'
+  include ActiveMerchant::Shipping
   has_many :categories
   has_many :carts
   has_many :addresses
@@ -122,6 +124,77 @@ class Storefront < ActiveRecord::Base
 
     tax_rate = state_tax_rate + county_tax_rate + city_tax_rate
     return tax_rate
+  end
+
+  def get_shipping_options_for_cart(cart_id)
+    cart = Cart.find(cart_id)
+    shipping_destination_address = Address.where(:user_id => cart.user.id, :shipping => true).first
+
+    package_weight_counter = 0.0
+    packages = []
+
+    cart.cart_items_by_product_weight.each do |ci|
+      ci.quantity.times do
+
+        if (package_weight_counter + ci.product.weight) <= 70
+          package_weight_counter = package_weight_counter + ci.product.weight
+        else
+          p = Package.new((package_weight_counter * 16), [], :units => :imperial)
+          packages << p
+          package_weight_counter = ci.product.weight
+        end
+
+      end
+
+    end
+
+    p = Package.new((package_weight_counter * 16), [], :units => :imperial)
+    packages << p
+
+    packages.each do |package|
+      #pp package
+    end
+
+    shipping_origin_geo_area = StorefrontPresence.where(:storefront_id => self.id, :ship_from => true).first.geo_area
+
+    shipping_origin = Location.new(
+        :country => 'US',
+        :state => shipping_origin_geo_area.state,
+        :city => shipping_origin_geo_area.primary_city,
+        :zip => shipping_origin_geo_area.zip
+    )
+
+    shipping_destination = Location.new(
+        :country => 'US',
+        :state => shipping_destination_address.state,
+        :city => shipping_destination_address.city,
+        :zip => shipping_destination_address.postal_code
+    )
+
+    ups = UPS.new(:login => 'dennisharrison', :password => 'Q210r0n3aeon', :key => 'CCB8702B7BA43C76')
+    ups_response = ups.find_rates(shipping_origin, shipping_destination, packages)
+    ups_rates = ups_response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+
+    usps = USPS.new(:login => '173AEONS6843')
+    usps_response = usps.find_rates(shipping_origin, shipping_destination, packages)
+    usps_rates = usps_response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+    usps_rates.delete_if {|x| x.first.include?("Flat Rate")}
+    usps_rates.delete_if {|x| x.first.include?("Hold For Pickup")}
+    usps_rates.delete_if {|x| x.first.include?("Library")}
+    usps_rates.delete_if {|x| x.first.include?("Media")}
+
+
+    fedex = FedEx.new(:key => 'c5bY8XoS6PaRFLhi', :password => '5hQpZoir2g9K4pdLqaYSEp15J', :account => '374170015', :login => '105295872')
+    fedex_response = fedex.find_rates(shipping_origin, shipping_destination, packages)
+    fedex_rates = fedex_response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+
+    shipping_options = {}
+    shipping_options['ups'] = ups_rates
+    shipping_options['fedex'] = fedex_rates
+    shipping_options['usps'] = usps_rates
+
+    return shipping_options
+
   end
 
 end

@@ -47,6 +47,8 @@
     <%= render :partial => "/addresses/addresses_list" %>
   </div>
 
+  <div id="ShippingOptionsWrapper"></div>
+
   <% unless @storefront.stripe_publish.blank? %>
     <div id="StripeCardsWrapper">
       <%= render :partial => "/stripe_cards/stripe_cards_list" %>
@@ -149,6 +151,24 @@
         }
       });
     }
+  }
+
+  function updateShippingOptions(){
+    var html = [];
+    html.push("<div id='ShippingOptionsPlaceholder'>");
+    html.push("<img class='loading_spinner' src='/images/spinner.gif'>");
+    html.push("<div class='loading_text'>Looking up shipping options...</div>");
+    html.push("</div>");
+    html = html.join("\n");
+    $("#ShippingOptionsWrapper").html(html);
+    $.ajax({
+      url: "/get_shipping_options_for_cart",
+      dataType: 'html',
+      success: function(data){
+        $("#ShippingOptionsWrapper").html(data);
+        //console.log(data);
+      }
+    });
   }
 
   function resetUserOptionsForm(){
@@ -445,7 +465,9 @@
 
   $(document).ready(function(){
     $("#StripeCardErrors").hide();
+    updateShippingOptions();
     updateTaxRate();
+    //updateShippingOptions();
     if(CurrentUser.is_anonymous == false){
       $("#ReviewAndAuthorizeWrapper").removeClass('hidden');
     }
