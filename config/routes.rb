@@ -25,6 +25,7 @@ PrecisionRails::Application.routes.draw do
   match 'add_to_cart' => 'carts#add_to_cart', :as => 'add_to_cart'
   match 'remove_from_cart' => 'carts#remove_from_cart', :as => 'remove_from_cart'
   match 'update_quantity_in_cart' => 'carts#update_quantity_in_cart', :as => 'update_quantity_in_cart'
+  match 'select_shipping_option' => 'carts#select_shipping_option'
 
   resources :addresses
   match 'set_default_shipping_address' => 'registrations#set_default_shipping_address'

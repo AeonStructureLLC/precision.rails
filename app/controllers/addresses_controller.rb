@@ -13,6 +13,10 @@ class AddressesController < ApplicationController
     render :partial => 'addresses/addresses_list'
   end
 
+  def index
+    render :partial => 'addresses/addresses_list'
+  end
+
   def destroy
     address = Address.find(params[:id])
     address.destroy

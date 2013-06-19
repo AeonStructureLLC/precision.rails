@@ -2,6 +2,7 @@ class Cart < ActiveRecord::Base
   belongs_to :storefront
   belongs_to :user
   has_many :cart_items
+  has_many :cart_shipping_options
   attr_accessible :storefront_id, :user_id
 
   def subtotal

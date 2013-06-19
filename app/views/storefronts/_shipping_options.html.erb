@@ -2,9 +2,9 @@
 <% @shipping_options.each do |key,values| %>
   <li id="<%=key.upcase %>_ShippingOptions" class="shipping_option_list">
     <% values.each do |shipping_option| %>
-      <div class="shipping_option_listing">
+      <div class="shipping_option_listing" model_root="true" model="cart_shipping_option" model_id="<%= shipping_option[2] %>">
         <div class="label"><%= shipping_option[0] %></div>
-        <div class="cost"><%= number_to_currency(shipping_option[1] / 100.0) %></div>
+        <div class="cost"><%= number_to_currency(shipping_option[1]) %></div>
       </div>
     <% end %>
   </li>

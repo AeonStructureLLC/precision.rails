@@ -39,4 +39,16 @@ class CartsController < ApplicationController
     render :partial => "/carts/cart_item_list"
   end
 
+  def select_shipping_option
+    selected_shipping_option = CartShippingOption.find(params[:shipping_option_id])
+    @cart.cart_shipping_options.each do |cart_shipping_option|
+      cart_shipping_option.selected = false
+      if cart_shipping_option.id == selected_shipping_option.id
+        cart_shipping_option.selected = true
+      end
+      cart_shipping_option.save!
+    end
+    render :json => selected_shipping_option
+  end
+
 end

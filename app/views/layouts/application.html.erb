@@ -40,7 +40,7 @@
     var CartSubtotal = "<%= number_to_currency(@cart.subtotal) %>";
     var CartTaxRate = 0.0;
     var CartWeight = <%= @cart.weight %>;
-    var CartShippingShippingCost = 0.0;
+    var CartShippingCost = 0.0;
 
     $(document).off('click', '#CurrentCart');
     $(document).on('click', '#CurrentCart', function(){
@@ -75,12 +75,13 @@
       var CartSubtotalNumber = currencyToNumber(CartSubtotal);
       var CartTaxNumber = CartSubtotalNumber * (CartTaxRate / 100);
       var CartTaxString = CartTaxNumber.toMoney().string;
-      var CartShippingNumber = currencyToNumber($("#CheckoutShipping").text());
+      var CartShippingString = CartShippingCost.toString().toMoney().string;
 
-      var CartTotalNumber = CartSubtotalNumber + CartTaxNumber + CartShippingNumber;
+      var CartTotalNumber = CartSubtotalNumber + CartTaxNumber + CartShippingCost;
       var CartTotalString = CartTotalNumber.toMoney().string;
 
       $("#CheckoutTax").html(CartTaxString);
+      $("#CheckoutShipping").html(CartShippingString);
       $("#CheckoutTotal").html(CartTotalString);
 
       if(ItemsInCart > 0){

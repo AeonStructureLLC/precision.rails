@@ -183,7 +183,6 @@ class Storefront < ActiveRecord::Base
     usps_rates.delete_if {|x| x.first.include?("Library")}
     usps_rates.delete_if {|x| x.first.include?("Media")}
 
-
     fedex = FedEx.new(:key => 'c5bY8XoS6PaRFLhi', :password => '5hQpZoir2g9K4pdLqaYSEp15J', :account => '374170015', :login => '105295872')
     fedex_response = fedex.find_rates(shipping_origin, shipping_destination, packages)
     fedex_rates = fedex_response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
@@ -193,7 +192,25 @@ class Storefront < ActiveRecord::Base
     shipping_options['fedex'] = fedex_rates
     shipping_options['usps'] = usps_rates
 
-    return shipping_options
+    cart.cart_shipping_options.destroy_all
+
+    new_shipping_options_array = {}
+
+    shipping_options.each do |key,values|
+      new_shipping_options_array[key] = []
+      values.each do |value|
+        shipping_option = cart.cart_shipping_options.new
+        shipping_option.provider = key
+        label = shipping_option.label = value[0]
+        cost = shipping_option.cost = (value[1] / 100.0)
+        shipping_option.save!
+	      id = shipping_option.id
+	      options = [label, cost, id]
+	      new_shipping_options_array[key].push options
+      end
+    end
+
+    return new_shipping_options_array
 
   end
 

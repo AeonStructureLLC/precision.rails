@@ -37,7 +37,11 @@
       success: function(data){
         $("#CartItemList").html(data);
         $("#CheckoutList").html(data);
+        CartShippingCost = 0.0;
         updateItemCountAndSubtotal();
+        if(location.pathname == "/checkout"){
+          updateShippingOptions();
+        }
       }
     });
   });

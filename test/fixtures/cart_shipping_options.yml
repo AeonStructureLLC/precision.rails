@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cart_id: 1
+  provider: MyString
+  label: MyString
+  cost: 1.5
+
+two:
+  cart_id: 1
+  provider: MyString
+  label: MyString
+  cost: 1.5
