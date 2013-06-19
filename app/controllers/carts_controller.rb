@@ -51,4 +51,17 @@ class CartsController < ApplicationController
     render :json => selected_shipping_option
   end
 
+  def set_alternate_payment_option
+
+    @cart.alternate_payment_option = params[:alternate_payment_option]
+    @cart.save!
+
+    @cart.user.stripe_cards.each do |stripe_card|
+      stripe_card.is_default = false
+      stripe_card.save!
+    end
+
+    render :nothing => true, :status => 200
+  end
+
 end

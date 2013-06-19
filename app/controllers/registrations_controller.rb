@@ -33,6 +33,8 @@ class RegistrationsController < ApplicationController
 
   def set_default_stripe_card
     current_user.set_default_stripe_card(params[:stripe_card_id])
+    @cart.alternate_payment_option = ""
+    @cart.save!
     render :nothing => true, :status => 200
   end
 

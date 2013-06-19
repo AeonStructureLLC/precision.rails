@@ -1131,6 +1131,7 @@
         display: inline-block;
         vertical-align: top;
         margin-left: 12px;
+        width: 24px;
         background-color: #fcfcfc;
         padding: 4px;
         text-align: center;
@@ -1272,6 +1273,7 @@
       display: inline-block;
       vertical-align: top;
       margin-left: 12px;
+      width: 24px;
       background-color: #fcfcfc;
       padding: 4px;
       text-align: center;
@@ -1610,10 +1612,14 @@
 
 #ReviewAndAuthorizeWrapper {
   width: 960px;
+  margin-top: -3px;
   .center-margins;
-  //border: 1px solid #333;
+  border: 1px solid #ececec;
+  .aeon-round;
   padding: 1px;
   margin-bottom: 108px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 
   #AddressesWrapper {
     width: 890px;
@@ -1698,6 +1704,7 @@
           background: linear-gradient(to bottom,  #e4efc0 0%,#abbd73 100%); /* W3C */
           filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4efc0', endColorstr='#abbd73',GradientType=0 ); /* IE6-9 */
           color: #333;
+          .aeon-shadow;
 
           .label {
             border-color: #bbb;
@@ -1723,6 +1730,51 @@
       cursor: pointer;
       line-height: 86px;
       border: 2px solid #ccc;
+    }
+  }
+
+  #AlternatePaymentOptionsWrapper {
+    width: 890px;
+    .center-margins;
+
+    #AlternatePaymentOptions {
+      list-style: none;
+      display: inline-block;
+
+      .alternate_payment_option_listing {
+        .review_item_listing;
+        cursor: pointer;
+        line-height: 86px;
+        border: 2px solid #ccc;
+      }
+      .alternate_payment_option_listing.selected {
+        border-color: #333;
+        background: #e4efc0; /* Old browsers */
+        background: -moz-linear-gradient(top,  #e4efc0 0%, #abbd73 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4efc0), color-stop(100%,#abbd73)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  #e4efc0 0%,#abbd73 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4efc0', endColorstr='#abbd73',GradientType=0 ); /* IE6-9 */
+        color: #555;
+        font-weight: bold;
+        .aeon-shadow;
+      }
+    }
+
+    #AlternatePaymentOptionsDetailsWrapper {
+      box-shadow:inset 0px 0px 16px -4px #8b8b8b;
+      .aeon-round;
+      border: 1px solid #a2a2a2;
+      background-color: #fcfcfc;
+      padding: 24px;
+      color: #777;
+
+      #AlternatePaymentOptionsDetailsDefault {
+        text-align: center;
+      }
+
     }
   }
 
@@ -1846,3 +1898,10 @@
 
 }
 
+.section_label {
+  display: block;
+  text-indent: 2px;
+  font-style: oblique;
+  color: #8b8b8b;
+  border-bottom: 1px solid #ccc;
+}

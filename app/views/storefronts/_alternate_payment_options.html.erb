@@ -1,0 +1,19 @@
+<ul id="AlternatePaymentOptions">
+  <% unless @storefront.phone_enabled.blank? %>
+  <li id="PayByPhone" class="alternate_payment_option_listing" payment_type="phone">
+    <div class="label">Pay via Phone</div>
+  </li>
+  <% end %>
+
+  <% unless @storefront.check_enabled.blank? %>
+    <li id="PayByCheck" class="alternate_payment_option_listing" payment_type="check">
+      <div class="label">Pay via Check</div>
+    </li>
+  <% end %>
+
+  <% unless @storefront.cod_enabled.blank? %>
+    <li id="PayByCOD" class="alternate_payment_option_listing" payment_type="cod">
+      <div class="label">Pay via COD</div>
+    </li>
+  <% end %>
+</ul>

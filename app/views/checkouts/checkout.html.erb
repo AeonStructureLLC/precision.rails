@@ -55,6 +55,19 @@
     </div>
   <% end %>
 
+  <% unless @storefront.phone_enabled.blank? && @storefront.cod_enabled.blank? && @storefront.check_enabled.blank? %>
+  <div id="AlternatePaymentOptionsWrapper">
+    <div class="section_label">Pay via Alternate Options</div>
+    <%= render :partial => "/storefronts/alternate_payment_options" %>
+    <div id="AlternatePaymentOptionsDetailsWrapper">
+      <div id="AlternatePaymentOptionsDetailsDefault" class="alternate_payment_option_details">Select an alternate payment method above to see related instructions.</div>
+      <div class="alternate_payment_option_details hidden" alternate_payment_option_details_for='phone'><%= @storefront.phone_details %></div>
+      <div class="alternate_payment_option_details hidden" alternate_payment_option_details_for='check'><%= @storefront.check_details %></div>
+      <div class="alternate_payment_option_details hidden" alternate_payment_option_details_for='cod'><%= @storefront.cod_details %></div>
+    </div>
+  </div>
+  <% end %>
+
   <a id="ReviewAndAuthorizeButton"  class="" href="#">Review & Authorize</a>
 </div>
 
@@ -332,6 +345,9 @@
     if(self.hasClass('default_true')){
       console.log("Already selected!");
     } else {
+      $('.alternate_payment_option_listing').removeClass('selected');
+      $('.alternate_payment_option_details').addClass('hidden');
+      $("#AlternatePaymentOptionsDetailsDefault").removeClass('hidden');
       $('.stripe_card_listing').removeClass('default_true').addClass('default_false');
       self.removeClass('default_false').addClass('default_true');
       var stripe_card_id = self.attr('model_id');
@@ -410,9 +426,12 @@
       data: params,
       dataType: 'html',
       success: function(data){
-        console.log(data);
         $("#AddressesWrapper").html(data);
         $("#AeonModalBlocker").click();
+        var address_listings = $(".address_listing");
+        if(address_listings.length == 1){
+          updateShippingOptions();
+        }
         updateTaxRate();
       }
     });
@@ -438,6 +457,33 @@
         success: function(data){
           CartShippingCost = data.cost;
           updateItemCountAndSubtotal();
+        }
+      });
+    }
+  });
+
+  $(document).off('click', '.alternate_payment_option_listing');
+  $(document).on('click', '.alternate_payment_option_listing', function(e){
+    var self = $(this);
+    if(self.hasClass('selected')){
+      console.log("Already selected!");
+    } else {
+      $('.alternate_payment_option_listing').removeClass('selected');
+      $('.stripe_card_listing').removeClass('default_true').addClass('default_false');
+      self.addClass('selected');
+      var alternate_payment_option = self.attr('payment_type');
+      $('.alternate_payment_option_details').addClass('hidden');
+      $("[alternate_payment_option_details_for='" + alternate_payment_option + "']").removeClass('hidden');
+
+      var params = {
+        alternate_payment_option: alternate_payment_option
+      }
+      $.ajax({
+        url: "/set_alternate_payment_option",
+        data: params,
+        dataType: 'json',
+        success: function(data){
+          console.log(data);
         }
       });
     }
@@ -496,7 +542,7 @@
   $(document).on('click', '.delete_address_icon', function(e){
     var self = $(this);
     if( confirm("Deleting this address can not be undone, are you sure you want to do this?")){
-      var model_root = self.closest('[model_root]')
+      var model_root = self.closest('[model_root]');
       var address_id = model_root.attr('model_id');
       var params = {
         address_id: address_id

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619171712) do
+ActiveRecord::Schema.define(:version => 20130619220900) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -48,8 +48,9 @@ ActiveRecord::Schema.define(:version => 20130619171712) do
   create_table "carts", :force => true do |t|
     t.integer  "storefront_id"
     t.integer  "user_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "alternate_payment_option"
   end
 
   create_table "categories", :force => true do |t|
@@ -229,6 +230,12 @@ ActiveRecord::Schema.define(:version => 20130619171712) do
     t.datetime "updated_at",                            :null => false
     t.string   "stripe_secret"
     t.string   "stripe_publish"
+    t.boolean  "cod_enabled",      :default => false
+    t.text     "cod_details"
+    t.boolean  "check_enabled",    :default => false
+    t.text     "check_details"
+    t.boolean  "phone_enabled",    :default => false
+    t.text     "phone_details"
   end
 
   add_index "storefronts", ["billing_user_id"], :name => "index_storefronts_on_billing_user_id"
