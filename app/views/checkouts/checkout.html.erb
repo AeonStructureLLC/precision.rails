@@ -32,9 +32,14 @@
       Sign-in or Sign-up : WORDS
     </div>
     <div id="UserSession">
+      <ul id="SignUpErrors" class="hidden"></ul>
       <div class="field_wrapper"><label>E-Mail: </label><input type="email" id="UserSessionEmail" placeholder="Enter your E-Mail address"/></div>
       <div class="field_wrapper"><label>Password: </label><input type="password" id="UserSessionPassword" class="passwords" placeholder="Enter your password"/></div>
       <div id="UserSessionPasswordConfirmationWrapper" class="hidden field_wrapper"><label>Password Confirmation: </label><input type="password" class="passwords" id="UserSessionPasswordConfirmation" placeholder="Enter your password again"/></div>
+      <div id="AdditionalFieldsForSignup" class="hidden field_wrapper">
+        <label>Full Name: </label><input type="text" class="name" id="UserSignUpFullName" placeholder="(Required)"/>
+        <label>Phone Number: </label><input type="phone" class="phone" id="UserSignUpPhoneNumber" placeholder="(555) 972-2525"/>
+      </div>
       <div id="ForgotPasswordWrapper" class="hidden"><a href="#">Forgot password?</a></div>
       <div id="SignInButton" class="hidden">Sign In</div>
       <div id="SignUpButton" class="hidden">Sign Up</div>
@@ -210,10 +215,14 @@
   function resetUserOptionsForm(){
     $("#UserSessionPassword").attr('value', '');
     $("#UserSessionPasswordConfirmation").attr('value', '');
+    $("#UserSignUpFullName").attr('value', '');
+    $("#UserSessionPhoneNumber").attr('value', '');
     $("#ForgotPasswordWrapper").addClass('hidden');
     $("#UserSessionPasswordConfirmationWrapper").addClass('hidden');
     $("#SignInButton").addClass('hidden');
     $("#SignUpButton").addClass('hidden');
+    $("#AdditionalFieldsForSignup").addClass('hidden');
+    $('#SignUpErrors').html('').addClass('hidden');
   }
 
   $(document).off('click', '#CurrentCart');
@@ -243,6 +252,7 @@
             $("#ForgotPasswordWrapper").removeClass('hidden');
             $("#SignUpButton").addClass('hidden');
             $("#SignInButton").removeClass('hidden');
+            $("#AdditionalFieldsForSignup").addClass('hidden');
           }
         }
       });
@@ -264,17 +274,38 @@
     var password_confirmation = $("#UserSessionPasswordConfirmation").attr('value');
     if(password.length >= 5){
       if(password === password_confirmation){
+        $("#AdditionalFieldsForSignup").removeClass('hidden');
         $("#SignUpButton").removeClass('hidden');
       }
     }
   });
 
   $(document).on('click', '#SignUpButton', function(){
+    $('#SignUpErrors').html('').addClass('hidden');
+    var full_name = $("#UserSignUpFullName").attr("value");
+    var email = $("#UserSessionEmail").attr("value");
+    var errors = 0;
+    if(validateEmail(email) != true){
+      errors = 1;
+      $('#SignUpErrors').removeClass('hidden');
+      $('#SignUpErrors').append('<li>Please enter a valid email address.</li>');
+    }
+    if(full_name.length < 3){
+      errors = 1;
+      $('#SignUpErrors').removeClass('hidden');
+      $('#SignUpErrors').append('<li>Please enter your name.</li>');
+    }
+    if(errors == 1){
+      return false;
+    }
+
     var params = {
       user: {
-        email: $("#UserSessionEmail").attr("value"),
+        email: email,
         password: $("#UserSessionPassword").attr("value"),
-        password_confirmation: $("#UserSessionPasswordConfirmation").attr("value")
+        password_confirmation: $("#UserSessionPasswordConfirmation").attr("value"),
+        full_name: full_name,
+        phone_number: $("#UserSignUpPhoneNumber").attr("value")
       }
     }
     $.ajax({

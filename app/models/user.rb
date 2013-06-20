@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :carts
   has_many :addresses
   has_many :stripe_cards
+  has_many :orders
 
   ACCESSIBLE_ATTRS = [:email, :password, :password_confirmation, :remember_me]
   # Include default devise modules. Others available are:
@@ -34,6 +35,10 @@ class User < ActiveRecord::Base
     else
       return true
     end
+  end
+
+  def default_stripe_card
+    return self.stripe_cards.select{|o| o.is_default}.first
   end
 
   def as_json(options)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619220900) do
+ActiveRecord::Schema.define(:version => 20130620202140) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -182,6 +182,33 @@ ActiveRecord::Schema.define(:version => 20130619220900) do
     t.boolean  "cover"
   end
 
+  create_table "order_items", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "quantity",           :default => 1
+    t.binary   "serialized_product"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  create_table "orders", :force => true do |t|
+    t.integer  "storefront_id"
+    t.string   "order_status",                :default => "pending_payment"
+    t.float    "subtotal",                    :default => 0.0
+    t.float    "tax",                         :default => 0.0
+    t.float    "total",                       :default => 0.0
+    t.string   "payment_method"
+    t.text     "notes"
+    t.binary   "serialized_user"
+    t.binary   "serialized_shipping_option"
+    t.binary   "serialized_shipping_address"
+    t.binary   "serialized_billing_address"
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.integer  "order_number"
+    t.integer  "user_id"
+    t.string   "stripe_charge_id"
+  end
+
   create_table "product_addons", :force => true do |t|
     t.integer  "product_id"
     t.integer  "addon_id"
@@ -270,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20130619220900) do
     t.datetime "updated_at",                             :null => false
     t.string   "authentication_token"
     t.string   "fullname"
+    t.string   "phone_number"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

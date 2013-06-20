@@ -1012,27 +1012,65 @@
   position: absolute;
   right: 88px;
   width: 250px;
-  .not_user {
+  cursor: pointer;
+  font-style: oblique;
+  .no-select;
+  .your_account {
     position: absolute;
     left: 0px;
     font-size: 12px;
     text-align: right;
     font-weight: bold;
-    .current_user_sign_out {
-      margin-left: 4px;
-      text-decoration: none;
-      color: #00F;
-    }
+    background-image: url("/images/downward_triangle.png");
+    background-repeat: no-repeat;
+    background-position: 81px 4px;
+    padding-right: 20px;
+    font-style: normal;
   }
   #CurrentUserGreeting {
     display: inline-block;
   }
-  #MyAccount {
-    position: absolute;
-    top: 0px;
-    right : 0px;
-    display: inline-block;
-    .button;
+}
+
+#AccountOptionsWrapper {
+  position: fixed;
+  right: 0px;
+  top: 46px;
+  z-index: 99;
+  width: 156px;
+  right: 190px;
+
+  .aeon-round-bottom;
+  padding: 2px;
+  .aeon-shadow;
+  border: 1px solid #a5a5a5;
+
+  //background-color: #ececec;
+
+  background: rgb(252,252,252); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgba(252,252,252,1) 7%, rgba(237,237,237,1) 85%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(7%,rgba(252,252,252,1)), color-stop(85%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 7%,rgba(237,237,237,1) 85%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgba(252,252,252,1) 7%,rgba(237,237,237,1) 85%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgba(252,252,252,1) 7%,rgba(237,237,237,1) 85%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgba(252,252,252,1) 7%,rgba(237,237,237,1) 85%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+  #AccountOptions {
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 16px;
+    .account_option_listing {
+      margin-top: 8px;
+      margin-bottom: 8px;
+
+      a {
+        text-decoration: none;
+        color: #555;
+        border-bottom: 1px solid #8b8b8b;
+      }
+
+    }
   }
 
 }
@@ -1064,7 +1102,7 @@
   position: fixed;
   right: 0px;
   top: 46px;
-  z-index: 99;
+  z-index: 98;
 
   .aeon-round-bottom;
   padding: 24px;
@@ -1307,6 +1345,18 @@
     width: 642px;
     padding-bottom: 24px;
     .center-margins;
+
+    #SignUpErrors {
+      border: 1px solid #990000;
+      padding: 24px;
+      .aeon-round;
+      li {
+        color: #900;
+        width: 250px;
+        .center-margins;
+      }
+    }
+
     .field_wrapper {
       margin-bottom: 8px;
     }
@@ -1327,6 +1377,13 @@
     #UserSessionEmail {
 
     }
+
+    #AdditionalFieldsForSignup {
+      label, input {
+        margin-bottom: 8px;
+      }
+    }
+
     #ForgotPasswordWrapper {
       text-align: left;
       margin-left: 212px;
@@ -1905,3 +1962,4 @@
   color: #8b8b8b;
   border-bottom: 1px solid #ccc;
 }
+

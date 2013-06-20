@@ -6,6 +6,7 @@ class Storefront < ActiveRecord::Base
   has_many :addresses
   has_many :stripe_cards
   has_many :storefront_presences
+  has_many :orders
   attr_accessible :billing_user_id, :default_currency, :default_language, :description, :inactive, :title, :url
 
   def self.bootstrap_dev
@@ -211,6 +212,55 @@ class Storefront < ActiveRecord::Base
     end
 
     return new_shipping_options_array
+
+  end
+
+  def charge_stripe_card_for_order(stripe_card, order)
+    if self.stripe_secret.blank?
+      return "Storefront #{self.id} is missing Stripe Secret!"
+    end
+
+    uri = "https://api.stripe.com/v1/charges"
+    auth = {:username => self.stripe_secret, :password => "password"}
+
+    response = HTTParty.post(uri, :basic_auth => auth, :body => {:customer => stripe_card.stripe_customer_id, :amount => order.total_cents, :currency => 'usd', :description => "Payment for Order #{order.order_number} (#{order.id}) -- #{self.title} (#{self.url})" } )
+    if response.code == 200
+      pp "charge_stripe_card_for_order SUCCESS: #{JSON.parse(response.body)}"
+
+      paid = response_json['paid']
+      charge_id = response_json['id']
+      if paid == "true"
+        order.order_status = "paid"
+        order.stripe_charge_id = charge_id
+        order.save!
+        return true
+      else
+        order.destroy
+        return false
+      end
+
+    else
+      pp "charge_stripe_card_for_order FAILED with error code: #{response.code}"
+      return false
+    end
+  end
+
+  def convert_cart_to_order(cart)
+    order = self.orders.new
+    order.create_from_cart(cart)
+    if cart.alternate_payment_option.blank?
+      stripe_card = cart.user.default_stripe_card
+      charged = self.charge_stripe_card_for_order(stripe_card, order)
+      if charged
+        cart.clear
+        return true
+      else
+        return false
+      end
+    else
+      cart.clear
+      return true
+    end
 
   end
 

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  storefront_id: 1
+  order_status: MyString
+  subtotal: 1.5
+  tax: 1.5
+  total: 1.5
+  payment_method: MyString
+  notes: MyText
+  serialized_user: 
+  serialized_shipping_option: 
+  serialized_shipping_address: 
+  serialized_billing_address: 
+
+two:
+  storefront_id: 1
+  order_status: MyString
+  subtotal: 1.5
+  tax: 1.5
+  total: 1.5
+  payment_method: MyString
+  notes: MyText
+  serialized_user: 
+  serialized_shipping_option: 
+  serialized_shipping_address: 
+  serialized_billing_address: 

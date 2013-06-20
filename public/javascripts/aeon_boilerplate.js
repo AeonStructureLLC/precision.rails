@@ -1,3 +1,8 @@
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
 String.prototype.capitalize = function () {
     return this.replace(/(^|\s)([a-z])/g, function (m, p1, p2) {
         return p1 + p2.toUpperCase();

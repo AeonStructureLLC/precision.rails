@@ -52,12 +52,13 @@
       }
     });
 
-    $(document).off('click', '#MyAccount');
-    $(document).on('click', '#MyAccount', function(){
-      var my_account_modal = $("#MyAccountModal");
-      if(my_account_modal.hasClass('hidden')){
-        my_account_modal.removeClass('hidden');
-        $("#AeonModalBlocker").removeClass('hidden');
+    $(document).off('click', '#UserControls');
+    $(document).on('click', '#UserControls', function(){
+      var menu = $("#AccountOptionsWrapper");
+      if(menu.hasClass('hidden')){
+        menu.removeClass('hidden');
+      } else {
+        menu.addClass('hidden');
       }
     });
 
@@ -102,6 +103,15 @@
 <body>
 
 <%= render :partial => '/shared/navigation' %>
+
+<div id="AccountOptionsWrapper" class="hidden">
+  <ul id="AccountOptions">
+    <li class="account_option_listing"><a href="/account_settings">Account Settings</a></li>
+    <li class="account_option_listing"><a href="/my_orders">My Orders</a></li>
+    <li class='account_option_listing'><a href="/users/sign_out" class="current_user_sign_out" data-method="delete" rel="nofollow">Sign Out</a></li>
+  </ul>
+</div>
+
 <div id="CurrentCartWrapper" class="hidden">
   <div id="CartItemList">
     <%= render :partial => '/carts/cart_item_list' %>

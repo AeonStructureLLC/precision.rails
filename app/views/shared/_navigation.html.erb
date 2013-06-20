@@ -23,16 +23,12 @@
 
 <div id="Navigation">
   <div id="UserControls" class="<%= user_controls_visibility %>">
-      <div id="CurrentUserGreeting">
-        <%= greeting %>
-      </div>
-    <div id="MyAccount" class="my_account">
-      My Account
+    <div id="CurrentUserGreeting">
+      <%= greeting %>
     </div>
-      <div class='not_user'>
-        Not <%= current_user.firstname %>?<a href="/users/sign_out" class="current_user_sign_out" data-method="delete" rel="nofollow">Sign Out</a>
-      </div>
-
+    <div class='your_account'>
+      Your Account
+    </div>
   </div>
   <div id="AnonymousControls" class="<%= anonymous_controls_visibility %>">
     <div id="CurrentUserGreeting">
@@ -43,8 +39,4 @@
     </div>
   </div>
   <div id="CurrentCart"><div id="CartItemsCount">0</div></div>
-</div>
-
-<div id="MyAccountModal" class="hidden aeon_modal">
-  <%= render :partial => "/users/myaccount" %>
 </div>

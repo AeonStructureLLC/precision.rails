@@ -5,13 +5,27 @@ class Cart < ActiveRecord::Base
   has_many :cart_shipping_options
   attr_accessible :storefront_id, :user_id
 
+  def clear
+    self.cart_items.destroy_all
+    self.cart_shipping_options.destroy_all
+    self.alternate_payment_option = ""
+    self.save!
+  end
+
   def subtotal
-    subtotal = 0
+    subtotal = 0.0
     self.cart_items.each do |ci|
       p = Product.find(ci.product_id)
       subtotal = subtotal + (p.price * ci.quantity)
     end
     return subtotal
+  end
+
+  def tax
+    tax = 0.0
+    shipping_address = self.user.addresses.select{|o| o.shipping}.first
+    tax_rate = self.storefront.get_tax_rate_for_zip(shipping_address.postal_code)
+    return (self.subtotal * (tax_rate / 100)).round(2)
   end
 
   def item_count
@@ -23,7 +37,7 @@ class Cart < ActiveRecord::Base
   end
 
   def weight
-    weight = 0
+    weight = 0.0
     self.cart_items.each do |ci|
       p = Product.find(ci.product_id)
       weight = weight + (p.weight * ci.quantity)
