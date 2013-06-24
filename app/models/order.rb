@@ -70,5 +70,10 @@ class Order < ActiveRecord::Base
     return (self.total * 100).to_i
   end
 
+  def order_date
+    date = self.created_at.to_date
+    return date.strftime("%B #{date.day.ordinalize}, %Y")
+  end
+
 
 end

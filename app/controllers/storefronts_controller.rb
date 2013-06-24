@@ -36,4 +36,10 @@ class StorefrontsController < ApplicationController
     storefront.inactive = true
     storefront.save!
   end
+
+
+  def my_orders
+    @orders = Order.where(:storefront_id => @storefront.id, :user_id => current_user.id)
+  end
+
 end

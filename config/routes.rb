@@ -28,6 +28,10 @@ PrecisionRails::Application.routes.draw do
   match 'select_shipping_option' => 'carts#select_shipping_option'
   match 'set_alternate_payment_option' => 'carts#set_alternate_payment_option'
 
+  resources :orders
+  resource :order
+  match 'my_orders' => 'storefronts#my_orders'
+
   resources :addresses
   match 'set_default_shipping_address' => 'registrations#set_default_shipping_address'
   match 'set_default_billing_address' => 'registrations#set_default_billing_address'
