@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130620202140) do
+ActiveRecord::Schema.define(:version => 20130625172027) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -249,20 +249,21 @@ ActiveRecord::Schema.define(:version => 20130620202140) do
     t.string   "title"
     t.text     "description"
     t.string   "url"
-    t.boolean  "inactive",         :default => false
-    t.string   "default_language", :default => "en-US"
-    t.string   "default_currency", :default => "USD"
+    t.boolean  "inactive",             :default => false
+    t.string   "default_language",     :default => "en-US"
+    t.string   "default_currency",     :default => "USD"
     t.integer  "billing_user_id"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "stripe_secret"
     t.string   "stripe_publish"
-    t.boolean  "cod_enabled",      :default => false
+    t.boolean  "cod_enabled",          :default => false
     t.text     "cod_details"
-    t.boolean  "check_enabled",    :default => false
+    t.boolean  "check_enabled",        :default => false
     t.text     "check_details"
-    t.boolean  "phone_enabled",    :default => false
+    t.boolean  "phone_enabled",        :default => false
     t.text     "phone_details"
+    t.text     "invoice_contact_info"
   end
 
   add_index "storefronts", ["billing_user_id"], :name => "index_storefronts_on_billing_user_id"

@@ -12,6 +12,7 @@ class Order < ActiveRecord::Base
   end
 
   def create_from_cart(cart)
+    User
     user = cart.user
     shipping_option = cart.cart_shipping_options.select{|o| o.selected}.first
     shipping_address = user.addresses.select{|o| o.shipping}.first
@@ -62,6 +63,7 @@ class Order < ActiveRecord::Base
 
   def user
     User
+    StripeCard
     Address
     return Marshal::load(self.serialized_user)
   end

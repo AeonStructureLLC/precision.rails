@@ -39,7 +39,19 @@ class StorefrontsController < ApplicationController
 
 
   def my_orders
-    @orders = Order.where(:storefront_id => @storefront.id, :user_id => current_user.id)
+    order_number = params[:order_number]
+    if order_number.blank?
+      @orders = Order.where(:storefront_id => @storefront.id, :user_id => current_user.id)
+      render 'storefronts/my_orders'
+    else
+      @order = Order.where(:storefront_id => @storefront.id, :user_id => current_user.id, :order_number => order_number).first
+      if @order.blank?
+        redirect_to "/my_orders"
+      else
+        @page_title = "#{@storefront.title} - Invoice #{@order.order_number}"
+        render 'storefronts/invoice'
+      end
+    end
   end
 
 end

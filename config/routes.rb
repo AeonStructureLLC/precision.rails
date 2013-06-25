@@ -31,6 +31,7 @@ PrecisionRails::Application.routes.draw do
   resources :orders
   resource :order
   match 'my_orders' => 'storefronts#my_orders'
+  match 'my_orders/:order_number' => 'storefronts#my_orders'
 
   resources :addresses
   match 'set_default_shipping_address' => 'registrations#set_default_shipping_address'

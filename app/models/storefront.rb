@@ -225,11 +225,12 @@ class Storefront < ActiveRecord::Base
 
     response = HTTParty.post(uri, :basic_auth => auth, :body => {:customer => stripe_card.stripe_customer_id, :amount => order.total_cents, :currency => 'usd', :description => "Payment for Order #{order.order_number} (#{order.id}) -- #{self.title} (#{self.url})" } )
     if response.code == 200
-      pp "charge_stripe_card_for_order SUCCESS: #{JSON.parse(response.body)}"
+      response_json = JSON.parse(response.body)
+      pp "charge_stripe_card_for_order SUCCESS: #{response_json}"
 
       paid = response_json['paid']
       charge_id = response_json['id']
-      if paid == "true"
+      if paid == true
         order.order_status = "paid"
         order.stripe_charge_id = charge_id
         order.save!

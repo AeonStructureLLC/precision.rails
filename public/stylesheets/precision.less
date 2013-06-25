@@ -1966,7 +1966,8 @@
 #MyOrdersListWrapper {
   width: 760px;
   .center-margins;
-
+  margin-top: 72px;
+  position: relative;
   .order_detail {
     display: inline-block;
     text-align: center;
@@ -1990,13 +1991,228 @@
   }
 
   #MyOrdersHeader {
-    width: 690px;
-    border: 1px solid #000;
+    width: 700px;
+    .center-margins;
+    position: absolute;
+    margin-left: 30px;
+    border: 1px solid #8b8b8b;
+    .aeon-round;
+    .aeon-shadow;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffffff 0%, #fafafa 47%, #f5f5f5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#fafafa), color-stop(100%,#f5f5f5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#fafafa 47%,#f5f5f5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffffff 0%,#fafafa 47%,#f5f5f5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffffff 0%,#fafafa 47%,#f5f5f5 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffffff 0%,#fafafa 47%,#f5f5f5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f5f5f5',GradientType=0 ); /* IE6-9 */
+
+    .order_detail {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
   }
 
   #MyOrdersList {
+    width: 690px;
+    .center-margins;
+    //border: 1px solid #8b8b8b;
+    padding-top: 52px;
     .order_listing {
+      //border: 1px solid #8b8b8b;
+      border-bottom: 1px solid #8b8b8b;
+      border-right: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      //.aeon-round;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      margin-top: 1px;
+      margin-bottom: 1px;
+      //box-shadow:inset 0px 0px 6px -1px #8b8b8b;
+    }
+    .order_listing:nth-child(odd){
+      background: #f9fdff; /* Old browsers */
+      background: -moz-linear-gradient(top,  #f9fdff 0%, #f6fcfe 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9fdff), color-stop(100%,#f6fcfe)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #f9fdff 0%,#f6fcfe 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #f9fdff 0%,#f6fcfe 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #f9fdff 0%,#f6fcfe 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #f9fdff 0%,#f6fcfe 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9fdff', endColorstr='#f6fcfe',GradientType=0 ); /* IE6-9 */
 
+    }
+    .order_listing:nth-child(even){
+      background: #ebf8ff; /* Old browsers */
+      background: -moz-linear-gradient(top,  #ebf8ff 0%, #ebf9fd 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf8ff), color-stop(100%,#ebf9fd)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #ebf8ff 0%,#ebf9fd 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #ebf8ff 0%,#ebf9fd 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #ebf8ff 0%,#ebf9fd 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #ebf8ff 0%,#ebf9fd 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf8ff', endColorstr='#ebf9fd',GradientType=0 ); /* IE6-9 */
+
+    }
+  }
+}
+
+#InvoiceWrapper {
+  position: relative;
+  width: 790px;
+  //border: 3px solid #000;
+  .center-margins;
+  .info_header {
+    font-weight: bold;
+    text-indent: -4px;
+  }
+  #StorefrontInfoWrapper {
+    //border: 2px solid #000;
+    display: block;
+    padding: 12px;
+    float: left;
+  }
+  #CustomerInfoWrapper {
+    //border: 2px solid #000;
+    display: block;
+    padding: 12px;
+    float: left;
+    clear: left;
+  }
+  #InvoiceInfoWrapper {
+    //border: 2px solid #000;
+    display: block;
+    padding: 12px;
+    float: right;
+    clear: right;
+    margin-top: -100px;
+  }
+  #OrderItemsWrapper {
+    border: 3px solid #000;
+    float: left;
+    clear: both;
+    margin-top: 12px;
+    width: 784px;
+    .quantity {
+      margin: 0;
+      margin-right: -4px;
+      display: inline-block;
+      width: 90px;
+      text-align: center;
+      border: 1px solid #999;
+      padding-bottom: 4px;
+      padding-top: 4px;
+      //border-left: 3px solid #000;
+    }
+    .item {
+      margin: 0;
+      margin-right: -4px;
+      display: inline-block;
+      width: 506px;
+      text-align: center;
+      padding-bottom: 4px;
+      padding-top: 4px;
+      border: 1px solid #999;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .each {
+      margin: 0;
+      margin-right: -4px;
+      display: inline-block;
+      width: 84px;
+      padding-right: 6px;
+      text-align: center;
+      padding-bottom: 4px;
+      padding-top: 4px;
+      border: 1px solid #999;
+    }
+    .amount {
+      margin: 0;
+      margin-right: -4px;
+      display: inline-block;
+      width: 84px;
+      padding-right: 6px;
+      text-align: center;
+      border: 1px solid #999;
+      padding-bottom: 4px;
+      padding-top: 4px;
+      //border-right: 3px solid #000;
+    }
+    #OrderItemsHeader {
+      //width: 776px;
+      .quantity, .item, .each, .amount {
+        border-bottom: 2px solid #000;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        font-weight: bold;
+        background-color: #eee;
+      }
+    }
+    .order_item_listing {
+      .each, .amount {
+        text-align: right;
+
+      }
+    }
+  }
+  #InvoiceTotalsWrapper {
+    //display: none;
+    float: right;
+    label {
+      width: 80px;
+      display: inline-block;
+      text-align: right;
+      padding-right: 12px;
+      margin-right: 1px;
+      background-color: #eee;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+    span {
+      width: 81px;
+      display: inline-block;
+      text-align: right;
+      padding-right: 9px;
+    }
+    .invoice_total_wrapper {
+      border-bottom: 1px solid #999;
+      border-right: 3px solid #000;
+      border-left: 3px solid #000;
+    }
+    .total {
+      font-weight: bold;
+      border-bottom: 3px solid #000;
+    }
+  }
+  #AdditionalInfoWrapper {
+    //display: none;
+    float: left;
+    clear: both;
+    position: relative;
+    border: 1px solid #000;
+    width: 764px;
+    padding: 12px;
+    margin-top: 24px;
+    #AdditionalInfo {
+      width: 100%;
+      border-collapse: collapse;
+      thead {
+
+        th {
+          //text-decoration: underline;
+        }
+      }
+      td {
+        width: 50%;
+        padding: 8px;
+        border-top: 1px solid #ccc;
+      }
+      #PaymentDetailsWrapper {
+        border-right: 1px solid #ddd;
+      }
     }
   }
 }

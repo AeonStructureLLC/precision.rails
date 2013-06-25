@@ -1,7 +1,15 @@
+<%
+  if @page_title.blank?
+    page_title = "PrecisionRails"
+  else
+    page_title = @page_title
+  end
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PrecisionRails</title>
+  <title><%= page_title %></title>
   <script type="text/javascript" src="/javascripts/jquery-1.7.1.min.js"></script>
   <script type="text/javascript" src="/javascripts/jquery-ui-1.9.2.custom.min.js"></script>
   <script type="text/javascript" src="/javascripts/jquery.dependClass.js"></script>

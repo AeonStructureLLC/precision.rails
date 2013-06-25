@@ -1,0 +1,81 @@
+<%
+
+   case @order.payment_method
+   when "phone"
+     payment_details = "Pay via Phone: #{@order.storefront.phone_details}"
+   when "check"
+     payment_details = "Pay via Check: #{@order.storefront.check_details}"
+   when "cod"
+    payment_details = "Pay via COD: #{@order.storefront.cod_details}"
+   else
+    payment_details = "Paid via: #{@order.payment_method}"
+   end
+
+%>
+
+<div id="InvoiceWrapper">
+  <div id="StorefrontInfoWrapper">
+    <div class="info_header"><%= @storefront.title %></div>
+    <%= @order.storefront.invoice_contact_info.html_safe %>
+  </div>
+
+  <div id="CustomerInfoWrapper">
+    <div class="info_header">Customer</div>
+    <div class="fullname"><%= @order.user.fullname %></div>
+    <div class="shipping_address">
+      <%= @order.shipping_address.address1 %><br/>
+      <% unless @order.shipping_address.address2.blank? %>
+        <%= @order.shipping_address.address2 %><br/>
+      <% end %>
+      <%= @order.shipping_address.city %>, <%= @order.shipping_address.state %> <%= @order.shipping_address.postal_code %>
+    </div>
+    <div class="phone_number"><%= @order.user.phone_number %></div>
+  </div>
+
+  <div id="InvoiceInfoWrapper">
+    <div class="info_header">Invoice</div>
+    <div class="order_number"># <%= @order.order_number %></div>
+    <div class="order_date"><%= @order.order_date %></div>
+  </div>
+
+  <div id="OrderItemsWrapper">
+    <div id="OrderItemsHeader">
+      <div class="quantity">Quantity</div>
+      <div class="item">Item</div>
+      <div class="each">Each</div>
+      <div class="amount">Amount</div>
+    </div>
+    <% @order.order_items.each do |order_item| %>
+      <div class="order_item_listing">
+        <div class="quantity"><%= order_item.quantity %></div>
+        <div class="item"><%= order_item.product.title %></div>
+        <div class="each"><%= number_to_currency(order_item.product.price) %></div>
+        <div class="amount"><%= number_to_currency(order_item.product.price * order_item.quantity) %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="InvoiceTotalsWrapper">
+    <div class="invoice_total_wrapper subtotal"><label>Subtotal</label><span><%= number_to_currency(@order.subtotal) %></span></div>
+    <div class="invoice_total_wrapper tax"><label>Tax</label><span><%= number_to_currency(@order.tax) %></span></div>
+    <div class="invoice_total_wrapper shipping"><label>Shipping</label><span><%= number_to_currency(@order.shipping_option.cost) %></span></div>
+    <div class="invoice_total_wrapper total"><label>Total</label><span><%= number_to_currency(@order.total) %></span></div>
+  </div>
+
+  <div id="AdditionalInfoWrapper">
+    <table id="AdditionalInfo">
+      <thead>
+      <th>Payment Details</th>
+      <th>Tracking</th>
+      </thead>
+      <tr>
+        <td id="PaymentDetailsWrapper">
+          <%= payment_details %>
+        </td>
+        <td id="TrackingWrapper"></td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
