@@ -37,6 +37,15 @@ class StorefrontsController < ApplicationController
     storefront.save!
   end
 
+  def convert_cart_to_order
+    converted = @storefront.convert_cart_to_order(@cart)
+    if converted
+      render :nothing => true, :status => 200
+    else
+      render :nothing => true, :status => 402
+    end
+  end
+
 
   def my_orders
     order_number = params[:order_number]

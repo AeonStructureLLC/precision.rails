@@ -73,7 +73,7 @@
   </div>
   <% end %>
 
-  <a id="ReviewAndAuthorizeButton"  class="" href="#">Review & Authorize</a>
+  <div id="AuthorizeButton"  class="hidden">Authorize Transaction</div>
 </div>
 
 <div id="AddAddressModal" class="aeon_modal hidden">
@@ -223,6 +223,38 @@
     $("#SignUpButton").addClass('hidden');
     $("#AdditionalFieldsForSignup").addClass('hidden');
     $('#SignUpErrors').html('').addClass('hidden');
+  }
+
+  function authorizeTransaction(){
+    var authorize_button = $("#AuthorizeButton");
+    authorize_button.removeClass('authorizable').addClass('authorizing');
+    authorize_button.html("<img class='loading_spinner' src='/images/spinner.gif'>");
+    $.ajax({
+      url: "/convert_cart_to_order",
+      dataType: 'json',
+      statusCode: {
+        200: function(){
+          location = "/my_orders";
+        },
+        402: function(){
+          authorize_button.removeClass('authorizing').addClass('authorizable');
+          authorize_button.text("Authorize Transaction");
+          alert("We were unable to process your payment. Please select a different payment method.");
+        }
+      }
+    });
+  }
+
+  function enableAuthorization(){
+    var authorize_button = $("#AuthorizeButton");
+    var shipping_option = $(".shipping_option_listing.selected");
+    var stripe_card = $(".stripe_card_listing.default_true");
+    var alternate_payment_option = $(".alternate_payment_option_listing.selected");
+    if( (shipping_option.length > 0) && ( (stripe_card.length > 0) || (alternate_payment_option.length >0) )) {
+      authorize_button.removeClass('hidden').addClass('authorizable');
+    } else {
+      authorize_button.removeClass('authorizable').addClass('hidden');
+    }
   }
 
   $(document).off('click', '#CurrentCart');
@@ -389,8 +421,10 @@
         url: "/set_default_stripe_card",
         data: params,
         dataType: 'json',
-        success: function(data){
-          console.log("Default Stripe Card Updated.");
+        statusCode: {
+          200: function(){
+            enableAuthorization();
+          }
         }
       });
     }
@@ -488,6 +522,7 @@
         success: function(data){
           CartShippingCost = data.cost;
           updateItemCountAndSubtotal();
+          enableAuthorization();
         }
       });
     }
@@ -513,8 +548,10 @@
         url: "/set_alternate_payment_option",
         data: params,
         dataType: 'json',
-        success: function(data){
-          console.log(data);
+        statusCode: {
+          200: function(){
+            enableAuthorization();
+          }
         }
       });
     }
@@ -591,6 +628,13 @@
       });
     }
   });
+
+  $(document).off('click', '.authorizable');
+  $(document).on('click', '.authorizable', function(e){
+    authorizeTransaction();
+  });
+
+
 
   $(document).ready(function(){
     $("#StripeCardErrors").hide();

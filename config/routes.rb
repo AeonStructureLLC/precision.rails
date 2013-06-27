@@ -27,6 +27,7 @@ PrecisionRails::Application.routes.draw do
   match 'update_quantity_in_cart' => 'carts#update_quantity_in_cart', :as => 'update_quantity_in_cart'
   match 'select_shipping_option' => 'carts#select_shipping_option'
   match 'set_alternate_payment_option' => 'carts#set_alternate_payment_option'
+  match 'convert_cart_to_order' => 'storefronts#convert_cart_to_order'
 
   resources :orders
   resource :order

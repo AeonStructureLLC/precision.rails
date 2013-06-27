@@ -2,6 +2,7 @@ class Order < ActiveRecord::Base
   belongs_to :storefront
   belongs_to :user
   has_many :order_items
+  default_scope order("order_number DESC")
   after_create :setup_defaults
   attr_accessible :notes, :order_number, :order_status, :payment_method, :serialized_billing_address, :serialized_shipping_address, :serialized_shipping_option, :serialized_user, :storefront_id, :subtotal, :tax, :total
 
