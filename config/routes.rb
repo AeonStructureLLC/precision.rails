@@ -29,10 +29,10 @@ PrecisionRails::Application.routes.draw do
   match 'set_alternate_payment_option' => 'carts#set_alternate_payment_option'
   match 'convert_cart_to_order' => 'storefronts#convert_cart_to_order'
 
-  resources :orders
-  resource :order
   match 'my_orders' => 'storefronts#my_orders'
   match 'my_orders/:order_number' => 'storefronts#my_orders'
+  match 'orders' => 'storefronts#orders'
+  match 'orders/:order_number' => 'storefronts#orders'
 
   resources :addresses
   match 'set_default_shipping_address' => 'registrations#set_default_shipping_address'

@@ -3,6 +3,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_many :order_items
   default_scope order("order_number DESC")
+  paginates_per 50
   after_create :setup_defaults
   attr_accessible :notes, :order_number, :order_status, :payment_method, :serialized_billing_address, :serialized_shipping_address, :serialized_shipping_option, :serialized_user, :storefront_id, :subtotal, :tax, :total
 
@@ -76,6 +77,11 @@ class Order < ActiveRecord::Base
   def order_date
     date = self.created_at.to_date
     return date.strftime("%B #{date.day.ordinalize}, %Y")
+  end
+
+  def update_customer_fullname
+    self.customer_fullname = self.user.fullname
+    self.save!
   end
 
 

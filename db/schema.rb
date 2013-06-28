@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130625172027) do
+ActiveRecord::Schema.define(:version => 20130628181834) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -207,7 +207,10 @@ ActiveRecord::Schema.define(:version => 20130625172027) do
     t.integer  "order_number"
     t.integer  "user_id"
     t.string   "stripe_charge_id"
+    t.string   "customer_fullname"
   end
+
+  add_index "orders", ["customer_fullname"], :name => "index_orders_on_customer_fullname"
 
   create_table "product_addons", :force => true do |t|
     t.integer  "product_id"

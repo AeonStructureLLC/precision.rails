@@ -1,0 +1,26 @@
+<div id="OrdersListWrapper">
+  <div id="OrdersHeader">
+    <div class="order_detail order_date">Order Placed</div>
+    <div class="order_detail order_number">Order #</div>
+    <div class="order_detail order_total">Total</div>
+    <div class="order_detail customer_fullname">Customer</div>
+    <div class="order_detail order_status">Status</div>
+    <div class="order_detail order_details_link"></div>
+  </div>
+  <div id="OrdersList">
+    <% @orders.each do |order| %>
+      <div class="order_listing" model_root="true" model="order" model_id="<%= order.id %>">
+        <div class="order_detail order_date"><%= order.order_date %></div>
+        <div class="order_detail order_number"><%= order.order_number %></div>
+        <div class="order_detail order_total"><%= number_to_currency(order.total) %></div>
+        <div class="order_detail customer_fullname"><%= order.customer_fullname %></div>
+        <div class="order_detail order_status"><%= order.order_status.upcase %></div>
+        <a class="order_detail order_details_link" href="/orders/<%= order.order_number %>">Details</a>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="pagination_wrapper">
+  <%= paginate @orders %>
+</div>
