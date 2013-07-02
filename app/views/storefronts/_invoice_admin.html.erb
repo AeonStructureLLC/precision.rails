@@ -1,0 +1,128 @@
+<%
+   selected = {
+     :pending_payment => "",
+     :paid => "",
+     :canceled => "",
+     :refunded => "",
+     :review => ""
+   }
+
+   if @order.order_status
+     selected["#{@order.order_status}"] = "selected"
+   end
+%>
+
+<% unless @order.stripe_charge_id.blank? %>
+  <div id="StripeChargeWrapper">
+    <a class="stripe-connect light-blue dark view_stripe_charge" target="_blank" href="https://manage.stripe.com/test/payments/<%= @order.stripe_charge_id %>"><span>View Stripe Charge</span></a>
+  </div>
+<% end %>
+
+<div id="InvoiceAdminWrapper">
+
+  <div id="InvoiceAdmin" order_id="<%= @order.id %>">
+
+    <div id="OrderStatusWrapper">
+      <div id="OrderStatus" class="aeon_lozenge_menu">
+        <div class="order_status_selector aeon_lozenge aeon_lozenge_left <%= selected["pending_payment"] %>" order_status="pending_payment">Pending Payment</div>
+        <div class="order_status_selector aeon_lozenge <%= selected["paid"] %>" order_status="paid">Paid</div>
+        <div class="order_status_selector aeon_lozenge <%= selected["canceled"] %>" order_status="canceled">Canceled</div>
+        <div class="order_status_selector aeon_lozenge <%= selected["refunded"] %>" order_status="refunded">Refunded</div>
+        <div class="order_status_selector aeon_lozenge aeon_lozenge_right <%= selected["review"] %>" order_status="review">Review</div>
+      </div>
+    </div>
+
+    <div id="NewShipmentWrapper">
+      <div id="NewShipment">
+
+        <div id="NewShipmentProviderWrapper">
+          <div id="NewShipmentProvider" class="aeon_lozenge_menu">
+            <div class="shipment_provider_selector aeon_lozenge aeon_lozenge_left" provider="ups">UPS</div>
+            <div class="shipment_provider_selector aeon_lozenge" provider="fedex">FEDEX</div>
+            <div class="shipment_provider_selector aeon_lozenge aeon_lozenge_right" provider="usps">USPS</div>
+          </div>
+        </div>
+
+        <input type="text" id="NewShipmentTrackingNumber" class="disabled" placeholder="Tracking Number" disabled />
+
+        <div id="AddNewShipmentButton">Add Shipment</div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).off('click', ".order_status_selector");
+  $(document).on('click', ".order_status_selector", function(){
+    var self = $(this);
+    $(".order_status_selector").removeClass('selected');
+    self.addClass('selected');
+    var order_id = $("#InvoiceAdmin").attr('order_id');
+    var order_status = self.attr('order_status');
+    var params = {
+        order_id: order_id,
+        order_status: order_status
+    }
+    $.ajax({
+      url: "/change_order_status.json",
+      dataType: "json",
+      type: "PUT",
+      data: params,
+      success: function(data){
+        console.log("Updated Order: ", data);
+      }
+    });
+  });
+
+  $(document).off('click', ".shipment_provider_selector");
+  $(document).on('click', ".shipment_provider_selector", function(){
+    var self = $(this);
+    $(".shipment_provider_selector").removeClass('selected');
+    self.addClass('selected');
+    $("#NewShipmentTrackingNumber").removeAttr('disabled').removeClass('disabled');
+    $("#AddNewShipmentButton").addClass('can_add_shipment');
+  });
+
+  $(document).off('click', ".can_add_shipment");
+  $(document).on('click', ".can_add_shipment", function(){
+    var self = $(this);
+    self.removeClass('can_add_shipment');
+    var order_id = $("#InvoiceAdmin").attr('order_id');
+    var provider = $(".shipment_provider_selector.selected").attr('provider') || "";
+    var tracking_number = $("#NewShipmentTrackingNumber").val() || "";
+    var params = {
+      order_id: order_id,
+      shipment: {
+        provider: provider,
+        tracking_number: tracking_number
+      }
+    }
+
+    if( (provider.length > 0) && (tracking_number.length >0) ){
+      $.ajax({
+        url: "/add_shipment_to_order.json",
+        dataType: "json",
+        type: "PUT",
+        data: params,
+        success: function(data){
+          console.log(data);
+          $(".shipment_provider_selector").removeClass('selected');
+          $("#NewShipmentTrackingNumber").attr('disabled', "true").addClass('disabled').attr('value', "");
+        },
+        error: function(data){
+          console.log(data);
+          $(".shipment_provider_selector").removeClass('selected');
+          $("#NewShipmentTrackingNumber").attr('disabled', "true").addClass('disabled').attr('value', "");
+        }
+      });
+    } else {
+      console.log("NO!");
+      self.addClass('can_add_shipment');
+      return false
+    }
+
+  });
+
+</script>

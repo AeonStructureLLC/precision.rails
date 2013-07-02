@@ -79,4 +79,22 @@ class StorefrontsController < ApplicationController
     end
   end
 
+  def change_order_status
+    order = Order.find(params[:order_id])
+    order.order_status = params[:order_status]
+    order.save!
+    return_json = {}
+    return_json['order_status'] = order.order_status
+    render json: return_json
+  end
+
+  def add_shipment_to_order
+    order = Order.find(params[:order_id])
+    shipment = order.shipments.new
+    shipment.provider = params[:shipment][:provider]
+    shipment.tracking_number = params[:shipment][:tracking_number]
+    shipment.save!
+    render json: shipment
+  end
+
 end

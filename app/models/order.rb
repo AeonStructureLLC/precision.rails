@@ -2,6 +2,7 @@ class Order < ActiveRecord::Base
   belongs_to :storefront
   belongs_to :user
   has_many :order_items
+  has_many :shipments
   default_scope order("order_number DESC")
   paginates_per 50
   after_create :setup_defaults

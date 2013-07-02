@@ -49,6 +49,8 @@ PrecisionRails::Application.routes.draw do
   match 'checkout_list' => 'checkouts#checkout_list', :as => 'checkout_list'
   match "get_tax_rate_for_zip" => "storefronts#get_tax_rate_for_zip"
   match 'get_shipping_options_for_cart' => 'storefronts#get_shipping_options_for_cart'
+  match 'change_order_status' => 'storefronts#change_order_status'
+  match 'add_shipment_to_order' => 'storefronts#add_shipment_to_order'
 
   match 'check_registration' => 'registrations#check_registration', :as => 'check_registration'
 
