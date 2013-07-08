@@ -1,0 +1,11 @@
+<ul id="OrderShipmentList">
+  <% shipments.each do |shipment| %>
+    <li class="shipment_listing" model_root="true" model="shipment" model_id="<%= shipment.id %>">
+      <div class="provider"><%= shipment.provider.upcase %></div>
+      <a class="tracking_link" href="<%= shipment.tracking_url %>" target="_blank"><%= shipment.tracking_number %></a>
+      <%if @storefront.user_is_admin(current_user) %>
+        <div class="remove_shipment_button">Remove</div>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

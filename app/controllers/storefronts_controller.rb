@@ -94,7 +94,18 @@ class StorefrontsController < ApplicationController
     shipment.provider = params[:shipment][:provider]
     shipment.tracking_number = params[:shipment][:tracking_number]
     shipment.save!
+    render :partial => 'storefronts/order_shipments', :locals => { :shipments => order.shipments }
+  end
+
+  def remove_shipment
+    shipment = Shipment.find(params[:shipment_id])
+    @storefront.remove_shipment(shipment)
     render json: shipment
+  end
+
+  def render_shipments_for_order
+    order = Order.find(params[:order_id])
+    render :partial => 'storefronts/order_shipments', :locals => { :shipments => order.shipments }
   end
 
 end

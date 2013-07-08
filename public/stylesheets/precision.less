@@ -2640,6 +2640,40 @@ only screen and (min-device-pixel-ratio: 1.5) {
   }
 }
 
+#TrackingWrapper {
+  #OrderShipmentList {
+    list-style: square;
+    padding: 0;
+    padding-left: 24px;
+    .shipment_listing {
+      margin-top: 8px;
+      margin-bottom: 8px;
+
+      .provider {
+        display: inline-block;
+        width: 55px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: left;
+        border-right: 1px solid #ccc;
+      }
+      .tracking_link {
+        display: inline-block;
+        width: 200px;
+        text-align: left;
+        text-indent: 6px;
+      }
+      .remove_shipment_button {
+        .button;
+        display: inline-block;
+        font-size: 14px;
+        margin-left: 4px;
+
+      }
+    }
+  }
+}
+
 .disabled {
   opacity: 0.5;
 }

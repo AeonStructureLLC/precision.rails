@@ -7,6 +7,7 @@ class Storefront < ActiveRecord::Base
   has_many :stripe_cards
   has_many :storefront_presences
   has_many :orders
+  has_many :storefront_admins
   attr_accessible :billing_user_id, :default_currency, :default_language, :description, :inactive, :title, :url
 
   def self.bootstrap_dev
@@ -263,6 +264,21 @@ class Storefront < ActiveRecord::Base
       return true
     end
 
+  end
+
+  def user_is_admin(user)
+    admin_check = self.storefront_admins.select{|o| o.user_id == user.id}
+    if admin_check.blank?
+      return false
+    else
+      return true
+    end
+  end
+
+  def remove_shipment(shipment)
+    if shipment.order.storefront == self
+      shipment.destroy
+    end
   end
 
 end

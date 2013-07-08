@@ -73,12 +73,14 @@
           <%= payment_details %>
         </td>
         <td id="TrackingWrapper">
-
+          <%= render :partial => 'storefronts/order_shipments', :locals => { :shipments => @order.shipments } %>
         </td>
       </tr>
     </table>
   </div>
-  <%= render :partial => 'storefronts/invoice_admin' %>
+  <%if @storefront.user_is_admin(current_user) %>
+    <%= render :partial => 'storefronts/invoice_admin' %>
+  <% end %>
 </div>
 
 

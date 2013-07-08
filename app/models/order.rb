@@ -47,6 +47,8 @@ class Order < ActiveRecord::Base
       order_item.save!
     end
 
+    self.update_customer_fullname
+
   end
 
   def shipping_option

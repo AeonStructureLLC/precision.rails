@@ -102,12 +102,12 @@
 
     if( (provider.length > 0) && (tracking_number.length >0) ){
       $.ajax({
-        url: "/add_shipment_to_order.json",
-        dataType: "json",
+        url: "/add_shipment_to_order",
+        dataType: "html",
         type: "PUT",
         data: params,
         success: function(data){
-          console.log(data);
+          $("#TrackingWrapper").html(data);
           $(".shipment_provider_selector").removeClass('selected');
           $("#NewShipmentTrackingNumber").attr('disabled', "true").addClass('disabled').attr('value', "");
         },
@@ -123,6 +123,27 @@
       return false
     }
 
+  });
+
+
+  $(document).off('click', ".remove_shipment_button");
+  $(document).on('click', ".remove_shipment_button", function(){
+    var self = $(this);
+    var model_root = self.closest("[model_root]");
+    var shipment_id = model_root.attr('model_id');
+    model_root.remove();
+    var params = {
+      shipment_id: shipment_id
+    }
+    $.ajax({
+      url: '/remove_shipment',
+      dataType: 'json',
+      type: 'DELETE',
+      data: params,
+      success: function(data){
+        console.log("Removed Shipment: ", data);
+      }
+    });
   });
 
 </script>
