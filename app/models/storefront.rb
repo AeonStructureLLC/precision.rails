@@ -8,7 +8,6 @@ class Storefront < ActiveRecord::Base
   has_many :storefront_presences
   has_many :orders
   has_many :storefront_admins
-  attr_accessible :billing_user_id, :default_currency, :default_language, :description, :inactive, :title, :url
 
   def self.bootstrap_dev
     au = User.find_by_email("devteam@aeonstructure.com")

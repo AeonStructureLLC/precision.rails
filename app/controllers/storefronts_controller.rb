@@ -108,4 +108,20 @@ class StorefrontsController < ApplicationController
     render :partial => 'storefronts/order_shipments', :locals => { :shipments => order.shipments }
   end
 
+  def settings
+    if @storefront.user_is_admin(current_user)
+      render 'storefronts/settings'
+    else
+      redirect_to '/'
+    end
+  end
+
+  def update_storefront_settings
+    if @storefront.update_attributes(params[:storefront])
+      render json: @storefront
+    else
+      render json: @category.errors, status: :unprocessable_entity
+    end
+  end
+
 end

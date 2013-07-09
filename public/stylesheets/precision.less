@@ -2674,6 +2674,70 @@ only screen and (min-device-pixel-ratio: 1.5) {
   }
 }
 
+
+#StorefrontSettingsWrapper {
+  margin-top: 96px;
+  #StorefrontSettings {
+    .setting_field {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      label {
+        display: inline-block;
+        font-weight: bold;
+        width: 250px;
+        text-align: right;
+
+      }
+      label:after {
+        content: ":"
+      }
+
+      .setting {
+        margin-left: 24px;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px dotted #ccc;
+        width: 450px;
+        padding: 8px;
+        margin-top: -8px;
+        .aeon-round;
+      }
+    }
+
+    .has_selector {
+      .aeon_lozenge_menu_wrapper {
+        margin-left: 282px;
+        margin-top: -22px;
+        margin-bottom: 16px;
+        .aeon_lozenge_menu {
+          text-align: left;
+        }
+
+      }
+      .setting {
+        margin-left: 282px;
+      }
+    }
+
+    #StorefrontUrl:before {
+      content: "http://";
+      color: #aaa;
+      margin-right: 4px;
+    }
+
+  }
+
+  #SaveSettingsButton {
+    .button;
+    margin-left: 540px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-top: 48px;
+  }
+}
+
+
+
 .disabled {
   opacity: 0.5;
 }

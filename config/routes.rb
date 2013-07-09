@@ -52,6 +52,9 @@ PrecisionRails::Application.routes.draw do
   match 'change_order_status' => 'storefronts#change_order_status'
   match 'add_shipment_to_order' => 'storefronts#add_shipment_to_order'
   match 'remove_shipment' => 'storefronts#remove_shipment'
+  match 'settings' => 'storefronts#settings'
+  match 'update_storefront_settings' => 'storefronts#update_storefront_settings'
+
 
   match 'check_registration' => 'registrations#check_registration', :as => 'check_registration'
 

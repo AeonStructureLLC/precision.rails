@@ -1,0 +1,264 @@
+<%
+
+   if @storefront.cod_enabled
+     cod_enabled = "selected"
+     cod_disabled = ""
+     cod_details_visible = ""
+   else
+     cod_enabled = ""
+     cod_disabled = "selected"
+     cod_details_visible = "hidden"
+   end
+
+   if @storefront.check_enabled
+     check_enabled = "selected"
+     check_disabled = ""
+     check_details_visible = ""
+   else
+     check_enabled = ""
+     check_disabled = "selected"
+     check_details_visible = "hidden"
+   end
+
+   if @storefront.phone_enabled
+     phone_enabled = "selected"
+     phone_disabled = ""
+     phone_details_visible = ""
+   else
+     phone_enabled = ""
+     phone_disabled = "selected"
+     phone_details_visible = "hidden"
+   end
+
+%>
+
+<div id="StorefrontSettingsWrapper">
+  <div id="StorefrontSettings">
+
+    <div class="setting_field">
+      <label>Title</label>
+      <div contenteditable id="StorefrontTitle" class="setting" attribute_type="text" attribute_name="title">
+        <% unless @storefront.title.blank? %>
+          <%= @storefront.title %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="setting_field">
+      <label>Contact Information</label>
+      <div contenteditable id="StorefrontInvoiceContactInfo" class="setting" attribute_name="invoice_contact_info">
+        <% unless @storefront.invoice_contact_info.blank? %>
+          <%= @storefront.invoice_contact_info.html_safe %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="setting_field">
+      <label>URL</label>
+      <div contenteditable id="StorefrontUrl" class="setting" attribute_type="text" attribute_name="url">
+        <% unless @storefront.url.blank? %>
+          <%= @storefront.url %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="setting_field">
+      <label>Stripe Secret</label>
+      <div contenteditable id="StorefrontStripeSecret" class="setting" attribute_type="text" attribute_name="stripe_secret">
+        <% unless @storefront.stripe_secret.blank? %>
+          <%= @storefront.stripe_secret %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="setting_field">
+      <label>Stripe Publish</label>
+      <div contenteditable id="StorefrontStripePublish" class="setting" attribute_type="text" attribute_name="stripe_publish">
+        <% unless @storefront.stripe_publish.blank? %>
+          <%= @storefront.stripe_publish %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="setting_field has_selector">
+      <label>Accept C.O.D.</label>
+
+      <div id="CodSettingWrapper" class="aeon_lozenge_menu_wrapper">
+        <div id="CodSetting" class="aeon_lozenge_menu">
+          <div class="cod_setting_selector aeon_lozenge aeon_lozenge_left <%= cod_enabled %>" cod_enabled="true">On</div>
+          <div class="cod_setting_selector aeon_lozenge aeon_lozenge_right <%= cod_disabled %>" cod_enabled="false">Off</div>
+        </div>
+      </div>
+
+      <div contenteditable id="StorefrontCodDetails" class="setting <%= cod_details_visible %>" attribute_name="cod_details">
+        <% unless @storefront.cod_details.blank? %>
+          <%= @storefront.cod_details.html_safe %>
+        <% end %>
+      </div>
+    </div>
+
+
+    <div class="setting_field has_selector">
+      <label>Accept Checks</label>
+
+      <div id="CheckSettingWrapper" class="aeon_lozenge_menu_wrapper">
+        <div id="CheckSetting" class="aeon_lozenge_menu">
+          <div class="check_setting_selector aeon_lozenge aeon_lozenge_left <%= check_enabled %>" check_enabled="true">On</div>
+          <div class="check_setting_selector aeon_lozenge aeon_lozenge_right <%= check_disabled %>" check_enabled="false">Off</div>
+        </div>
+      </div>
+
+      <div contenteditable id="StorefrontCheckDetails" class="setting <%= check_details_visible %>" attribute_name="check_details">
+        <% unless @storefront.check_details.blank? %>
+          <%= @storefront.check_details.html_safe %>
+        <% end %>
+      </div>
+    </div>
+
+
+    <div class="setting_field has_selector">
+      <label>Accept Call-In Payments</label>
+
+      <div id="PhoneSettingWrapper" class="aeon_lozenge_menu_wrapper">
+        <div id="PhoneSetting" class="aeon_lozenge_menu">
+          <div class="phone_setting_selector aeon_lozenge aeon_lozenge_left <%= phone_enabled %>" phone_enabled="true">On</div>
+          <div class="phone_setting_selector aeon_lozenge aeon_lozenge_right <%= phone_disabled %>" phone_enabled="false">Off</div>
+        </div>
+      </div>
+
+      <div contenteditable id="StorefrontPhoneDetails" class="setting <%= phone_details_visible %>" attribute_name="phone_details">
+        <% unless @storefront.phone_details.blank? %>
+          <%= @storefront.phone_details.html_safe %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+  <div id="SaveSettingsButton" onclick="saveStorefrontSettings();">Save Settings</div>
+</div>
+
+<script type="text/javascript">
+
+
+  function saveStorefrontSettings(){
+    var button_ui = $("#SaveSettingsButton");
+
+    button_ui.html("Saving ...");
+    button_ui.addClass('disabled');
+
+    var ui = $("#StorefrontSettings");
+
+    var params = {
+      storefront: {}
+    }
+
+    var attributes = ui.find('.setting');
+    _.each(attributes, function(attribute){
+      var attribute = $(attribute);
+      var attribute_name = attribute.attr('attribute_name');
+      var attribute_type = attribute.attr('attribute_type');
+      if( attribute_type == "text" ){
+        params['storefront'][attribute_name] = attribute.text().trim();
+      } else {
+        params['storefront'][attribute_name] = attribute.html().trim();
+      }
+    });
+
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        button_ui.html("Save Settings");
+        button_ui.removeClass('disabled');
+      }
+    });
+
+  }
+
+
+  $(document).off('click', ".cod_setting_selector");
+  $(document).on('click', ".cod_setting_selector", function(){
+    var self = $(this);
+    var cod_enabled = self.attr('cod_enabled');
+    $(".cod_setting_selector").removeClass('selected');
+    self.addClass('selected');
+    if(cod_enabled == "true"){
+      $("#StorefrontCodDetails").removeClass('hidden');
+      cod_enabled = true;
+    } else {
+      $("#StorefrontCodDetails").addClass('hidden');
+      cod_enabled = false;
+    }
+    var params = {
+      storefront: {
+        cod_enabled: cod_enabled
+      }
+    }
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".check_setting_selector");
+  $(document).on('click', ".check_setting_selector", function(){
+    var self = $(this);
+    var check_enabled = self.attr('check_enabled');
+    $(".check_setting_selector").removeClass('selected');
+    self.addClass('selected');
+    if(check_enabled == "true"){
+      $("#StorefrontCheckDetails").removeClass('hidden');
+      check_enabled = true;
+    } else {
+      $("#StorefrontCheckDetails").addClass('hidden');
+      check_enabled = false;
+    }
+    var params = {
+      storefront: {
+        check_enabled: check_enabled
+      }
+    }
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".phone_setting_selector");
+  $(document).on('click', ".phone_setting_selector", function(){
+    var self = $(this);
+    var phone_enabled = self.attr('phone_enabled');
+    $(".phone_setting_selector").removeClass('selected');
+    self.addClass('selected');
+    if(phone_enabled == "true"){
+      $("#StorefrontPhoneDetails").removeClass('hidden');
+      phone_enabled = true;
+    } else {
+      $("#StorefrontPhoneDetails").addClass('hidden');
+      phone_enabled = false;
+    }
+    var params = {
+      storefront: {
+        phone_enabled: phone_enabled
+      }
+    }
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+</script>
