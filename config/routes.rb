@@ -44,6 +44,7 @@ PrecisionRails::Application.routes.draw do
 
   resources :geo_areas_importer
   resources :storefront_presences
+  resources :storefront_admins
 
 
   match 'checkout' => 'checkouts#checkout', :as => 'checkout'
@@ -57,6 +58,7 @@ PrecisionRails::Application.routes.draw do
   match 'update_storefront_settings' => 'storefronts#update_storefront_settings'
 
   match 'set_ship_from_storefront_presence' => 'storefronts#set_ship_from_storefront_presence'
+  match 'create_admin_user' => 'storefronts#create_admin_user'
 
 
   match 'check_registration' => 'registrations#check_registration', :as => 'check_registration'

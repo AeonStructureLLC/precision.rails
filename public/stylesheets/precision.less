@@ -2930,6 +2930,96 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 }
 
+#StorefrontAdminListWrapper {
+  #StorefrontAdminList {
+    width: 748px;
+    padding: 12px;
+    .storefront_admin_listing:nth-child(1) {
+      border-top: 1px solid #ddd;
+    }
+    .storefront_admin_listing {
+      border-bottom: 1px solid #ddd;
+      background: rgb(255,255,255); /* Old browsers */
+      background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(236,246,252,1) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(236,246,252,1))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,246,252,1) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,246,252,1) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(236,246,252,1) 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(236,246,252,1) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ecf6fc',GradientType=0 ); /* IE6-9 */
+      position: relative;
+      padding: 12px;
+      .storefront_admin_user_fullname {
+        display: inline-block;
+        width: 300px;
+      }
+      .storefront_admin_user_email {
+        display: inline-block;
+        width: 250px;
+      }
+      .remove_storefront_admin {
+        .button;
+        display: block;
+        font-size: 14px;
+        position: absolute;
+        right: 12px;
+        top: 8px;
+      }
+    }
+  }
+  #NewStorefrontAdminWrapper {
+    width: 724px;
+    margin-top: -10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    .aeon-round;
+    background: rgb(248,248,248); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(248,248,248,1) 0%, rgba(249,249,249,1) 53%, rgba(252,252,252,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(248,248,248,1)), color-stop(53%,rgba(249,249,249,1)), color-stop(100%,rgba(252,252,252,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(249,249,249,1) 53%,rgba(252,252,252,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(249,249,249,1) 53%,rgba(252,252,252,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(249,249,249,1) 53%,rgba(252,252,252,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(248,248,248,1) 0%,rgba(249,249,249,1) 53%,rgba(252,252,252,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#fcfcfc',GradientType=0 ); /* IE6-9 */
+
+    padding: 12px;
+    margin-left: 12px;
+    #NewStorefrontAdmin {
+      position: relative;
+      text-align: left;
+      .new_admin_field {
+        label {
+          display: inline-block;
+          width: 200px;
+          font-weight: bold;
+          text-align: right;
+        }
+        input {
+          font-size: 18px;
+          text-indent: 4px;
+          width: 300px;
+        }
+      }
+      #AddStorefrontAdminButton {
+        .button;
+        vertical-align: top;
+        margin-left: 12px;
+        font-size: 14px;
+        padding: 8px;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+      }
+      .add_storefront_admin_button {
+        width: 120px;
+      }
+      .create_admin_user_button {
+        width: 165px;
+      }
+    }
+  }
+}
+
 
 .disabled {
   opacity: 0.5;

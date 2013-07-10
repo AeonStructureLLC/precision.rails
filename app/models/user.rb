@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :stripe_cards
   has_many :orders
 
-  ACCESSIBLE_ATTRS = [:email, :password, :password_confirmation, :remember_me]
+  ACCESSIBLE_ATTRS = [:email, :password, :password_confirmation, :remember_me, :fullname]
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable

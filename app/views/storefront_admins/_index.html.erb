@@ -1,0 +1,156 @@
+<div id="StorefrontAdminList">
+  <%= render :partial => 'storefront_admins/storefront_admin_listing', :collection => @storefront.storefront_admins %>
+</div>
+<div id="NewStorefrontAdminWrapper">
+  <div id="NewStorefrontAdmin">
+    <div class="new_admin_field">
+      <label>Email Address: </label>
+      <input type="text" id="AdminEmail" name="email" maxlength="70" placeholder="admin@<%= @storefront.url %>" />
+    </div>
+    <div id="AdminFullnameWrapper" class="new_admin_field hidden">
+      <label>Full Name: </label>
+      <input type="text" id="AdminFullname" name="fullname" placeholder="User's full name" />
+    </div>
+    <div id="AdminPasswordWrapper" class="new_admin_field hidden">
+      <label>Password: </label>
+      <input type="password" id="AdminPassword" name="password" placeholder="Password"/>
+    </div>
+    <div id="AdminPasswordConfirmationWrapper" class="new_admin_field hidden">
+      <label>Password Confirmation: </label>
+      <input type="password" id="AdminPasswordConfirmation" name="confirmation" placeholder="Confirm Password"/>
+    </div>
+
+    <div id="AddStorefrontAdminButton" class="add_storefront_admin_button disabled">Add New Admin</div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  function resetAdminForm(){
+    $("#AdminFullnameWrapper").addClass('hidden');
+    $("#AdminPasswordWrapper").addClass('hidden');
+    $("#AdminPasswordConfirmationWrapper").addClass('hidden');
+    $("#AddStorefrontAdminButton").addClass('add_storefront_admin_button').removeClass('create_admin_user_button').html("Add New Admin");
+  }
+
+  $(document).off('keyup', "#AdminEmail");
+  $(document).on('keyup', "#AdminEmail", function(event){
+    var self = $(this);
+    var email = self.val();
+    resetAdminForm();
+    if(email.length >= 4){
+      $("#AddStorefrontAdminButton").removeClass('disabled');
+    } else {
+      $("#AddStorefrontAdminButton").addClass('disabled');
+    }
+  });
+
+
+  $(document).off('click', '.add_storefront_admin_button');
+  $(document).on('click', '.add_storefront_admin_button', function(){
+    var self = $(this)
+    var email = $("#AdminEmail").attr('value');
+    if(email.length > 4){
+      var params = {
+        email: email
+      }
+      $.ajax({
+        url: "/check_registration.json",
+        data: params,
+        dataType: 'json',
+        statusCode: {
+          404: function(){
+            $("#AdminFullnameWrapper").removeClass('hidden');
+            $("#AdminPasswordWrapper").removeClass('hidden');
+            $("#AdminPasswordConfirmationWrapper").removeClass('hidden');
+            self.removeClass('add_storefront_admin_button').addClass('create_admin_user_button').html("Create New Admin User");
+          },
+          200: function(){
+            $("#AdminFullnameWrapper").addClass('hidden');
+            $("#AdminPasswordWrapper").addClass('hidden');
+            $("#AdminPasswordConfirmationWrapper").addClass('hidden');
+            // Add the darn user to the admin list!
+
+            var params = {
+              email: email
+            }
+
+            $.ajax({
+              url: '/storefront_admins',
+              type: 'POST',
+              dataType: 'html',
+              data: params,
+              success: function(data){
+                $("#StorefrontAdminListWrapper").html(data);
+              }
+            });
+
+          }
+        }
+      });
+    } else {
+      resetAdminForm();
+    }
+  });
+
+
+  $(document).off('click', '.create_admin_user_button');
+  $(document).on('click', '.create_admin_user_button', function(){
+    var self = $(this)
+    var email = $("#AdminEmail").attr('value');
+    var fullname = $("#AdminFullname").attr('value');
+    if(fullname.length < 2){
+      alert("Please fill in the Full Name field.");
+      return;
+    }
+    var password = $("#AdminPassword").attr('value');
+    var password_confirmation = $("#AdminPasswordConfirmation").attr('value');
+    if( password == password_confirmation ){
+      var params = {
+        user: {
+          email: email,
+          fullname: fullname,
+          password: password,
+          password_confirmation: password_confirmation
+        }
+      }
+      $.ajax({
+        url: "/create_admin_user",
+        data: params,
+        dataType: 'html',
+        success: function(data){
+          $("#StorefrontAdminListWrapper").html(data);
+        }
+      });
+    } else {
+      alert("Password and Password Confirmation do not match.");
+      return;
+    }
+
+  });
+
+  $(document).off('click', '.remove_storefront_admin');
+  $(document).on('click', '.remove_storefront_admin', function(event){
+    var self = $(this);
+    var storefront_admin = $(this).closest('.storefront_admin_listing');
+    var storefront_admin_id = storefront_admin.attr('model_id');
+    var storefront_admin_email = storefront_admin.find(".storefront_admin_user_email").text().trim();
+    if(storefront_admin_email == CurrentUser.email){
+      alert("You can not delete yourself!");
+      return;
+    }
+
+    storefront_admin.remove();
+    $.ajax({
+      url: '/storefront_admins/' + storefront_admin_id,
+      dataType: 'json',
+      type: 'DELETE',
+      success: function(data){
+        console.log(data);
+      }
+    });
+
+  });
+
+</script>

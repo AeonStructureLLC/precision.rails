@@ -137,4 +137,10 @@ class StorefrontsController < ApplicationController
     render json: storefront_presence_id
   end
 
+  def create_admin_user
+    user = User.create(params[:user])
+    @storefront.storefront_admins.create(:user_id => user.id)
+    render :partial => "storefront_admins/index"
+  end
+
 end
