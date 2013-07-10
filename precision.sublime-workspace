@@ -1,0 +1,267 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "<%\n\n   if @storefront.cod_enabled\n     cod_enabled = \"selected\"\n     cod_disabled = \"\"\n     cod_details_visible = \"\"\n   else\n     cod_enabled = \"\"\n     cod_disabled = \"selected\"\n     cod_details_visible = \"hidden\"\n   end\n\n   if @storefront.check_enabled\n     check_enabled = \"selected\"\n     check_disabled = \"\"\n     check_details_visible = \"\"\n   else\n     check_enabled = \"\"\n     check_disabled = \"selected\"\n     check_details_visible = \"hidden\"\n   end\n\n   if @storefront.phone_enabled\n     phone_enabled = \"selected\"\n     phone_disabled = \"\"\n     phone_details_visible = \"\"\n   else\n     phone_enabled = \"\"\n     phone_disabled = \"selected\"\n     phone_details_visible = \"hidden\"\n   end\n\n   if @storefront.ups_enabled\n     ups_enabled = \"selected\"\n     ups_disabled = \"\"\n   else\n     ups_enabled = \"\"\n     ups_disabled = \"selected\"\n   end\n\n   if @storefront.fedex_enabled\n     fedex_enabled = \"selected\"\n     fedex_disabled = \"\"\n   else\n     fedex_enabled = \"\"\n     fedex_disabled = \"selected\"\n   end\n\n   if @storefront.usps_enabled\n     usps_enabled = \"selected\"\n     usps_disabled = \"\"\n   else\n     usps_enabled = \"\"\n     usps_disabled = \"selected\"\n   end\n\n%>\n\n<div id=\"StorefrontSettingsWrapper\">\n  <div id=\"StorefrontSettings\">\n\n    <div class=\"setting_field\">\n      <label>Title</label>\n      <div contenteditable id=\"StorefrontTitle\" class=\"setting\" attribute_type=\"text\" attribute_name=\"title\">\n        <% unless @storefront.title.blank? %>\n          <%= @storefront.title %>\n        <% end %>\n      </div>\n    </div>\n\n    <div class=\"setting_field\">\n      <label>Contact Information</label>\n      <div contenteditable id=\"StorefrontInvoiceContactInfo\" class=\"setting\" attribute_name=\"invoice_contact_info\">\n        <% unless @storefront.invoice_contact_info.blank? %>\n          <%= @storefront.invoice_contact_info.html_safe %>\n        <% end %>\n      </div>\n    </div>\n\n    <div class=\"setting_field\">\n      <label>URL</label>\n      <div contenteditable id=\"StorefrontUrl\" class=\"setting\" attribute_type=\"text\" attribute_name=\"url\">\n        <% unless @storefront.url.blank? %>\n          <%= @storefront.url %>\n        <% end %>\n      </div>\n    </div>\n\n    <div class=\"setting_field\">\n      <label>Stripe Secret</label>\n      <div contenteditable id=\"StorefrontStripeSecret\" class=\"setting\" attribute_type=\"text\" attribute_name=\"stripe_secret\">\n        <% unless @storefront.stripe_secret.blank? %>\n          <%= @storefront.stripe_secret %>\n        <% end %>\n      </div>\n    </div>\n\n    <div class=\"setting_field\">\n      <label>Stripe Publish</label>\n      <div contenteditable id=\"StorefrontStripePublish\" class=\"setting\" attribute_type=\"text\" attribute_name=\"stripe_publish\">\n        <% unless @storefront.stripe_publish.blank? %>\n          <%= @storefront.stripe_publish %>\n        <% end %>\n      </div>\n    </div>\n\n    <div class=\"setting_field has_selector\">\n      <label>Accept C.O.D.</label>\n\n      <div id=\"CodSettingWrapper\" class=\"aeon_lozenge_menu_wrapper\">\n        <div id=\"CodSetting\" class=\"aeon_lozenge_menu\">\n          <div class=\"cod_setting_selector aeon_lozenge aeon_lozenge_left <%= cod_enabled %>\" cod_enabled=\"true\">On</div>\n          <div class=\"cod_setting_selector aeon_lozenge aeon_lozenge_right <%= cod_disabled %>\" cod_enabled=\"false\">Off</div>\n        </div>\n      </div>\n\n      <div contenteditable id=\"StorefrontCodDetails\" class=\"setting <%= cod_details_visible %>\" attribute_name=\"cod_details\">\n        <% unless @storefront.cod_details.blank? %>\n          <%= @storefront.cod_details.html_safe %>\n        <% end %>\n      </div>\n    </div>\n\n\n    <div class=\"setting_field has_selector\">\n      <label>Accept Checks</label>\n\n      <div id=\"CheckSettingWrapper\" class=\"aeon_lozenge_menu_wrapper\">\n        <div id=\"CheckSetting\" class=\"aeon_lozenge_menu\">\n          <div class=\"check_setting_selector aeon_lozenge aeon_lozenge_left <%= check_enabled %>\" check_enabled=\"true\">On</div>\n          <div class=\"check_setting_selector aeon_lozenge aeon_lozenge_right <%= check_disabled %>\" check_enabled=\"false\">Off</div>\n        </div>\n      </div>\n\n      <div contenteditable id=\"StorefrontCheckDetails\" class=\"setting <%= check_details_visible %>\" attribute_name=\"check_details\">\n        <% unless @storefront.check_details.blank? %>\n          <%= @storefront.check_details.html_safe %>\n        <% end %>\n      </div>\n    </div>\n\n\n    <div class=\"setting_field has_selector\">\n      <label>Accept Call-In Payments</label>\n\n      <div id=\"PhoneSettingWrapper\" class=\"aeon_lozenge_menu_wrapper\">\n        <div id=\"PhoneSetting\" class=\"aeon_lozenge_menu\">\n          <div class=\"phone_setting_selector aeon_lozenge aeon_lozenge_left <%= phone_enabled %>\" phone_enabled=\"true\">On</div>\n          <div class=\"phone_setting_selector aeon_lozenge aeon_lozenge_right <%= phone_disabled %>\" phone_enabled=\"false\">Off</div>\n        </div>\n      </div>\n\n      <div contenteditable id=\"StorefrontPhoneDetails\" class=\"setting <%= phone_details_visible %>\" attribute_name=\"phone_details\">\n        <% unless @storefront.phone_details.blank? %>\n          <%= @storefront.phone_details.html_safe %>\n        <% end %>\n      </div>\n    </div>\n\n    <div class=\"setting_field has_selector\">\n      <label>Ship via UPS</label>\n      <div id=\"UpsSettingWrapper\" class=\"aeon_lozenge_menu_wrapper\">\n        <div id=\"UpsSetting\" class=\"aeon_lozenge_menu\">\n          <div class=\"ups_setting_selector aeon_lozenge aeon_lozenge_left <%= ups_enabled %>\" ups_enabled=\"true\">On</div>\n          <div class=\"ups_setting_selector aeon_lozenge aeon_lozenge_right <%= ups_disabled %>\" ups_enabled=\"false\">Off</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"setting_field has_selector\">\n      <label>Ship via FEDEX</label>\n      <div id=\"FedexSettingWrapper\" class=\"aeon_lozenge_menu_wrapper\">\n        <div id=\"FedexSetting\" class=\"aeon_lozenge_menu\">\n          <div class=\"fedex_setting_selector aeon_lozenge aeon_lozenge_left <%= fedex_enabled %>\" fedex_enabled=\"true\">On</div>\n          <div class=\"fedex_setting_selector aeon_lozenge aeon_lozenge_right <%= fedex_disabled %>\" fedex_enabled=\"false\">Off</div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"setting_field has_selector\">\n      <label>Ship via USPS</label>\n      <div id=\"UspsSettingWrapper\" class=\"aeon_lozenge_menu_wrapper\">\n        <div id=\"UspsSetting\" class=\"aeon_lozenge_menu\">\n          <div class=\"usps_setting_selector aeon_lozenge aeon_lozenge_left <%= usps_enabled %>\" usps_enabled=\"true\">On</div>\n          <div class=\"usps_setting_selector aeon_lozenge aeon_lozenge_right <%= usps_disabled %>\" usps_enabled=\"false\">Off</div>\n        </div>\n      </div>\n    </div>\n\n  </div>\n  <div id=\"SaveSettingsButton\" onclick=\"saveStorefrontSettings();\">Save Settings</div>\n\n\n  <div id=\"StorefrontPresenceListWrapper\">\n    <div id=\"StorefrontPresenceList\">\n      \n    </div>\n  </div>\n\n</div>\n\n<script type=\"text/javascript\">\n\n\n  function saveStorefrontSettings(){\n    var button_ui = $(\"#SaveSettingsButton\");\n\n    button_ui.html(\"Saving ...\");\n    button_ui.addClass('disabled');\n\n    var ui = $(\"#StorefrontSettings\");\n\n    var params = {\n      storefront: {}\n    }\n\n    var attributes = ui.find('.setting');\n    _.each(attributes, function(attribute){\n      var attribute = $(attribute);\n      var attribute_name = attribute.attr('attribute_name');\n      var attribute_type = attribute.attr('attribute_type');\n      if( attribute_type == \"text\" ){\n        params['storefront'][attribute_name] = attribute.text().trim();\n      } else {\n        params['storefront'][attribute_name] = attribute.html().trim();\n      }\n    });\n\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        button_ui.html(\"Save Settings\");\n        button_ui.removeClass('disabled');\n      }\n    });\n\n  }\n\n\n  $(document).off('click', \".cod_setting_selector\");\n  $(document).on('click', \".cod_setting_selector\", function(){\n    var self = $(this);\n    var cod_enabled = self.attr('cod_enabled');\n    $(\".cod_setting_selector\").removeClass('selected');\n    self.addClass('selected');\n    if(cod_enabled == \"true\"){\n      $(\"#StorefrontCodDetails\").removeClass('hidden');\n      cod_enabled = true;\n    } else {\n      $(\"#StorefrontCodDetails\").addClass('hidden');\n      cod_enabled = false;\n    }\n    var params = {\n      storefront: {\n        cod_enabled: cod_enabled\n      }\n    }\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        console.log(data);\n      }\n    });\n  });\n\n  $(document).off('click', \".check_setting_selector\");\n  $(document).on('click', \".check_setting_selector\", function(){\n    var self = $(this);\n    var check_enabled = self.attr('check_enabled');\n    $(\".check_setting_selector\").removeClass('selected');\n    self.addClass('selected');\n    if(check_enabled == \"true\"){\n      $(\"#StorefrontCheckDetails\").removeClass('hidden');\n      check_enabled = true;\n    } else {\n      $(\"#StorefrontCheckDetails\").addClass('hidden');\n      check_enabled = false;\n    }\n    var params = {\n      storefront: {\n        check_enabled: check_enabled\n      }\n    }\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        console.log(data);\n      }\n    });\n  });\n\n  $(document).off('click', \".phone_setting_selector\");\n  $(document).on('click', \".phone_setting_selector\", function(){\n    var self = $(this);\n    var phone_enabled = self.attr('phone_enabled');\n    $(\".phone_setting_selector\").removeClass('selected');\n    self.addClass('selected');\n    if(phone_enabled == \"true\"){\n      $(\"#StorefrontPhoneDetails\").removeClass('hidden');\n      phone_enabled = true;\n    } else {\n      $(\"#StorefrontPhoneDetails\").addClass('hidden');\n      phone_enabled = false;\n    }\n    var params = {\n      storefront: {\n        phone_enabled: phone_enabled\n      }\n    }\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        console.log(data);\n      }\n    });\n  });\n\n  $(document).off('click', \".ups_setting_selector\");\n  $(document).on('click', \".ups_setting_selector\", function(){\n    var self = $(this);\n    var ups_enabled = self.attr('ups_enabled');\n    $(\".ups_setting_selector\").removeClass('selected');\n    self.addClass('selected');\n    if(ups_enabled == \"true\"){\n      ups_enabled = true;\n    } else {\n      ups_enabled = false;\n    }\n    var params = {\n      storefront: {\n        ups_enabled: ups_enabled\n      }\n    }\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        console.log(data);\n      }\n    });\n  });\n\n  $(document).off('click', \".fedex_setting_selector\");\n  $(document).on('click', \".fedex_setting_selector\", function(){\n    var self = $(this);\n    var fedex_enabled = self.attr('fedex_enabled');\n    $(\".fedex_setting_selector\").removeClass('selected');\n    self.addClass('selected');\n    if(fedex_enabled == \"true\"){\n      fedex_enabled = true;\n    } else {\n      fedex_enabled = false;\n    }\n    var params = {\n      storefront: {\n        fedex_enabled: fedex_enabled\n      }\n    }\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        console.log(data);\n      }\n    });\n  });\n\n  $(document).off('click', \".usps_setting_selector\");\n  $(document).on('click', \".usps_setting_selector\", function(){\n    var self = $(this);\n    var usps_enabled = self.attr('usps_enabled');\n    $(\".usps_setting_selector\").removeClass('selected');\n    self.addClass('selected');\n    if(usps_enabled == \"true\"){\n      usps_enabled = true;\n    } else {\n      usps_enabled = false;\n    }\n    var params = {\n      storefront: {\n        usps_enabled: usps_enabled\n      }\n    }\n    $.ajax({\n      url: \"/update_storefront_settings\",\n      dataType: 'json',\n      data: params,\n      success: function(data){\n        console.log(data);\n      }\n    });\n  });\n\n</script>",
+			"file": "app/views/storefronts/settings.html.erb",
+			"file_size": 12014,
+			"file_write_time": 130179474030000000,
+			"settings":
+			{
+				"buffer_size": 12125,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "class StorefrontPresencesController < ApplicationController\n\n\n\nend\n",
+			"file": "app/controllers/storefront_presences_controller.rb",
+			"file_size": 64,
+			"file_write_time": 130179477570000000,
+			"settings":
+			{
+				"buffer_size": 67,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/sessions_controller.rb",
+			"settings":
+			{
+				"buffer_size": 719,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/dennisharrison/projects/precision.rails/precision.sublime-project"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/views/storefronts/settings.html.erb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12125,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6846,
+								6846
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2320.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/controllers/storefront_presences_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 67,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61,
+								61
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/controllers/sessions_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 719,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"project": "precision.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 281.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

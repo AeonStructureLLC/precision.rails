@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708185348) do
+ActiveRecord::Schema.define(:version => 20130710192639) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address1"
@@ -255,12 +255,12 @@ ActiveRecord::Schema.define(:version => 20130708185348) do
   create_table "storefront_presences", :force => true do |t|
     t.integer  "storefront_id"
     t.integer  "geo_area_id"
-    t.boolean  "ship_from"
-    t.float    "state_tax_rate"
-    t.float    "county_tax_rate"
-    t.float    "city_tax_rate"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.boolean  "ship_from",       :default => false
+    t.float    "state_tax_rate",  :default => 0.0
+    t.float    "county_tax_rate", :default => 0.0
+    t.float    "city_tax_rate",   :default => 0.0
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "storefronts", :force => true do |t|
@@ -282,6 +282,9 @@ ActiveRecord::Schema.define(:version => 20130708185348) do
     t.boolean  "phone_enabled",        :default => false
     t.text     "phone_details"
     t.text     "invoice_contact_info"
+    t.boolean  "ups_enabled",          :default => false
+    t.boolean  "fedex_enabled",        :default => false
+    t.boolean  "usps_enabled",         :default => false
   end
 
   add_index "storefronts", ["billing_user_id"], :name => "index_storefronts_on_billing_user_id"

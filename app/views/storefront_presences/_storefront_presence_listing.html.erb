@@ -1,0 +1,36 @@
+<%
+   if storefront_presence_listing.ship_from
+     ship_from_enabled = "selected"
+     ship_from_disabled = ""
+   else
+     ship_from_enabled = ""
+     ship_from_disabled = "selected"
+   end
+%>
+
+<div class="storefront_presence_listing" model_root="true" model="storefront_presence" model_id="<%= storefront_presence_listing.id %>">
+  <div class="section_heading">Tax rates for <span class="zip"><%= storefront_presence_listing.geo_area.zip %></span></div>
+  <div class="geo_area_information">
+    <div class="primary_city"><%= storefront_presence_listing.geo_area.primary_city %></div>
+    <div class="county"><%= storefront_presence_listing.geo_area.county %></div>
+    <div class="state"><%= storefront_presence_listing.geo_area.state %></div>
+
+  </div>
+  <div class="tax_rate_information">
+    <input type="text" class="tax_rate city_tax_rate" name="city_tax_rate" value="<%= storefront_presence_listing.city_tax_rate %>" />
+    <input type="text" class="tax_rate county_tax_rate" name="county_tax_rate" value="<%= storefront_presence_listing.county_tax_rate %>" />
+    <input type="text" class="tax_rate state_tax_rate" name="state_tax_rate" value="<%= storefront_presence_listing.state_tax_rate %>" />
+  </div>
+  <div class="ship_from_wrapper">
+    <label>Ship from this location? </label>
+    <div class="aeon_lozenge_menu_wrapper">
+      <div class="aeon_lozenge_menu">
+        <div class="ship_from_setting_selector aeon_lozenge aeon_lozenge_left <%= ship_from_enabled %>" ship_from="true">Yes</div>
+        <div class="ship_from_setting_selector aeon_lozenge aeon_lozenge_right <%= ship_from_disabled %>" ship_from="false">No</div>
+      </div>
+    </div>
+  </div>
+  <div class="remove_storefront_presence">Remove</div>
+</div>
+
+

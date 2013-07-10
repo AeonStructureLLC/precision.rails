@@ -30,6 +30,30 @@
      phone_details_visible = "hidden"
    end
 
+   if @storefront.ups_enabled
+     ups_enabled = "selected"
+     ups_disabled = ""
+   else
+     ups_enabled = ""
+     ups_disabled = "selected"
+   end
+
+   if @storefront.fedex_enabled
+     fedex_enabled = "selected"
+     fedex_disabled = ""
+   else
+     fedex_enabled = ""
+     fedex_disabled = "selected"
+   end
+
+   if @storefront.usps_enabled
+     usps_enabled = "selected"
+     usps_disabled = ""
+   else
+     usps_enabled = ""
+     usps_disabled = "selected"
+   end
+
 %>
 
 <div id="StorefrontSettingsWrapper">
@@ -133,7 +157,44 @@
       </div>
     </div>
 
+    <div class="setting_field has_selector">
+      <label>Ship via UPS</label>
+      <div id="UpsSettingWrapper" class="aeon_lozenge_menu_wrapper">
+        <div id="UpsSetting" class="aeon_lozenge_menu">
+          <div class="ups_setting_selector aeon_lozenge aeon_lozenge_left <%= ups_enabled %>" ups_enabled="true">On</div>
+          <div class="ups_setting_selector aeon_lozenge aeon_lozenge_right <%= ups_disabled %>" ups_enabled="false">Off</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="setting_field has_selector">
+      <label>Ship via FEDEX</label>
+      <div id="FedexSettingWrapper" class="aeon_lozenge_menu_wrapper">
+        <div id="FedexSetting" class="aeon_lozenge_menu">
+          <div class="fedex_setting_selector aeon_lozenge aeon_lozenge_left <%= fedex_enabled %>" fedex_enabled="true">On</div>
+          <div class="fedex_setting_selector aeon_lozenge aeon_lozenge_right <%= fedex_disabled %>" fedex_enabled="false">Off</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="setting_field has_selector">
+      <label>Ship via USPS</label>
+      <div id="UspsSettingWrapper" class="aeon_lozenge_menu_wrapper">
+        <div id="UspsSetting" class="aeon_lozenge_menu">
+          <div class="usps_setting_selector aeon_lozenge aeon_lozenge_left <%= usps_enabled %>" usps_enabled="true">On</div>
+          <div class="usps_setting_selector aeon_lozenge aeon_lozenge_right <%= usps_disabled %>" usps_enabled="false">Off</div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+
+  <div id="StorefrontPresenceListWrapper">
+    <%= render :partial => 'storefront_presences/index' %>
+  </div>
+
+
   <div id="SaveSettingsButton" onclick="saveStorefrontSettings();">Save Settings</div>
 </div>
 
@@ -249,6 +310,84 @@
     var params = {
       storefront: {
         phone_enabled: phone_enabled
+      }
+    }
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".ups_setting_selector");
+  $(document).on('click', ".ups_setting_selector", function(){
+    var self = $(this);
+    var ups_enabled = self.attr('ups_enabled');
+    $(".ups_setting_selector").removeClass('selected');
+    self.addClass('selected');
+    if(ups_enabled == "true"){
+      ups_enabled = true;
+    } else {
+      ups_enabled = false;
+    }
+    var params = {
+      storefront: {
+        ups_enabled: ups_enabled
+      }
+    }
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".fedex_setting_selector");
+  $(document).on('click', ".fedex_setting_selector", function(){
+    var self = $(this);
+    var fedex_enabled = self.attr('fedex_enabled');
+    $(".fedex_setting_selector").removeClass('selected');
+    self.addClass('selected');
+    if(fedex_enabled == "true"){
+      fedex_enabled = true;
+    } else {
+      fedex_enabled = false;
+    }
+    var params = {
+      storefront: {
+        fedex_enabled: fedex_enabled
+      }
+    }
+    $.ajax({
+      url: "/update_storefront_settings",
+      dataType: 'json',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).off('click', ".usps_setting_selector");
+  $(document).on('click', ".usps_setting_selector", function(){
+    var self = $(this);
+    var usps_enabled = self.attr('usps_enabled');
+    $(".usps_setting_selector").removeClass('selected');
+    self.addClass('selected');
+    if(usps_enabled == "true"){
+      usps_enabled = true;
+    } else {
+      usps_enabled = false;
+    }
+    var params = {
+      storefront: {
+        usps_enabled: usps_enabled
       }
     }
     $.ajax({

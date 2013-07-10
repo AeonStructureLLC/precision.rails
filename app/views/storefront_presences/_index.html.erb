@@ -1,0 +1,126 @@
+<div id="StorefrontPresenceList">
+  <%= render :partial => 'storefront_presences/storefront_presence_listing', :collection => @storefront.storefront_presences %>
+</div>
+<div id="NewStorefrontPresenceWrapper">
+  <div id="NewStorefrontPresence">
+    <label>Retail or Warehouse Zip: </label>
+    <input type="text" id="Zip" name="zip" maxlength="5" placeholder="12345" />
+    <div id="AddStorefrontPresenceButton" class="disabled">Add New Location</div>
+  </div>
+</div>
+
+<script>
+  $(document).off('keyup', '.tax_rate');
+  $(document).on('keyup', '.tax_rate', function(event){
+    var value = this.value;
+    var name = this.name;
+    var storefront_presence_id = $(this).closest('.storefront_presence_listing').attr('model_id');
+    var params = {
+      storefront_presence: {}
+    }
+    params['storefront_presence'][name] = value;
+    $.ajax({
+      url: '/storefront_presences/' + storefront_presence_id,
+      dataType: 'json',
+      type: 'PUT',
+      data: params,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+
+
+  $(document).off('keyup', '#Zip');
+  $(document).on('keyup', '#Zip', function(event){
+    var value = this.value;
+    if( (value.length > 4) && (value.length < 6)){
+      $("#AddStorefrontPresenceButton").removeClass('disabled');
+    } else {
+      $("#AddStorefrontPresenceButton").addClass('disabled');
+    }
+
+  });
+
+
+  $(document).off('click', '#AddStorefrontPresenceButton');
+  $(document).on('click', '#AddStorefrontPresenceButton', function(event){
+    var self = $(this);
+    if(self.hasClass('disabled')){
+      return
+    } else {
+      zip = $("#NewStorefrontPresence").children("[name='zip']").val();
+      var params = {
+        zip: zip
+      }
+      $.ajax({
+        url: '/storefront_presences/',
+        dataType: 'html',
+        type: 'POST',
+        data: params,
+        success: function(data){
+          $("#StorefrontPresenceListWrapper").html(data);
+        }
+      });
+    }
+  });
+
+  $(document).off('click', '.remove_storefront_presence');
+  $(document).on('click', '.remove_storefront_presence', function(event){
+    var storefront_presences = $(".storefront_presence_listing");
+    if(storefront_presences.length <= 1){
+      alert("You must have at least 1 location!");
+      return;
+    }
+    var self = $(this);
+    var storefront_presence = $(this).closest('.storefront_presence_listing');
+    var storefront_presence_id = storefront_presence.attr('model_id');
+    storefront_presence.remove();
+      $.ajax({
+        url: '/storefront_presences/' + storefront_presence_id,
+        dataType: 'json',
+        type: 'DELETE',
+        success: function(data){
+          console.log(data);
+        }
+      });
+    var selected_check = $(".selected[ship_from='true']");
+    if(selected_check.length == 0){
+      $("[ship_from='true']")[0].click();
+    }
+  });
+
+  $(document).off('click', '.ship_from_setting_selector');
+  $(document).on('click', '.ship_from_setting_selector', function(event){
+    var self = $(this);
+    if(self.hasClass('selected')){
+      return;
+    }
+    if(self.attr('ship_from') == "false"){
+      alert("You must have a ship from location!");
+      return;
+    } else {
+      var storefront_presence = self.closest('.storefront_presence_listing');
+      var storefront_presence_id = storefront_presence.attr('model_id');
+      $(".ship_from_setting_selector").removeClass('selected');
+      $(".ship_from_setting_selector[ship_from='false']").addClass('selected');
+      storefront_presence.find("[ship_from='false']").removeClass('selected');
+      self.addClass('selected');
+
+      var params = {
+        storefront_presence_id: storefront_presence_id
+      }
+      $.ajax({
+        url: '/set_ship_from_storefront_presence/',
+        dataType: 'json',
+        type: 'PUT',
+        data: params,
+        success: function(data){
+          console.log(data);
+        }
+      });
+    }
+
+  });
+
+</script>

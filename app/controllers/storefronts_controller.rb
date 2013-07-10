@@ -124,4 +124,17 @@ class StorefrontsController < ApplicationController
     end
   end
 
+  def set_ship_from_storefront_presence
+    storefront_presence_id = params[:storefront_presence_id].to_i
+    @storefront.storefront_presences.each do |storefront_presence|
+      if storefront_presence.id == storefront_presence_id
+        storefront_presence.ship_from = true
+      else
+        storefront_presence.ship_from = false
+      end
+      storefront_presence.save!
+    end
+    render json: storefront_presence_id
+  end
+
 end

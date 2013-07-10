@@ -43,6 +43,7 @@ PrecisionRails::Application.routes.draw do
   match 'set_default_stripe_card' => 'registrations#set_default_stripe_card'
 
   resources :geo_areas_importer
+  resources :storefront_presences
 
 
   match 'checkout' => 'checkouts#checkout', :as => 'checkout'
@@ -54,6 +55,8 @@ PrecisionRails::Application.routes.draw do
   match 'remove_shipment' => 'storefronts#remove_shipment'
   match 'settings' => 'storefronts#settings'
   match 'update_storefront_settings' => 'storefronts#update_storefront_settings'
+
+  match 'set_ship_from_storefront_presence' => 'storefronts#set_ship_from_storefront_presence'
 
 
   match 'check_registration' => 'registrations#check_registration', :as => 'check_registration'
