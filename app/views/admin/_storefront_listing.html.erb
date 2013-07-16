@@ -1,0 +1,8 @@
+<li class="storefront_listing" model_root="true" model_id="<%= storefront_listing.id %>">
+  <a class="url" href="/settings?storefront_url=<%= storefront_listing.url %>"><%= storefront_listing.url %></a>
+  <% if storefront_listing.inactive %>
+    <div class="change_storefront_status storefront_button" change_storefront_status="activate">Activate</div>
+  <% else %>
+    <div class="change_storefront_status storefront_button" change_storefront_status="deactivate">Deactivate</div>
+  <% end %>
+</li>

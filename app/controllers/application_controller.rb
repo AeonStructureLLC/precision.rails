@@ -8,7 +8,14 @@ class ApplicationController < ActionController::Base
 
   def get_storefront
     #host = request.host
-    @storefront = Storefront.find_by_url(request.host)
+    if params.include? :storefront_url
+      @storefront = Storefront.find_by_url(params[:storefront_url])
+    else
+      @storefront = Storefront.find_by_url(request.host)
+      if @storefront.inactive && request.original_url.exclude?("/admin")
+        redirect_to "http://www.google.com"
+      end
+    end
     if @storefront.blank? && request.original_url.exclude?("/customer_setup")
       redirect_to create_your_storefront_url
     end

@@ -1,0 +1,92 @@
+<div id="NewStorefrontWrapper">
+  <div id="NewStorefront">
+
+    <div class="storefront_field">
+      <label>Title</label>
+      <div contenteditable id="NewStorefrontTitle" class="storefront_attribute" attribute_type="text" attribute_name="title"></div>
+    </div>
+
+    <div class="storefront_field">
+      <label>Contact Info</label>
+      <div contenteditable id="NewStorefrontInvoiceContactInfo" class="storefront_attribute" attribute_type="html" attribute_name="invoice_contact_info"></div>
+    </div>
+
+    <div class="storefront_field">
+      <label>URL</label>
+      <div contenteditable id="NewStorefrontUrl" class="storefront_attribute" attribute_type="text" attribute_name="url"></div>
+    </div>
+
+    <div id="NewStorefrontButton" onclick="NewStorefront();">Add</div>
+
+  </div>
+</div>
+
+
+<div id="StorefrontListWrapper">
+  <%= render :partial => 'admin/storefront_list' %>
+</div>
+
+<script type="text/javascript">
+  function NewStorefront(){
+    var button_ui = $("#NewStorefrontButton");
+      button_ui.html("Saving ...");
+      button_ui.addClass('disabled');
+
+      var ui = $("#NewStorefront");
+
+      var params = {
+        storefront: {}
+      }
+
+      var attributes = ui.find('.storefront_attribute');
+      _.each(attributes, function(attribute){
+        var attribute = $(attribute);
+        var attribute_name = attribute.attr('attribute_name');
+        var attribute_type = attribute.attr('attribute_type');
+        if( attribute_type == "text" ){
+          params['storefront'][attribute_name] = attribute.text().trim();
+        } else {
+          params['storefront'][attribute_name] = attribute.html().trim();
+        }
+      });
+
+      $.ajax({
+        url: "/admin/create_storefront",
+        dataType: 'html',
+        data: params,
+        success: function(data){
+          $(".storefront_attribute").html('');
+          button_ui.html("Add");
+          button_ui.removeClass('disabled');
+          $("#StorefrontListWrapper").html(data);
+        }
+      });
+  }
+
+  $(document).off('click', '.change_storefront_status');
+  $(document).on('click', '.change_storefront_status', function(e){
+    var self = $(this);
+    var change_storefront_status = self.attr('change_storefront_status');
+    if(change_storefront_status == "activate"){
+      var inactive = false;
+    } else {
+      var inactive = true;
+    }
+    var storefront_ui = self.closest('[model_root]');
+    var storefront_id = storefront_ui.attr('model_id');
+    var params = {
+      storefront_id: storefront_id,
+      inactive: inactive
+    }
+    $.ajax({
+      url: '/admin/change_storefront_status',
+      dataType: 'html',
+      data: params,
+      success: function(data){
+        $("#StorefrontListWrapper").html(data);
+      }
+    });
+  });
+
+
+</script>

@@ -63,6 +63,10 @@ PrecisionRails::Application.routes.draw do
 
   match 'check_registration' => 'registrations#check_registration', :as => 'check_registration'
 
+  match 'admin' => 'admin#index'
+  match 'admin/create_storefront' => 'admin#create_storefront'
+  match 'admin/change_storefront_status' => 'admin#change_storefront_status'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
