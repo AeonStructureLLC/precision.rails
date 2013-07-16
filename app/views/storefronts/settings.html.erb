@@ -56,9 +56,18 @@
 
 %>
 
+<div id="StorefrontSettingsMenuWrapper">
+  <ul id="StorefrontSettingsMenu">
+    <li id="GeneralSettings" class="nav_tab selected" settings_pane=".general_pane" show_save_button="true">General</li>
+    <li id="PaymentSettings" class="nav_tab" settings_pane=".payments_pane" show_save_button="true">Payments</li>
+    <li id="TaxesShippingSettings" class="nav_tab" settings_pane=".taxes_shipping_pane" show_save_button="false">Taxes & Shipping</li>
+    <li id="AdminUsersSettings" class="nav_tab" settings_pane=".admin_users_pane" show_save_button="false">Admin Users</li>
+  </ul>
+</div>
+
 <div id="StorefrontSettingsWrapper">
   <div id="StorefrontSettings">
-
+    <div class="settings_pane general_pane">
     <div class="setting_field">
       <label>Title</label>
       <div contenteditable id="StorefrontTitle" class="setting" attribute_type="text" attribute_name="title">
@@ -85,7 +94,9 @@
         <% end %>
       </div>
     </div>
+    </div>
 
+    <div class="settings_pane payments_pane hidden">
     <div class="setting_field">
       <label>Stripe Secret</label>
       <div contenteditable id="StorefrontStripeSecret" class="setting" attribute_type="text" attribute_name="stripe_secret">
@@ -156,7 +167,9 @@
         <% end %>
       </div>
     </div>
+    </div>
 
+    <div class="settings_pane taxes_shipping_pane hidden">
     <div class="setting_field has_selector">
       <label>Ship via UPS</label>
       <div id="UpsSettingWrapper" class="aeon_lozenge_menu_wrapper">
@@ -186,16 +199,21 @@
         </div>
       </div>
     </div>
+    </div>
 
   </div>
 
-
+  <div class="settings_pane taxes_shipping_pane hidden">
   <div id="StorefrontPresenceListWrapper">
     <%= render :partial => 'storefront_presences/index' %>
   </div>
+  </div>
 
+
+  <div class="settings_pane admin_users_pane hidden">
   <div id="StorefrontAdminListWrapper">
     <%= render :partial => 'storefront_admins/index' %>
+  </div>
   </div>
 
 
@@ -403,5 +421,23 @@
       }
     });
   });
+
+  $(document).off('click', ".nav_tab");
+  $(document).on('click', ".nav_tab", function(){
+    var self = $(this);
+    var settings_pane = self.attr('settings_pane');
+    var show_save_button = self.attr('show_save_button');
+    $(".nav_tab").removeClass('selected');
+    self.addClass('selected');
+    $(".settings_pane").addClass('hidden');
+    if(show_save_button == "true"){
+      $("#SaveSettingsButton").removeClass('hidden');
+    } else {
+      $("#SaveSettingsButton").addClass('hidden');
+    }
+    $(settings_pane).removeClass('hidden');
+
+  });
+
 
 </script>

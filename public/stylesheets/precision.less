@@ -2676,7 +2676,19 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 
 #StorefrontSettingsWrapper {
-  margin-top: 96px;
+  padding-top: 24px;
+  margin-left: 153px;
+  //border-left: 1px solid #ccc;
+
+  background: -moz-linear-gradient(left,  rgba(251,251,251,1) 0%, rgba(251,251,251,0) 12%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(251,251,251,1)), color-stop(12%,rgba(251,251,251,0)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left,  rgba(251,251,251,1) 0%,rgba(251,251,251,0) 12%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left,  rgba(251,251,251,1) 0%,rgba(251,251,251,0) 12%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left,  rgba(251,251,251,1) 0%,rgba(251,251,251,0) 12%,rgba(255,255,255,0) 100%); /* IE10+ */
+  background: linear-gradient(to right,  rgba(251,251,251,1) 0%,rgba(251,251,251,0) 12%,rgba(255,255,255,0) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbfbfb', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+
+
   #StorefrontSettings {
     .setting_field {
       margin-top: 24px;
@@ -3016,6 +3028,47 @@ only screen and (min-device-pixel-ratio: 1.5) {
       .create_admin_user_button {
         width: 165px;
       }
+    }
+  }
+}
+
+
+#StorefrontSettingsMenuWrapper {
+  //border: 1px solid red;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  margin: 0;
+  margin-left: -8px;
+  #StorefrontSettingsMenu {
+    //border: 1px solid blue;
+    margin-top: 50px;
+    list-style: none;
+    padding: 0;
+    .nav_tab {
+      border: 1px solid #8b8b8b;
+      height: 96px;
+      line-height: 96px;
+      padding-left: 18px;
+      padding-right: 18px;
+      text-align: center;
+      //font-weight: bold;
+      background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#d8d8d8));
+      margin-top: -1px;
+      .no-select;
+      cursor: pointer;
+    }
+    .nav_tab.selected {
+      color: #fcfcfc;
+      background: rgb(73,155,234); /* Old browsers */
+      background: -moz-linear-gradient(top,  rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(73,155,234,1)), color-stop(100%,rgba(32,124,229,1))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  rgba(73,155,234,1) 0%,rgba(32,124,229,1) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  rgba(73,155,234,1) 0%,rgba(32,124,229,1) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  rgba(73,155,234,1) 0%,rgba(32,124,229,1) 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  rgba(73,155,234,1) 0%,rgba(32,124,229,1) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#499bea', endColorstr='#207ce5',GradientType=0 ); /* IE6-9 */
+      border-color: #000;
     }
   }
 }
