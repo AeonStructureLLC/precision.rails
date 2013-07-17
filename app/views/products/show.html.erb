@@ -41,15 +41,6 @@
    end
 %>
 
-<div id="ProductDetailControl">
-  <div class="draggable_widget add_media_widget">Add Media</div>
-  <div class="draggable_widget set_cover_media_widget">Set Cover Image</div>
-  <div class="draggable_widget delete_media_widget">Delete Media</div>
-  <div class="draggable_widget link_addon_widget">Link Addons</div>
-  <div class="draggable_widget unlink_addon_widget">Unlink Addon</div>
-  <div class="draggable_widget inquire_widget">?</div>
-</div>
-
 <%=  render :partial => 'categories/index', :locals => { :categories => @categories, :editable => @editable } %>
 
 <div id="ProductDetailWrapper">
@@ -603,6 +594,7 @@
     start_product_edit();
     reset_media_item_droppable();
     resetProductAddonsInteractivity();
+    $("#ProductDetailControl").removeClass('hidden');
     <% end %>
 
   });

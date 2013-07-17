@@ -67,6 +67,8 @@ PrecisionRails::Application.routes.draw do
   match 'admin/create_storefront' => 'admin#create_storefront'
   match 'admin/change_storefront_status' => 'admin#change_storefront_status'
 
+  resource :page
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -117,7 +119,9 @@ PrecisionRails::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'categories#index'
+
+  # root :to => 'categories#index'
+  root :to => 'pages#index'
 
   # See how all your routes lay out with "rake routes"
 

@@ -132,18 +132,27 @@
 
 #AdminNavigation {
   position: fixed;
-  top: 0px;
+  bottom: 0px;
   left: 0px;
-  right: 360px;
-  height: 32px;
+  right: 0px;
+  height: 36px;
+  max-height: 36px;
+  overflow: hidden;
   padding: 8px;
   z-index: 101;
 }
 
 .admin {
-  background-color: #ff7c55;
-  .aeon-round-right(25px);
-  border: 1px dotted #3b3b3b;
+  border-top: 1px solid #aaa;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+  .aeon-shadow;
 }
 
 #Navigation {
@@ -166,8 +175,38 @@
   .aeon-shadow;
 }
 
+#PageTabs {
+  border-bottom: 1px solid #ccc;
+  position: fixed;
+  top: 48px;
+  left: 0px;
+  right: 0px;
+  height: 32px;
+  background-color: #f3f3f3;
+  padding-left: 8px;
+
+  .page_tab {
+    margin-top: 8px;
+    display: inline-block;
+    margin-left: 8px;
+    margin-right: 8px;
+    .page_link {
+      color: #555;
+      text-decoration: none;
+    }
+  }
+
+  .page_tab.selected {
+    .page_link {
+      font-weight: bold;
+    }
+  }
+
+
+}
+
 #ContentContainer {
-  margin-top: 52px;
+  margin-top: 88px;
 }
 
 #CategoriesList {
@@ -225,13 +264,17 @@
 
 }
 
+#PageControl {
+  margin-top: 6px;
+}
+
 #CategoryControl {
   position: fixed;
   z-index: 101;
   display: block;
   height: 32px;
   padding: 8px;
-  top: 0px;
+  bottom: -2px;
   left: 134px;
   .new_category_button {
     .button;
@@ -379,6 +422,7 @@
   .button;
   font-size: 14px;
   width: 120px;
+  margin-top: 6px;
 }
 
 #ProductsList {
@@ -575,7 +619,7 @@
     display: block;
     height: 32px;
     padding: 8px;
-    top: 0px;
+    bottom: -2px;
     left: 526px;
     .new_product_button {
       .button;
@@ -627,7 +671,7 @@
   font-size: 14px;
   width: 120px;
   position: absolute;
-  top: 8px;
+  top: 14px;
   left: 400px;
   z-index: 102;
 }
@@ -775,7 +819,7 @@
 }
 #ProductDetailControl {
   position: fixed;
-  top: 8px;
+  bottom: 13px;
   z-index: 103;
   left: 412px;
 }

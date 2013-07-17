@@ -12,12 +12,29 @@
 
 <% if @editable -%>
   <div id="AdminNavigation" class="admin">
-    <div id="EditCategoriesButton">Edit Categories</div>
+
+    <div id="PageControl" class="hidden">
+      <div class="draggable_widget add_page_widget">Add Page</div>
+      <div class="draggable_widget add_media_widget">Add Media</div>
+      <div class="draggable_widget delete_media_widget">Delete Media</div>
+    </div>
+
+    <div id="EditCategoriesButton" class="hidden">Edit Categories</div>
     <div id="CategoryControl" class="hidden">
       <div class="new_category_button aeon_drag">New Category</div>
       <div class="delete_category_widget">Delete</div>
     </div>
-    <div id="EditProductsButton">Edit Products</div>
+    <div id="EditProductsButton" class="hidden">Edit Products</div>
+
+    <div id="ProductDetailControl" class="hidden">
+      <div class="draggable_widget add_media_widget">Add Media</div>
+      <div class="draggable_widget set_cover_media_widget">Set Cover Image</div>
+      <div class="draggable_widget delete_media_widget">Delete Media</div>
+      <div class="draggable_widget link_addon_widget">Link Addons</div>
+      <div class="draggable_widget unlink_addon_widget">Unlink Addon</div>
+      <div class="draggable_widget inquire_widget">?</div>
+    </div>
+
   </div>
 <% end %>
 
@@ -39,4 +56,11 @@
     </div>
   </div>
   <div id="CurrentCart"><div id="CartItemsCount">0</div></div>
+</div>
+
+<div id="PageTabs">
+  <div id="Page<%= @storefront.root_page.id %>" class="page_tab"><a class="page_link" href="#"><%= @storefront.root_page.title %></a></div>
+  <% @storefront.root_page.pages.each do |page| %>
+    <div id="Page<%= page.id %>" class="page_tab"><a class="page_link" href="#"><%= page.title %></a></div>
+  <% end %>
 </div>

@@ -136,9 +136,9 @@ function model_to_json(model, model_id){
         var attribute_name = attribute.attr('attribute_name');
         var attribute_type = attribute.attr('attribute_type');
         if(attribute_type == 'text'){
-            model_json[model][attribute_name] = attribute.text();
+            model_json[model][attribute_name] = attribute.text().trim();
         } else {
-            model_json[model][attribute_name] = attribute.html();
+            model_json[model][attribute_name] = attribute.html().trim();
         }
     });
     return model_json;

@@ -8,7 +8,23 @@ class Storefront < ActiveRecord::Base
   has_many :storefront_presences
   has_many :orders
   has_many :storefront_admins
+  has_many :pages
   default_scope order('url ASC')
+  after_create :setup_defaults
+
+  def setup_defaults
+    home = self.pages.new
+    home.title = "Home"
+    home.description = "Welcome to our store."
+    home.storefront_root = true
+    home.active = true
+    home.save!
+  end
+
+  def root_page
+    root_page = self.pages.select{|o| o.storefront_root == true}.first
+    return root_page
+  end
 
   def self.bootstrap_dev
     au = User.find_by_email("devteam@aeonstructure.com")
