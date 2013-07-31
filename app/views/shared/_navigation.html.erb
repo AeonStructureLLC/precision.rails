@@ -58,9 +58,6 @@
   <div id="CurrentCart"><div id="CartItemsCount">0</div></div>
 </div>
 
-<div id="PageTabs">
-  <div id="Page<%= @storefront.root_page.id %>" class="page_tab"><a class="page_link" href="#"><%= @storefront.root_page.title %></a></div>
-  <% @storefront.root_page.pages.each do |page| %>
-    <div id="Page<%= page.id %>" class="page_tab"><a class="page_link" href="#"><%= page.title %></a></div>
-  <% end %>
+<div id="PageTabsWrapper">
+  <%= render :partial => '/shared/page_tabs' %>
 </div>

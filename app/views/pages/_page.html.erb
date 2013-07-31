@@ -13,37 +13,7 @@
 
   <div class="page_relation_area">
     <ul class="page_pages_wrapper">
-
-      <li class="page_relation">
-        <div class="drag_handle">DRAG</div>
-        <div class="title">Page 1</div>
-        <div class="description">Description for this thing</div>
-      </li>
-
-      <li class="page_relation">
-        <div class="drag_handle">DRAG</div>
-        <div class="title">Page 2</div>
-        <div class="description">Description for this thing</div>
-      </li>
-
-      <li class="page_relation">
-        <div class="drag_handle">DRAG</div>
-        <div class="title">Page 3</div>
-        <div class="description">Description for this thing</div>
-      </li>
-
-      <li class="page_relation">
-        <div class="drag_handle">DRAG</div>
-        <div class="title">Page 4</div>
-        <div class="description">Description for this thing</div>
-      </li>
-
-      <li class="page_relation">
-        <div class="drag_handle">DRAG</div>
-        <div class="title">Page 5</div>
-        <div class="description">Description for this thing</div>
-      </li>
-
+      <%= render :partial => '/pages/page_relation', :collection => page.pages %>
     </ul>
     <ul class="page_products_wrapper"></ul>
     <ul class="page_categories_wrapper"></ul>
@@ -55,36 +25,109 @@
 <script type="text/javascript">
   //$("#Page<%= page.id %>").addClass('selected');
 
-  function reset_sortables(){
-    $('.page_pages_wrapper').sortable({
-      placeholder: 'page_relation_placeholder',
-      stop: function(event, ui){
-        //build_perception($(ui.item),$(this));
-        //set_perception_order($(this))
-      },
-      cancel: '.heading,.attribute,.media_items_listing_wrapper,.media_items_listing,.media_item,.next_media_item,.prev_media_item,.next_icon,.prev_icon,.media_upload_wrapper',
-      handle: '.drag_handle',
-      helper: function(event, ui){
-        devent = event;
-        dui = ui;
-        var draggable = ui.clone().addClass('nano');
-        draggable.offset(ui.offset());
-        console.log(draggable.offset());
-        return $(draggable);
+  function build_page_relation(ui, container){
+    if(ui.hasClass('draggable_widget')){
+      ui.hide();
+      params = {
+        current_page_id: <%= page.id %>,
+        title: "New Page",
+        description: "Description"
+      }
+      $.ajax({
+        url: '/pages',
+        type: 'POST',
+        data: params,
+        success: function(data){
+          ui.replaceWith($(data));
+          set_page_order(container);
+        }
+      });
+    } else {
+      set_page_order(container);
+    }
+
+  }
+
+  function set_page_order(page_sortable){
+    //console.log(page_sortable);
+    var page_relations = page_sortable.find('.page_relation');
+    var order = 1;
+    var params = {
+      pages: {}
+    }
+    _.each(page_relations, function(page_relation){
+      var page_id = Number($(page_relation).attr('model_id'));
+      params['pages'][order] = page_id;
+      order = order + 1;
+    });
+
+    console.log(params);
+
+    $.ajax({
+      url: '/set_page_order',
+      type: 'PUT',
+      dataType: 'json',
+      data: params,
+      statusCode: {
+        200: function(data){
+          $.ajax({
+            url: '/page_tabs',
+            success: function(data){
+              $("#PageTabsWrapper").html(data);
+            }
+          });
+        }
       }
     });
 
   }
 
 
-  $('.add_page_widget').draggable({
-    revert: true,
-    revertDuration: 100,
-    helper: 'clone',
-    scope: 'page_management',
-    appendTo: 'body',
-    zIndex: 199
-  });
+
+  function reset_sortables(){
+    $('.page_pages_wrapper').sortable({
+      placeholder: 'page_relation_placeholder',
+      stop: function(event, ui){
+        build_page_relation($(ui.item), $(this));
+        //set_page_order($(this));
+      },
+      cancel: '.heading,.attribute,.media_items_listing_wrapper,.media_items_listing,.media_item,.next_media_item,.prev_media_item,.next_icon,.prev_icon,.media_upload_wrapper',
+      handle: '.drag_handle',
+      helper: function(event, ui){
+        var draggable = ui.clone().addClass('nano');
+        draggable.offset(ui.offset());
+        //console.log(draggable.offset());
+        return $(draggable);
+      }
+    });
+
+
+    $('.add_page_widget').draggable({
+      revert: true,
+      revertDuration: 100,
+      appendTo: 'body',
+      connectToSortable: '.page_pages_wrapper',
+      zIndex: 199,
+      helper: function(event){
+        var item_stub;
+        $.ajax({
+          url: "/page_stub",
+          dataType: 'html',
+          async: false,
+          success: function(data){
+            item_stub = $(data).addClass('stub');
+          }
+        });
+        return item_stub;
+      }
+    });
+
+
+  }
+
+
+
+
 
 
 

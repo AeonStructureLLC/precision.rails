@@ -67,7 +67,11 @@ PrecisionRails::Application.routes.draw do
   match 'admin/create_storefront' => 'admin#create_storefront'
   match 'admin/change_storefront_status' => 'admin#change_storefront_status'
 
+  resources :pages
   resource :page
+  match 'page_stub' => 'pages#stub'
+  match 'set_page_order' => 'pages#set_page_order'
+  match 'page_tabs' => 'pages#page_tabs'
 
 
   # The priority is based upon order of creation:

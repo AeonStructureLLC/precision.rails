@@ -175,7 +175,7 @@
   .aeon-shadow;
 }
 
-#PageTabs {
+#PageTabsWrapper {
   border-bottom: 1px solid #ccc;
   position: fixed;
   top: 48px;
@@ -3214,6 +3214,114 @@ only screen and (min-device-pixel-ratio: 1.5) {
     }
   }
 }
+
+.page_relation.stub {
+  margin: 3px 3px 3px 0;
+  padding: 12px;
+  display: block;
+  vertical-align: top;
+  width: 250px;
+  height: 200px;
+  min-wdith: 250px;
+  min-heigh: 200px;
+  max-width: 250px;
+  max-height: 200px;
+  position: relative;
+  border: 1px solid #ececec;
+
+  .drag_handle {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 25px;
+    height: 22px;
+    background-image: url('/images/draghandle.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .title {
+    border-bottom: 1px solid #ececec;
+    text-align: justify;
+  }
+
+  .description {
+    padding: 8px;
+  }
+
+}
+
+.page_relation.stub[style] {
+  height: 200px !important;
+  width: 250px !important;
+}
+
+
+.page_relation_area {
+  .page_pages_wrapper {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 960px;
+
+    .page_relation {
+      margin: 3px 3px 3px 0;
+      padding: 12px;
+      display: inline-block;
+      vertical-align: top;
+      width: 250px;
+      height: 200px;
+      min-wdith: 250px;
+      min-heigh: 200px;
+      max-width: 250px;
+      max-height: 200px;
+      position: relative;
+      border: 1px solid #ececec;
+
+      .drag_handle {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 25px;
+        height: 22px;
+        background-image: url('/images/draghandle.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
+      .title {
+        border-bottom: 1px solid #ececec;
+        text-align: justify;
+      }
+
+      .description {
+        padding: 8px;
+      }
+
+    }
+
+    .page_relation_placeholder {
+      margin: 3px 3px 3px 0;
+      position: relative;
+      border: 1px solid #ccc;
+      .aeon-round;
+      background-color: #ececec;
+      width: 250px;
+      height: 200px;
+      min-wdith: 250px;
+      min-heigh: 200px;
+      max-width: 250px;
+      max-height: 200px;
+      padding: 12px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+  }
+}
+
+
+
 
 
 .disabled {
