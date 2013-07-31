@@ -47,7 +47,7 @@ class PagesController < ApplicationController
       page.page_order = order
       page.save!
     end
-    render :nothing => true, :status => 200
+    render :partial => '/shared/page_tabs'
   end
 
   def page_tabs

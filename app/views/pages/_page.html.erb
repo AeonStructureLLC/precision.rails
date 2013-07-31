@@ -66,16 +66,11 @@
     $.ajax({
       url: '/set_page_order',
       type: 'PUT',
-      dataType: 'json',
+      dataType: 'html',
       data: params,
       statusCode: {
         200: function(data){
-          $.ajax({
-            url: '/page_tabs',
-            success: function(data){
-              $("#PageTabsWrapper").html(data);
-            }
-          });
+          $("#PageTabsWrapper").html(data);
         }
       }
     });
